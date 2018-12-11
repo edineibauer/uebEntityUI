@@ -13,7 +13,7 @@ if (0 < $_FILES['file']['error']) {
         move_uploaded_file($_FILES['file']['tmp_name'], PATH_HOME . 'entity/cache/' . $file);
 
         if ("json" === $extensao) {
-            $entity = new \EntityForm\SaveEntity();
+            $entity = new \EntityUi\SaveEntity();
             $entity->importMetadados($name);
         } elseif ("sql" === $extensao) {
 

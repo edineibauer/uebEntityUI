@@ -6,10 +6,10 @@ $newName = str_replace("-", "_", \Helpers\Check::name(trim(strip_tags(filter_inp
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $dados = filter_input(INPUT_POST, 'dados', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
-$save = new \EntityForm\SaveEntity($name, $icon, $dados, $id);
+$save = new \EntityUi\SaveEntity($name, $icon, $dados, $id);
 
 if($name !== $newName) {
-    $sql = new \ConnCrud\SqlCommand();
+    $sql = new \Conn\SqlCommand();
 
     //Table Rename
     $sql->exeCommand("RENAME TABLE  `" . PRE . "{$name}` TO  `" . PRE . "{$newName}`");

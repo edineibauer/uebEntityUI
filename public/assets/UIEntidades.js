@@ -14,19 +14,19 @@ var data = {
 };
 
 function readDefaults() {
-    post("entity-form", "load/defaults", function (data) {
+    post("entity-ui", "load/defaults", function (data) {
         defaults = data;
     });
 }
 
 function readInfo() {
-    post("entity-form", "load/info", function (data) {
+    post("entity-ui", "load/info", function (data) {
         info = data;
     });
 }
 
 function readIdentifier() {
-    post("entity-form", "load/identifier", function (data) {
+    post("entity-ui", "load/identifier", function (data) {
         identifier = data;
     });
 }
@@ -34,7 +34,7 @@ function readIdentifier() {
 function readDicionarios() {
     readInfo();
     readIdentifier();
-    post("entity-form", "load/dicionarios", function (data) {
+    post("entity-ui", "load/dicionarios", function (data) {
         dicionarios = data;
         $("#entity-space, #relation").html("");
 
@@ -103,7 +103,7 @@ function showEntity() {
 function saveEntity(silent) {
     if (checkSaveAttr() && entity.name.length > 2 && typeof(dicionarios[entity.name]) !== "undefined" && !$.isEmptyObject(dicionarios[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
-        post("entity-form", "save/entity", {
+        post("entity-ui", "save/entity", {
             "name": entity.name,
             "icon": $("#entityIcon").val(),
             "dados": dicionarios[entity.name],
@@ -554,7 +554,7 @@ function deleteAttr(id) {
 
 function removeEntity(entity) {
     if (confirm("Excluir esta entidade e todos os seus dados?")) {
-        post("entity-form", "delete/entity", {"name": entity}, function (g) {
+        post("entity-ui", "delete/entity", {"name": entity}, function (g) {
             if (g) {
                 toast("Entidade Excluída", 3000, "toast-warning");
                 readDicionarios();
@@ -581,7 +581,7 @@ function sendImport() {
                         toast("Entidade já Existe", 2500, "toast-warning");
                     } else {
                         toast("Rejeitado! Chave Estrangeira Ausente", 4000, "toast-warning");
-                        post('entity-form', 'delete/import', {entity: $('#import').val()}, function (g) {
+                        post('entity-ui', 'delete/import', {entity: $('#import').val()}, function (g) {
                         });
                     }
                     $('#import').val("");

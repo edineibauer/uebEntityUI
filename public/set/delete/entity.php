@@ -2,9 +2,9 @@
 
 $entity = trim(strip_tags(filter_input(INPUT_POST, 'name', FILTER_DEFAULT)));
 
-$sql = new \ConnCrud\SqlCommand();
-$del = new \ConnCrud\Delete();
-$read = new \ConnCrud\Read();
+$sql = new \Conn\SqlCommand();
+$del = new \Conn\Delete();
+$read = new \Conn\Read();
 
 $dic = new \Entity\Dicionario($entity);
 
