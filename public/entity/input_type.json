@@ -1,0 +1,629 @@
+{
+  "": {},
+  "default": {
+    "format": "text",
+    "type": "varchar",
+    "nome": null,
+    "column": null,
+    "size": false,
+    "key": null,
+    "group": null,
+    "unique": false,
+    "default": null,
+    "update": true,
+    "relation": null,
+    "allow": {
+      "regex": null,
+      "values": [],
+      "names": [],
+      "validate": null
+    },
+    "form": {
+      "input": "text",
+      "class": null,
+      "style": null,
+      "cols": 12,
+      "colm": null,
+      "coll": null,
+      "atributos": null,
+      "template": null
+    },
+    "datagrid": {
+      "grid_relevant": null,
+      "grid_class": null,
+      "grid_style": null,
+      "grid_template": null,
+      "grid_relevant_relational": null,
+      "grid_class_relational": null,
+      "grid_style_relational": null,
+      "grid_template_relational": null
+    },
+    "select": [],
+    "filter": [],
+    "value": null
+  },
+  "text": {
+    "size": 127
+  },
+  "textarea": {
+    "format": "textarea",
+    "type": "varchar",
+    "nome": "Descrição",
+    "size": 1023,
+    "key": "description",
+    "form": {
+      "input": "textarea"
+    }
+  },
+  "information": {
+    "format": "information",
+    "type": "varchar",
+    "nome": "Informação",
+    "size": 8192,
+    "key": "information",
+    "form": {
+      "input": "span"
+    }
+  },
+  "html": {
+    "format": "html",
+    "type": "text",
+    "nome": "Conteúdo",
+    "key": "html",
+    "form": {
+      "input": "html"
+    }
+  },
+  "int": {
+    "format": "int",
+    "type": "int",
+    "allow": {
+      "regex": "/^\\d{1,10}$/"
+    },
+    "form": {
+      "input": "int"
+    }
+  },
+  "float": {
+    "format": "float",
+    "type": "float",
+    "form": {
+      "input": "float"
+    }
+  },
+  "boolean": {
+    "format": "boolean",
+    "type": "tinyint",
+    "size": 1,
+    "default": 0,
+    "allow": {
+      "values" : [0,1],
+      "names": ["não", "sim"]
+    },
+    "form": {
+      "input": "switch"
+    }
+  },
+  "status": {
+    "format": "status",
+    "type": "tinyint",
+    "nome": "Status",
+    "size": 1,
+    "default": 0,
+    "allow": {
+      "values" : [0,1],
+      "names": ["desativado", "ativado"]
+    },
+    "form": {
+      "input": "switch"
+    }
+  },
+  "date": {
+    "format": "date",
+    "type": "date",
+    "nome": "Data",
+    "key": "date",
+    "default": "date",
+    "allow": {
+      "regex": "/^\\d{4}-\\d{2}-\\d{2}$/"
+    },
+    "form": {
+      "input": "date"
+    }
+  },
+  "time": {
+    "format": "time",
+    "type": "time",
+    "nome": "Hora",
+    "default": "time",
+    "allow": {
+      "regex": "/^\\d{2}:\\d{2}:\\d{2}$/"
+    },
+    "form": {
+      "input": "time"
+    }
+  },
+  "datetime": {
+    "format": "datetime",
+    "type": "datetime",
+    "nome": "Data",
+    "default": "datetime",
+    "allow": {
+      "regex": "/^\\d{4}-\\d{2}-\\d{2}(\\s|T)\\d{2}:\\d{2}(:\\d{2})*$/"
+    },
+    "form": {
+      "input": "datetime"
+    }
+  },
+  "week": {
+    "format": "week",
+    "type": "tinyint",
+    "nome": "Semana",
+    "allow": {
+      "values": [1,2,3,4,5,6,7],
+      "names": ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"]
+    },
+    "form": {
+      "input": "select"
+    }
+  },
+  "month": {
+    "format": "month",
+    "type": "tinyint",
+    "nome": "Mês",
+    "allow": {
+      "values": [1,2,3,4,5,6,7,8,9,10,11,12],
+      "names": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+    },
+    "form": {
+      "input": "select"
+    }
+  },
+  "year": {
+    "format": "year",
+    "type": "smallint",
+    "nome": "Ano",
+    "allow": {
+      "regex": "/^(\\d{2}|\\d{4})$/"
+    },
+    "form": {
+      "input": "year"
+    }
+  },
+  "title": {
+    "format": "title",
+    "nome": "Título",
+    "size": 127,
+    "key": "title",
+    "unique": true,
+    "default": false,
+    "form": {
+      "style": "font-size:1.7em;font-weight:bold"
+    }
+  },
+  "link": {
+    "format": "link",
+    "type": "varchar",
+    "nome": "name",
+    "size": 127,
+    "key": "link",
+    "unique": true,
+    "default": false,
+    "form": false
+  },
+  "select": {
+    "format": "select",
+    "allow": {
+      "values": [1],
+      "names": ["opção 1"]
+    },
+    "form": {
+      "input": "select"
+    }
+  },
+  "radio": {
+    "format": "radio",
+    "type": "tinyint",
+    "default": 1,
+    "allow": {
+      "values": [1],
+      "names": ["opção 1"]
+    },
+    "form": {
+      "input": "radio"
+    }
+  },
+  "checkbox": {
+    "format": "checkbox",
+    "type": "json",
+    "allow": {
+      "values": [1],
+      "names": ["opção 1"]
+    },
+    "form": {
+      "input": "checkbox"
+    }
+  },
+  "range": {
+    "format": "range",
+    "type": "json",
+    "allow": {
+      "between": [1,100]
+    },
+    "form": {
+      "input": "range"
+    }
+  },
+  "color": {
+    "format": "color",
+    "type": "varchar",
+    "nome": "Cor",
+    "size": 40,
+    "allow": {
+      "regex": "/^(#[0-9abcdefABCDEF]{3}|#[0-9abcdefABCDEF]{6}|\\s*rgb\\s*\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)\\s*|\\s*rgba\\s*\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*(0\\.\\d{1,2}|1)\\s*\\)\\s*)$/"
+    },
+    "form": {
+      "input": "color"
+    }
+  },
+  "identifier": {
+    "format": "identifier",
+    "type": "int",
+    "nome": "id",
+    "key": "identifier",
+    "unique": true,
+    "default": false,
+    "update": false,
+    "form": {
+      "input": "hidden"
+    }
+  },
+  "extend": {
+    "format": "extend",
+    "type": "int",
+    "key": "extend",
+    "group": "relation",
+    "update": false,
+    "form": {
+      "input": "extend",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "extend_mult": {
+    "format": "extend_mult",
+    "type": "json",
+    "key": "extend_mult",
+    "group": "relation",
+    "form": {
+      "input": "extend_mult",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "extend_add": {
+    "format": "extend_add",
+    "type": "int",
+    "key": "extend_add",
+    "group": "relation",
+    "form": {
+      "input": "extend_add",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "list": {
+    "format": "list",
+    "type": "int",
+    "key": "list",
+    "group": "relation",
+    "form": {
+      "input": "list",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "selecao": {
+    "format": "selecao",
+    "type": "int",
+    "key": "selecao",
+    "group": "relation",
+    "form": {
+      "input": "selecao",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "list_mult": {
+    "format": "list_mult",
+    "type": "json",
+    "key": "list_mult",
+    "group": "relation",
+    "form": {
+      "input": "list_mult",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "selecao_mult": {
+    "format": "selecao_mult",
+    "type": "json",
+    "key": "selecao_mult",
+    "group": "relation",
+    "form": {
+      "input": "selecao_mult",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "checkbox_rel": {
+    "format": "checkbox_rel",
+    "type": "int",
+    "key": "selecao",
+    "group": "relation",
+    "form": {
+      "input": "checkbox_rel",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "checkbox_mult": {
+    "format": "checkbox_mult",
+    "type": "json",
+    "key": "checkbox_mult",
+    "group": "relation",
+    "form": {
+      "input": "checkbox_mult",
+      "fields": "",
+      "defaults": ""
+    }
+  },
+  "publisher": {
+    "format": "publisher",
+    "nome": "autor",
+    "type": "int",
+    "key": "publisher",
+    "update": false,
+    "form": false
+  },
+  "owner": {
+    "format": "owner",
+    "nome": "dono",
+    "type": "int",
+    "key": "publisher",
+    "update": false,
+    "form": false
+  },
+  "source": {
+    "format": "source",
+    "type": "json",
+    "nome": "Imagem",
+    "key": "source",
+    "allow": {
+      "values": [
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+        "bmp",
+        "tif",
+        "tiff",
+        "psd",
+        "svg"
+      ],
+      "names": [
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+        "bmp",
+        "tif",
+        "tiff",
+        "psd",
+        "svg"
+      ]
+    },
+    "form": {
+      "input": "file"
+    }
+  },
+  "sources": {
+    "format": "sources",
+    "type": "json",
+    "nome": "Arquivos",
+    "key": "sources",
+    "allow": {
+      "values": [
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+        "bmp",
+        "tif",
+        "tiff",
+        "psd",
+        "svg"
+      ],
+      "names": [
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+        "bmp",
+        "tif",
+        "tiff",
+        "psd",
+        "svg"
+      ]
+    },
+    "form": {
+      "input": "files"
+    }
+  },
+  "email": {
+    "format": "email",
+    "type": "varchar",
+    "nome": "Email",
+    "size": 127,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "validate": "email"
+    },
+    "form": {
+      "input": "email"
+    }
+  },
+  "password": {
+    "format": "password",
+    "type": "varchar",
+    "nome": "Senha",
+    "size": 254,
+    "default": false,
+    "form": {
+      "input": "password"
+    }
+  },
+  "passwordRequired": {
+    "format": "passwordRequired",
+    "type": "varchar",
+    "key": "information",
+    "nome": "Confirmação de Senha",
+    "size": 254,
+    "default": false,
+    "form": {
+      "input": "passwordRequired"
+    }
+  },
+  "url": {
+    "format": "url",
+    "type": "varchar",
+    "nome": "Link",
+    "size": 254,
+    "allow": {
+      "regex": "/^https?:\\/\\//"
+    },
+    "form": {
+      "input": "text"
+    }
+  },
+  "cpf": {
+    "format": "cpf",
+    "type": "varchar",
+    "nome": "CPF",
+    "size": 11,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "validate": "cpf"
+    },
+    "form": {
+      "input": "cpf"
+    }
+  },
+  "ie": {
+    "format": "ie",
+    "type": "varchar",
+    "nome": "Inscrição Estadual",
+    "size": 12,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "regex": "/^\\d{12}$/",
+      "validate": "ie"
+    },
+    "form": {
+      "input": "ie"
+    }
+  },
+  "rg": {
+    "format": "rg",
+    "type": "varchar",
+    "nome": "RG",
+    "size": 16,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "regex": "/^.{5,16}$/",
+      "validate": "rg"
+    },
+    "form": {
+      "input": "rg"
+    }
+  },
+  "cnpj": {
+    "format": "cnpj",
+    "type": "varchar",
+    "nome": "CNPJ",
+    "size": 14,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "validate": "cnpj"
+    },
+    "form": {
+      "input": "cnpj"
+    }
+  },
+  "cep": {
+    "format": "cep",
+    "type": "varchar",
+    "nome": "CEP",
+    "size": 8,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "regex": "/^\\d{8}$/"
+    },
+    "form": {
+      "input": "cep"
+    }
+  },
+  "tel": {
+    "format": "tel",
+    "type": "varchar",
+    "nome": "Telefone",
+    "size": 17,
+    "unique": true,
+    "default": false,
+    "allow": {
+      "regex": "/^\\d{10,14}$/"
+    },
+    "form": {
+      "input": "tel"
+    }
+  },
+  "valor": {
+    "format": "valor",
+    "type": "decimal",
+    "nome": "Valor",
+    "size": 11,
+    "allow": {
+      "regex": "\/^(\\d{1,15})?(\\.)?\\d{1,2}$\/"
+    },
+    "form": {
+      "input": "valor"
+    }
+  },
+  "percent": {
+    "format": "percent",
+    "nome": "porcentagem",
+    "type": "float",
+    "allow": {
+      "regex": "/^\\d{1,4}$/"
+    },
+    "form": {
+      "input": "percent"
+    }
+  },
+  "card_number": {
+    "format": "card_number",
+    "nome": "Número do Cartão",
+    "allow": {
+      "regex": "/^\\d{14,20}$/"
+    },
+    "form": {
+      "input": "card_number"
+    }
+  }
+}
