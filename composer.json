@@ -11,8 +11,8 @@
   ],
   "require": {
     "php": "^7.1",
-    "conn/config": "*",
-    "conn/conn-crud": "*"
+    "ueb/config": "*",
+    "ueb/conn": "*"
   },
   "autoload": {
     "psr-0": {
