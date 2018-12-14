@@ -13,6 +13,30 @@ var data = {
     "denveloper": ["html", "css", "scss", "js", "tpl", "json", "xml", "md", "sql", "dll"]
 };
 
+function tplObject(obj, $elem, prefix) {
+    prefix = typeof(prefix) === "undefined" ? "" : prefix;
+    if (typeof(obj) === "object") {
+        $.each(obj, function (key, value) {
+            if (obj instanceof Array) $elem = tplObject(value, $elem, prefix + key); else $elem = typeof(value) === "object" ? tplObject(value, $elem, prefix + key + ".") : $elem.replace(regexTpl(prefix + key), value)
+        })
+    } else {
+        $elem = $elem.replace(regexTpl(prefix), obj)
+    }
+    return $elem
+}
+
+function regexTpl(v) {
+    return new RegExp('__\\s*\\$' + v + '\\s*__', 'g')
+}
+
+function copy($elem, $destino, variable, position) {
+    $elem = (typeof($elem) === "string" ? $($elem) : $elem);
+    $destino = (typeof($destino) === "string" ? $($destino) : $destino);
+    $elem = $elem.clone().removeClass("hide").removeAttr("id").prop('outerHTML');
+    $elem = tplObject(variable, $elem);
+    if (typeof(position) === "undefined") $($elem).prependTo($destino); else if (position === "after") $($elem).insertAfter($destino); else if (position === "before") $($elem).insertBefore($destino); else $($elem).appendTo($destino)
+}
+
 function readDefaults() {
     post("entity-ui", "load/defaults", function (data) {
         defaults = data;
