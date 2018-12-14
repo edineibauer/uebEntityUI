@@ -207,7 +207,7 @@ function editAttr(id) {
     }
 }
 
-let alert = false;
+var alert = false;
 function checkSaveAttr() {
     var yes = true;
     if (checkRequiresFields()) {
