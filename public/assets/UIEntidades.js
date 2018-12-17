@@ -484,6 +484,7 @@ function setAllow(name, value) {
 function setFormat(val) {
     $(".selectInput").css("color", "#AAA").val("");
     getSelectInput(val).css("color", "#000").val(val);
+    $("#spaceValueAllow").html("");
 
     if (val === "source" || val === "sources") {
         $("#format-source").removeClass("hide");
