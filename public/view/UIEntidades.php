@@ -1,7 +1,7 @@
 <?php
 if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || $_SESSION['userlogin']['nivel'] !== "1") {
     $data['response'] = 3;
-    $data['data'] = HOME . "login";
+    $data['data'] = HOME . "logout";
 } else {
     ob_start();
     ?>
@@ -57,23 +57,33 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </div>
         </header>
         <div class="row"></div>
-        <div class="panel" id="space-attr-entity">
+        <div class="panel" id="space-attr-entity" style="margin-top: 0!important;">
             <div class="row">
                 <label class="col s12">
-                    <span>Nome da Entidade</span>
-                    <input id="entityName" type="text" placeholder="entidade..." class="font-large" style="margin:0">
+                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large" style="margin:0">
                 </label>
 
-                <div class="row font-small">
-                    <div class="col left padding-tiny" style="width: 33px; height: 33px">
+                <div class="row font-small hide requireNameEntity">
+                    <div class="col left padding-tiny" style="width: 26px; height: 26px">
                         <a href="https://material.io/tools/icons/?style=baseline" target="_blank"
-                           class="right btn-flat font-small theme-text margin-0" style="width: 33px; height: 33px">
+                           class="right btn-flat font-small theme-text margin-0" style="width: 27px; height: 26px">
                             <i class="material-icons padding-tiny padding-4 theme-text-d" id="entityIconDemo"></i>
                         </a>
                     </div>
-                    <div class="rest">
-                        <input id="entityIcon" placeholder="ícone" type="text" class="rest">
+                    <div class="left" style="width: 50px">
+                        <input id="entityIcon" placeholder="ícone" type="text">
                     </div>
+                    <label class="col relative" style="width: 65px">
+                        <input type="checkbox" class="left" id="haveAutor" />
+                        <span class="left pointer" style="padding:10px 0">Autor</span>
+                    </label>
+                    <label class="col relative" style="width: 110px">
+                        <input type="checkbox" class="left" id="haveOwner"/>
+                        <span class="left pointer" style="padding:10px 0">Multi-tenancy</span>
+                    </label>
+                </div>
+
+                <div class="row">
                 </div>
             </div>
 
@@ -118,7 +128,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
     </div>
 
     <div id="main" class="row color-gray-light space-header">
-        <div class="col s12 hide" id="requireNameEntity">
+        <div class="col s12 hide requireNameEntity">
             <div class="card padding-medium">
                 <div class="row">
                     <div class="col s12 m4 padding-small pad">
@@ -166,6 +176,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <option value="week">Semana</option>
                             <option value="month">Mês</option>
                             <option value="year">Ano</option>
+                            <option value="passwordRequired">Confirmar Senha</option>
                         </select>
                     </div>
                     <div class="col s12 m4 padding-small">
@@ -181,9 +192,6 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <option value="selecao_mult">Seleção Multipla</option>
                             <option value="checkbox_rel">CheckBox</option>
                             <option value="checkbox_mult">CheckBox Multiplo</option>
-                            <option value="publisher">Autor</option>
-                            <option value="owner">Dono</option>
-                            <option value="passwordRequired">Password Check</option>
                         </select>
                     </div>
                 </div>
@@ -269,16 +277,16 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </div>
             <option id="optionTpl" class="hide" value="__$0____$2__">__$1__</option>
 
-            <div class="hide card padding-medium" id="requireListFilter">
-                <header class="row padding-small">
-                    <span class="left padding-medium" style="padding-left: 0!important;">Filtrar Lista</span>
-                    <button class="btn-floating theme opacity hover-opacity-off" onclick="addFilter()"><i
-                                class="material-icons">add</i></button>
-                </header>
+            <!-- <div class="hide card padding-medium" id="requireListFilter">
+                 <header class="row padding-small">
+                     <span class="left padding-medium" style="padding-left: 0!important;">Filtrar Lista</span>
+                     <button class="btn-floating theme opacity hover-opacity-off" onclick="addFilter()"><i
+                                 class="material-icons">add</i></button>
+                 </header>
 
-                <div id="list-filter"></div>
-            </div>
-
+                 <div id="list-filter"></div>
+             </div>
+ -->
 
             <div class="hide card padding-medium" id="requireListExtend">
                 <header class="row padding-small">

@@ -74,6 +74,8 @@ function entityReset() {
     entity = {
         "name": "",
         "icon": "",
+        "autor": "",
+        "owner": "",
         "edit": null
     };
 }
@@ -87,7 +89,16 @@ function entityEdit(id) {
         if (typeof(id) !== "undefined") {
             entity.name = id;
             entity.icon = info[id]["icon"];
-            $("#entityIconDemo").text(entity.icon);
+            entity.autor = info[id]["autor"];
+            entity.owner = info[id]["owner"];
+
+            $("#entityIconDemo").text(entity.icon || "");
+
+            $("#haveOwner, #haveAutor").prop("checked", false);
+            if(entity.autor === 1)
+                $("#haveAutor").prop("checked", true);
+            else if(entity.autor === 2)
+                $("#haveOwner").prop("checked", true);
         }
 
         showEntity();
@@ -105,6 +116,14 @@ function uploadEntity() {
 function showEntity() {
     $("#entityName").val(entity.name).focus();
     $("#entityIcon").val(entity.icon);
+    $("#entityIconDemo").text(entity.icon);
+
+    $("#haveOwner, #haveAutor").prop("checked", false);
+    if(entity.autor === 1)
+        $("#haveAutor").prop("checked", true);
+    else if(entity.autor === 2)
+        $("#haveOwner").prop("checked", true);
+
     $("#entityAttr").html("");
 
     let maxIndice = 1;
@@ -127,9 +146,12 @@ function showEntity() {
 function saveEntity(silent) {
     if (checkSaveAttr() && entity.name.length > 2 && typeof(dicionarios[entity.name]) !== "undefined" && !$.isEmptyObject(dicionarios[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
+
         post("entity-ui", "save/entity", {
             "name": entity.name,
             "icon": $("#entityIcon").val(),
+            "autor": $("#haveAutor").prop("checked"),
+            "owner": $("#haveOwner").prop("checked"),
             "dados": dicionarios[entity.name],
             "id": identifier[entity.name],
             "newName": newName
@@ -154,7 +176,7 @@ function saveEntity(silent) {
 function resetAttr(id) {
     entity.edit = typeof(id) !== "undefined" ? id : null;
     $("#atributos, #template, #style, #class, .input").val("");
-    $(".selectInput").css("color", "#CCCCCC").val("");
+    $(".selectInput").css("color", "#AAAAAA").val("");
     $(".allformat").prop("checked", false);
     $("#format-source, .formato-div, #requireListExtend, .relation_container, #requireListFilter, .relation_creation_container").addClass("hide");
     $("#allowBtnAdd, #spaceValueAllow").removeClass("hide");
@@ -169,6 +191,7 @@ function resetAttr(id) {
         $(".selectInput, #relation").removeAttr("disabled").removeClass("disabled");
 
     applyAttr(getDefaultsInfo());
+    $("#nome").trigger("change");
 }
 
 function indiceChange(id, val) {
@@ -229,6 +252,8 @@ function checkSaveAttr() {
                 if (yes && allowName(temp, 1)) {
                     entity.name = temp;
                     entity.icon = $("#entityIcon").val();
+                    entity.autor = $("#haveAutor").prop("checked") === "on" ? 1 : ($("#haveOwner").prop("checked") === "on" ? 2 : null);
+
                     identifier[entity.name] = 1;
                     dicionarios[entity.name] = {};
                 }
@@ -457,8 +482,8 @@ function setAllow(name, value) {
 }
 
 function setFormat(val) {
-    $(".selectInput").css("color", "#CCCCCC").val("");
-    getSelectInput(val).css("color", "#333333").val(val);
+    $(".selectInput").css("color", "#AAA").val("");
+    getSelectInput(val).css("color", "#000").val(val);
 
     if (val === "source" || val === "sources") {
         $("#format-source").removeClass("hide");
@@ -480,7 +505,7 @@ function setFormat(val) {
 function getSelectInput(val) {
     if (["text", "textarea", "html", "int", "float", "boolean", "select", "radio", "checkbox", "range", "color", "source", "sources", "information"].indexOf(val) > -1)
         return $("#funcaoPrimary");
-    else if (["extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult", "publisher", "owner", "passwordRequired"].indexOf(val) > -1)
+    else if (["extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult", "publisher", "owner"].indexOf(val) > -1)
         return $("#funcaoRelation");
     else
         return $("#funcaoIdentifier");
@@ -528,7 +553,7 @@ function allowName(nome, tipo) {
         }
 
         //nome repetido
-        if (tipo === 2) {
+        if (tipo === 2 && nome.length > 2 && nome !== dicionarios[entity.name][entity.edit]['nome']) {
             let tt = slug(nome, "_");
             $.each(dicionarios[entity.name], function (i, e) {
                 if (tt === e.column) {
@@ -779,14 +804,15 @@ $(function () {
 
     $("#core-content").off("keyup change focus", "#entityName").on("keyup change focus", "#entityName", function () {
         if ($(this).val().length > 2)
-            $("#requireNameEntity").removeClass("hide");
+            $(".requireNameEntity").removeClass("hide");
         else
-            $("#requireNameEntity").addClass("hide");
+            $(".requireNameEntity").addClass("hide");
 
     }).off("change", "#relation").on("change", "#relation", function () {
         checkFieldsOpenOrClose();
         checkEntityMultipleFields();
         checkFilterToApply();
+        $("#nome").trigger("change").focus();
 
         let val = $("#funcaoRelation").val();
         if (["selecao", "selecao_mult", "checkbox_mult"].indexOf(val) === -1)
@@ -796,6 +822,13 @@ $(function () {
         setFormat($(this).val());
         applyAttr(assignObject(defaults.default, defaults[getType()]));
         checkFieldsOpenOrClose();
+        $("#nome").trigger("change");
+
+    }).off("change", "#haveAutor, #haveOwner").on("change", "#haveAutor, #haveOwner", function () {
+        if($(this).attr("id") === "haveAutor")
+            $("#haveOwner").prop("checked", false);
+        else
+            $("#haveAutor").prop("checked", false);
 
     }).off("keyup change", "#nome").on("keyup change", "#nome", function () {
         checkFieldsOpenOrClose($(this).val());
@@ -803,7 +836,6 @@ $(function () {
     }).off("change", "#default_custom").on("change", "#default_custom", function () {
         if ($(this).is(":checked")) {
             $("#default_container").removeClass("hide");
-            $("#default").focus();
             if ($("#unique").is(":checked"))
                 $("#unique").trigger("click");
         } else {
@@ -813,7 +845,6 @@ $(function () {
     }).off("change", "#size_custom").on("change", "#size_custom", function () {
         if ($(this).is(":checked")) {
             $("#size_container").removeClass("hide");
-            $("#size").focus();
         } else {
             $("#size_container").addClass("hide");
         }

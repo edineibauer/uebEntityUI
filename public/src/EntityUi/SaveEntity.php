@@ -12,14 +12,16 @@ class SaveEntity
     private $id;
 
     /**
+     * SaveEntity constructor.
      * Nome da entidade, dicionário de dados e identificador atual
-     *
-     * @param string $entity
-     * @param string $icon
-     * @param array $data
-     * @param int $id
+
+     * @param string|null $entity
+     * @param string|null $icon
+     * @param int|null $autor
+     * @param null $data
+     * @param int|null $id
      */
-    public function __construct(string $entity = null, string $icon = null, $data = null, int $id = null)
+    public function __construct(string $entity = null, string $icon = null, int $autor = null, $data = null, int $id = null)
     {
         if ($entity) {
             $this->entity = $entity;
@@ -27,7 +29,7 @@ class SaveEntity
                 $this->id = $id;
 
             if ($data)
-                $this->start($data, $icon);
+                $this->start($data, $icon, $autor);
         }
     }
 
@@ -49,8 +51,9 @@ class SaveEntity
     /**
      * @param null $metadados
      * @param string|null $icon
+     * @param int|null $autor
      */
-    private function start($metadados = null, string $icon = null)
+    private function start($metadados = null, string $icon = null, int $autor = null)
     {
         try {
             $data['dicionario'] = Metadados::getDicionario($this->entity);
@@ -65,7 +68,7 @@ class SaveEntity
 
             $metadados["0"] = $this->generatePrimary();
             $this->createEntityJson($metadados);
-            $this->createEntityJson($this->generateInfo($metadados, $icon), "info");
+            $this->createEntityJson($this->generateInfo($metadados, $icon, $autor), "info");
 
             new EntityCreateEntityDatabase($this->entity, $data);
 
@@ -120,13 +123,15 @@ class SaveEntity
 
     /**
      * @param array $metadados
-     * @param string $icon
+     * @param string|null $icon
+     * @param int|null $autor
      * @return array
      */
-    private function generateInfo(array $metadados, string $icon = null): array
+    private function generateInfo(array $metadados, string $icon = null, int $autor = null): array
     {
         $data = [
             "icon" => $icon,
+            "autor" => $autor,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
             "required" => null, "unique" => null, "publisher" => null, "constant" => null, "extend" => null, "extend_add" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "selecao" => null, "selecao_mult" => null, "checkbox_rel" => null, "checkbox_mult" => null, "owner" => null, "ownerPublisher" => null,
             "source" => [
