@@ -553,7 +553,7 @@ function allowName(nome, tipo) {
         }
 
         //nome repetido
-        if (tipo === 2 && nome.length > 2 && nome !== dicionarios[entity.name][entity.edit]['nome']) {
+        if (tipo === 2 && nome.length > 2 && (entity.edit < 1 || (entity.edit > 0 && nome !== dicionarios[entity.name][entity.edit]['nome']))) {
             let tt = slug(nome, "_");
             $.each(dicionarios[entity.name], function (i, e) {
                 if (tt === e.column) {
