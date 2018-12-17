@@ -60,7 +60,8 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
         <div class="panel" id="space-attr-entity" style="margin-top: 0!important;">
             <div class="row">
                 <label class="col s12">
-                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large" style="margin:0">
+                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large"
+                           style="margin:0">
                 </label>
 
                 <div class="row font-small hide requireNameEntity">
@@ -74,7 +75,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         <input id="entityIcon" placeholder="ícone" type="text">
                     </div>
                     <label class="col relative" style="width: 65px">
-                        <input type="checkbox" class="left" id="haveAutor" />
+                        <input type="checkbox" class="left" id="haveAutor"/>
                         <span class="left pointer" style="padding:10px 0">Autor</span>
                     </label>
                     <label class="col relative" style="width: 110px">
@@ -305,8 +306,8 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </label>
 
             <div class="requireName hide card padding-medium">
-                <header class="row padding-small">
-                    <span class="left padding-medium">Formulário</span>
+                <header class="row padding-16">
+                    <span class="left padding-12 padding-right">Formulário</span>
                     <label class="switch">
                         <input type="checkbox" class="input" id="form">
                         <div class="slider"></div>
@@ -339,58 +340,58 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     </div>
 
                     <div class="col s4 padding-small form_body">
-                        <label>Colunas Smartphone</label>
+                        <label>Largura do Campo no Smartphone</label>
                         <select class="input form_body" id="cols">
-                            <option value="12" selected>12/12</option>
-                            <option value="11">11/12</option>
-                            <option value="10">10/12</option>
-                            <option value="9">9/12</option>
-                            <option value="8">8/12</option>
-                            <option value="7">7/12</option>
-                            <option value="6">6/12</option>
-                            <option value="5">5/12</option>
-                            <option value="4">4/12</option>
-                            <option value="3">3/12</option>
-                            <option value="2">2/12</option>
-                            <option value="1">1/12</option>
+                            <option value="12" selected>100.% &nbsp;|&nbsp; Proporção 12/12</option>
+                            <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
+                            <option value="10">83.3% &nbsp;|&nbsp; Proporção 10/12</option>
+                            <option value="9">75.0% &nbsp;|&nbsp; Proporção 9/12</option>
+                            <option value="8">66.6% &nbsp;|&nbsp; Proporção 8/12</option>
+                            <option value="7">58.3% &nbsp;|&nbsp; Proporção 7/12</option>
+                            <option value="6">50.0% &nbsp;|&nbsp; Proporção 6/12</option>
+                            <option value="5">41.6% &nbsp;|&nbsp; Proporção 5/12</option>
+                            <option value="4">33.3% &nbsp;|&nbsp; Proporção 4/12</option>
+                            <option value="3">25.0% &nbsp;|&nbsp; Proporção 3/12</option>
+                            <option value="2">16.6% &nbsp;|&nbsp; Proporção 2/12</option>
+                            <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
                         </select>
                     </div>
 
                     <div class="col s4 padding-small form_body">
-                        <label>Colunas Tablet</label>
+                        <label>Largura do Campo no Tablet</label>
                         <select class="input form_body" id="colm">
                             <option value="" selected disabled></option>
-                            <option value="12">12/12</option>
-                            <option value="11">11/12</option>
-                            <option value="10">10/12</option>
-                            <option value="9">9/12</option>
-                            <option value="8">8/12</option>
-                            <option value="7">7/12</option>
-                            <option value="6">6/12</option>
-                            <option value="5">5/12</option>
-                            <option value="4">4/12</option>
-                            <option value="3">3/12</option>
-                            <option value="2">2/12</option>
-                            <option value="1">1/12</option>
+                            <option value="12">100.% &nbsp;|&nbsp; Proporção 12/12</option>
+                            <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
+                            <option value="10">83.3% &nbsp;|&nbsp; Proporção 10/12</option>
+                            <option value="9">75.0% &nbsp;|&nbsp; Proporção 9/12</option>
+                            <option value="8">66.6% &nbsp;|&nbsp; Proporção 8/12</option>
+                            <option value="7">58.3% &nbsp;|&nbsp; Proporção 7/12</option>
+                            <option value="6">50.0% &nbsp;|&nbsp; Proporção 6/12</option>
+                            <option value="5">41.6% &nbsp;|&nbsp; Proporção 5/12</option>
+                            <option value="4">33.3% &nbsp;|&nbsp; Proporção 4/12</option>
+                            <option value="3">25.0% &nbsp;|&nbsp; Proporção 3/12</option>
+                            <option value="2">16.6% &nbsp;|&nbsp; Proporção 2/12</option>
+                            <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
                         </select>
                     </div>
 
                     <div class="col s4 padding-small form_body">
-                        <label>Colunas Desktop</label>
+                        <label>Largura do Campo no Desktop</label>
                         <select class="input form_body" id="coll">
                             <option value="" selected disabled></option>
-                            <option value="12">12/12</option>
-                            <option value="11">11/12</option>
-                            <option value="10">10/12</option>
-                            <option value="9">9/12</option>
-                            <option value="8">8/12</option>
-                            <option value="7">7/12</option>
-                            <option value="6">6/12</option>
-                            <option value="5">5/12</option>
-                            <option value="4">4/12</option>
-                            <option value="3">3/12</option>
-                            <option value="2">2/12</option>
-                            <option value="1">1/12</option>
+                            <option value="12">100.% &nbsp;|&nbsp; Proporção 12/12</option>
+                            <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
+                            <option value="10">83.3% &nbsp;|&nbsp; Proporção 10/12</option>
+                            <option value="9">75.0% &nbsp;|&nbsp; Proporção 9/12</option>
+                            <option value="8">66.6% &nbsp;|&nbsp; Proporção 8/12</option>
+                            <option value="7">58.3% &nbsp;|&nbsp; Proporção 7/12</option>
+                            <option value="6">50.0% &nbsp;|&nbsp; Proporção 6/12</option>
+                            <option value="5">41.6% &nbsp;|&nbsp; Proporção 5/12</option>
+                            <option value="4">33.3% &nbsp;|&nbsp; Proporção 4/12</option>
+                            <option value="3">25.0% &nbsp;|&nbsp; Proporção 3/12</option>
+                            <option value="2">16.6% &nbsp;|&nbsp; Proporção 2/12</option>
+                            <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
                         </select>
                     </div>
                     <div class="clearfix"></div>
@@ -416,8 +417,8 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </div>
 
             <div class="requireName hide card padding-medium">
-                <header class="row padding-small">
-                    <span class="left padding-medium">Tabela</span>
+                <header class="row padding-16">
+                    <span class="left padding-12 padding-right">Tabela de Listagem</span>
                     <label class="switch">
                         <input type="checkbox" class="input" id="datagrid">
                         <div class="slider"></div>
@@ -491,16 +492,16 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </div>
 
             <div class="requireName hide card padding-medium">
-                <header class="row padding-large">
-                    <span class="left">Validação</span>
-                    <i class="material-icons padding-left">check</i>
+                <header class="row padding-16">
+                    <i class="material-icons left">check</i>
+                    <span class="left padding-left">Validação</span>
                 </header>
                 <div class="collapsible-body">
                     <div class="clearfix"></div>
 
                     <div class="col s12">
                         <label class="input-field col s12">
-                            <span>Expressão Regular para Validação</span>
+                            <span>Expressão Regular</span>
                             <input id="regex" type="text" class="input font-medium">
                         </label>
                     </div>
@@ -510,15 +511,15 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </div>
 
             <div class="requireName hide card padding-medium">
-                <header class="row padding-medium">
-                <span class="left padding-medium">
-                    <i class="material-icons left">assignment</i>
-                    <span class="left padding-left">Valores Permitidos &nbsp;&nbsp;</span>
-                </span>
+                <header class="row padding-16">
+                    <span class="left padding-8 padding-right">
+                        <i class="material-icons left">assignment</i>
+                        <span class="left padding-left">Definir Valores Permitidos para este Campo&nbsp;&nbsp;</span>
+                    </span>
                     <span class="btn-floating left theme" id="allowBtnAdd"
                           onclick="copy('#tplValueAllow', '#spaceValueAllow');$('#spaceValueAllow').find('.allow:first-child').find('.values').focus()">
-                    <i class="material-icons">add</i>
-                </span>
+                        <i class="material-icons">add</i>
+                    </span>
                 </header>
 
                 <div class="col s12 hide" id="format-source">
@@ -650,13 +651,14 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
                 <div class="col s12 font-medium hide allow" id="tplValueAllow">
                     <label class="input-field col s12 m4 padding-small">
-                        <span>Valor</span>
+                        <span>Valor Interno <small class="color-text-gray"> (armazenamento)</small></span>
                         <input class="values" type="text"
                                onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 49 && event.charCode <= 57">
                     </label>
 
                     <label class="input-field col s12 m8 padding-small">
-                        <span>Nome</span>
+                        <span>Valor Representativo <small
+                                    class="color-text-gray"> (exibido para o usuário)</small></span>
                         <input class="names" type="text">
                     </label>
                 </div>

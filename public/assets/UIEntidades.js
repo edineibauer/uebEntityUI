@@ -181,6 +181,9 @@ function resetAttr(id) {
     $("#format-source, .formato-div, #requireListExtend, .relation_container, #requireListFilter, .relation_creation_container").addClass("hide");
     $("#allowBtnAdd, #spaceValueAllow").removeClass("hide");
     $("#spaceValueAllow, #requireListExtendDiv, #list-filter, #relation_fields_show, #relation_fields_default").html("");
+
+    $(".allformat").prop("checked", false);
+    $(".formato-div").addClass("hide");
     $(".file-format").each(function () {
         $(this).prop("checked", false);
         $("." + $(this).attr("id") + "-format").prop("checked", false);
@@ -485,6 +488,13 @@ function setFormat(val) {
     $(".selectInput").css("color", "#AAA").val("");
     getSelectInput(val).css("color", "#000").val(val);
     $("#spaceValueAllow").html("");
+
+    $(".allformat").prop("checked", false);
+    $(".formato-div").addClass("hide");
+    $(".file-format").each(function () {
+        $(this).prop("checked", false);
+        $("." + $(this).attr("id") + "-format").prop("checked", false);
+    });
 
     if (val === "source" || val === "sources") {
         $("#format-source").removeClass("hide");
