@@ -380,7 +380,9 @@
   },
   "publisher": {
     "format": "publisher",
-    "nome": "autor",
+    "nome": "autorpub",
+    "column": "autorpub",
+    "relation": "usuarios",
     "type": "int",
     "key": "publisher",
     "update": false,
@@ -388,7 +390,9 @@
   },
   "owner": {
     "format": "owner",
-    "nome": "dono",
+    "nome": "ownerpub",
+    "column": "ownerpub",
+    "relation": "usuarios",
     "type": "int",
     "key": "publisher",
     "update": false,
