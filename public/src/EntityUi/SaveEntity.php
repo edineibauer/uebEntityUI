@@ -70,7 +70,7 @@ class SaveEntity
             $this->createEntityJson($metadados);
             $this->createEntityJson($this->generateInfo($metadados, $icon, $autor), "info");
 
-            new EntityCreateEntityDatabase($this->entity, $data);
+            new EntityCreateEntityDatabase($this->entity, $data, $autor);
 
         } catch (\Exception $e) {
             echo $e->getMessage() . " #linha {$e->getLine()}";

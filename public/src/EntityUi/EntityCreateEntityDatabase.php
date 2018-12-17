@@ -7,10 +7,12 @@ use Entity\Metadados;
 class EntityCreateEntityDatabase extends EntityDatabase
 {
     /**
+     * EntityCreateEntityDatabase constructor.
      * @param string $entity
      * @param array $dados
+     * @param int|null $autor
      */
-    public function __construct(string $entity, array $dados)
+    public function __construct(string $entity, array $dados, int $autor = null)
     {
         parent::__construct($entity);
 
@@ -18,20 +20,38 @@ class EntityCreateEntityDatabase extends EntityDatabase
 
             //remove Strings from metadados para não salvar no banco
             foreach ($data as $i => $datum) {
-                if($datum['key'] === 'information')
+                if ($datum['key'] === 'information')
                     unset($data[$i]);
             }
 
             //remove Strings from metadados para não salvar no banco
             foreach ($dados as $i => $dadosm) {
-                if(!empty($dadosm['key']) && $dadosm['key'] === 'information')
+                if (!empty($dadosm['key']) && $dadosm['key'] === 'information')
                     unset($dados[$i]);
+            }
+
+            //verifica se tem autor ou owner
+            $sql = new \Conn\SqlCommand();
+            $base = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+
+            //remove owner and autor if necessary
+            if($dados['info']['autor'] === 1) {
+                $dados['dicionario'][9998] = array_merge($base['default'], $base['publisher']);
+            } elseif($dados['info']['autor'] === 2) {
+                $dados['dicionario'][9997] = array_merge($base['default'], $base['owner']);
+            }
+
+            //add owner and autor if necessary
+            if ($autor === 1) {
+                $data[9998] = array_merge($base['default'], $base['publisher']);
+            } elseif($autor === 2) {
+                $data[9997] = array_merge($base['default'], $base['owner']);
             }
 
             $sql = new \Conn\SqlCommand();
             $sql->exeCommand("SELECT 1 FROM " . PRE . "{$entity} LIMIT 1");
             if (!$sql->getErro() && !empty($dados['dicionario']))
-                new EntityUpdateEntityDatabase($entity, $dados['dicionario']);
+                new EntityUpdateEntityDatabase($entity, $data, $dados['dicionario']);
             elseif ($sql->getErro())
                 $this->createTableFromEntityJson($entity, $data);
         }

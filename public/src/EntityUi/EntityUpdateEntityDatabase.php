@@ -13,12 +13,18 @@ class EntityUpdateEntityDatabase extends EntityDatabase
     private $old;
     private $new;
 
-    public function __construct(string $entity, array $dados)
+    /**
+     * EntityUpdateEntityDatabase constructor.
+     * @param string $entity
+     * @param array $novos
+     * @param array $dados
+     */
+    public function __construct(string $entity, array $novos, array $dados)
     {
         parent::__construct($entity);
         $this->setEntity($entity);
         $this->old = $dados;
-        $this->new = Metadados::getDicionario($entity);
+        $this->new = $novos;
         $this->start();
     }
 
@@ -112,7 +118,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
 
         $constraint = substr("c_{$this->entity}_{$dados['column']}_{$dados['relation']}", 0, 64);
 
-        if (in_array($dados['format'], ["list", "extend", "extend_add", "selecao", "checkbox_rel", "selecaoUnique", "publisher"]))
+        if (in_array($dados['format'], ["list", "extend", "extend_add", "selecao", "checkbox_rel", "selecaoUnique", "publisher", "owner"]))
             $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP FOREIGN KEY {$constraint}, DROP INDEX fk_" . $dados['column']);
 
         //deleta dados armazenados da extensão

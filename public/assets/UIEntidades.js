@@ -835,11 +835,15 @@ $(function () {
         checkFieldsOpenOrClose();
         $("#nome").trigger("change");
 
-    }).off("change", "#haveAutor, #haveOwner").on("change", "#haveAutor, #haveOwner", function () {
-        if($(this).attr("id") === "haveAutor")
-            $("#haveOwner").prop("checked", false);
-        else
-            $("#haveAutor").prop("checked", false);
+    }).off("change", "#haveAutor, #haveOwner").on("change", "#haveAutor, #haveOwner", function (e) {
+        let alt = $(this).attr("id") === "haveAutor" ? "#haveOwner" : "#haveAutor";
+
+        if(!$(this).prop("checked") || $(alt).prop("checked")) {
+            if(confirm("Os dados com Referência a esta entidade serão perdidos.\n\nDeseja Formatar?"))
+                $(alt).prop("checked", false);
+            else
+                $(this).prop("checked", !$(alt).prop("checked"));
+        }
 
     }).off("keyup change", "#nome").on("keyup change", "#nome", function () {
         checkFieldsOpenOrClose($(this).val());
