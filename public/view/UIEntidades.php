@@ -257,7 +257,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
                         <div class="col s12 m8 l5 padding-tiny hide" id="default_container">
                             <label for="default">Valor Padrão</label>
-                            <input id="default" type="text" class="input">
+                            <input type="text" id="default" class="input">
                         </div>
                     </div>
                 </div>
