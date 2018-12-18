@@ -77,9 +77,6 @@
   "int": {
     "format": "int",
     "type": "int",
-    "allow": {
-      "regex": "/^\\d{1,10}$/"
-    },
     "form": {
       "input": "int"
     }

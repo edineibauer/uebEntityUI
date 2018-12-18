@@ -210,15 +210,15 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
                     <div class="row requireName hide">
 
-                        <div class="col s6 m3 l1">
-                            <label class="row" for="update">Update</label>
+                        <div class="col s6 m3 l1" id="update_field">
+                            <label class="row" for="update">Atualizar</label>
                             <label class="switch">
                                 <input type="checkbox" class="input" id="update">
                                 <div class="slider"></div>
                             </label>
                         </div>
 
-                        <div class="col s6 m3 l1">
+                        <div class="col s6 m3 l1" id="unique_field">
                             <label class="row" for="unique">Único</label>
                             <label class="switch">
                                 <input type="checkbox" class="input" id="unique">
@@ -226,7 +226,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             </label>
                         </div>
 
-                        <div class="col s6 m3 l1">
+                        <div class="col s6 m3 l1" id="default_field">
                             <label class="row" for="default_custom">Nulo</label>
                             <label class="switch">
                                 <input type="checkbox" id="default_custom">
@@ -234,7 +234,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             </label>
                         </div>
 
-                        <div class="col s6 m3 l1" style="margin-bottom: 10px;">
+                        <div class="col s6 m3 l1" id="size_field" style="margin-bottom: 10px;">
                             <label class="row" for="size_custom">Tamanho</label>
                             <label class="switch">
                                 <input type="checkbox" id="size_custom">
@@ -242,12 +242,20 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             </label>
                         </div>
 
-                        <div class="col s12 m6 l2 relative hide" style="padding: 25px 0 0px 5px!important;"
-                             id="size_container">
-                            <input id="size" type="number" step="1" max="1000000" value="127" min="1" class="input">
+                        <div class="col s12 m6 l3 relative hide" id="size_field_container">
+                            <div class="col s12 relative hide" style="padding: 2px 10px 0px!important;" id="size_container">
+                                <div class="col s6" style="padding-right: 5px;">
+                                    <label for="minimo">Min</label>
+                                    <input id="minimo" type="number" step="1" max="1000000" value="127" min="1" class="input">
+                                </div>
+                                <div class="col s6">
+                                    <label for="size">Max</label>
+                                    <input id="size" type="number" step="1" max="1000000" value="127" min="1" class="input">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col s12 m8 l6 padding-tiny hide" id="default_container">
+                        <div class="col s12 m8 l5 padding-tiny hide" id="default_container">
                             <label for="default">Valor Padrão</label>
                             <input id="default" type="text" class="input">
                         </div>
