@@ -74,7 +74,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     <div class="left" style="width: 50px">
                         <input id="entityIcon" placeholder="ícone" type="text">
                     </div>
-                    <label class="col relative" style="width: 70px">
+                    <label class="col relative" style="width: 65px">
                         <input type="checkbox" class="left" id="haveAutor"/>
                         <span class="left pointer" style="padding:10px 0">Autor</span>
                     </label>
@@ -510,160 +510,162 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                 </div>
             </div>
 
-            <div class="requireName hide card padding-medium">
-                <header class="row padding-16">
+            <div class="hide col" id="definirvalores">
+                <div class="hide card padding-medium requireName">
+                    <header class="row padding-16">
                     <span class="left padding-8 padding-right">
                         <i class="material-icons left">assignment</i>
                         <span class="left padding-left">Definir Valores Permitidos para este Campo&nbsp;&nbsp;</span>
                     </span>
-                    <span class="btn-floating left theme" id="allowBtnAdd"
-                          onclick="copy('#tplValueAllow', '#spaceValueAllow');$('#spaceValueAllow').find('.allow:first-child').find('.values').focus()">
+                        <span class="btn-floating left theme" id="allowBtnAdd"
+                              onclick="copy('#tplValueAllow', '#spaceValueAllow');$('#spaceValueAllow').find('.allow:first-child').find('.values').focus()">
                         <i class="material-icons">add</i>
                     </span>
-                </header>
+                    </header>
 
-                <div class="col s12 hide" id="format-source">
-                    <div class="clearfix"></div>
+                    <div class="col s12 hide" id="format-source">
+                        <div class="clearfix"></div>
 
-                    <div class="col s12">
-                        <label class="col s6 m2 relative">
-                            <input type="checkbox" class="file-format" id="image"/>
-                            <span class="left padding-8">Imagens</span>
-                        </label>
-                        <label class="col s6 m2 relative">
-                            <input type="checkbox" class="file-format" id="video"/>
-                            <span class="left padding-8">Vídeos</span>
-                        </label>
-                        <label class="col s6 m2 relative">
-                            <input type="checkbox" class="file-format" id="audio"/>
-                            <span class="left padding-8">Audios</span>
-                        </label>
-                        <label class="col s6 m2 relative">
-                            <input type="checkbox" class="file-format" id="document"/>
-                            <span class="left padding-8">Doc.</span>
-                        </label>
-                        <label class="col s6 m2 relative">
-                            <input type="checkbox" class="file-format" id="compact"/>
-                            <span class="left padding-8">Compact.</span>
-                        </label>
-                        <label class="col s6 m2 relative">
-                            <input type="checkbox" class="file-format" id="denveloper"/>
-                            <span class="left padding-8">Dev.</span>
-                        </label>
+                        <div class="col s12">
+                            <label class="col s6 m2 relative">
+                                <input type="checkbox" class="file-format" id="image"/>
+                                <span class="left padding-8">Imagens</span>
+                            </label>
+                            <label class="col s6 m2 relative">
+                                <input type="checkbox" class="file-format" id="video"/>
+                                <span class="left padding-8">Vídeos</span>
+                            </label>
+                            <label class="col s6 m2 relative">
+                                <input type="checkbox" class="file-format" id="audio"/>
+                                <span class="left padding-8">Audios</span>
+                            </label>
+                            <label class="col s6 m2 relative">
+                                <input type="checkbox" class="file-format" id="document"/>
+                                <span class="left padding-8">Doc.</span>
+                            </label>
+                            <label class="col s6 m2 relative">
+                                <input type="checkbox" class="file-format" id="compact"/>
+                                <span class="left padding-8">Compact.</span>
+                            </label>
+                            <label class="col s6 m2 relative">
+                                <input type="checkbox" class="file-format" id="denveloper"/>
+                                <span class="left padding-8">Dev.</span>
+                            </label>
+                        </div>
+
+                        <div class="panel">
+                            <div class="col s12 formato-div hide" id="formato-image">
+                                <div class="row padding-small"></div>
+                                <div class="padding-medium row color-grey-light round">
+                                    <label class="col s6 m2 relative">
+                                        <input type="checkbox" class="allformat" rel="image" id="all-image"/>
+                                        <span>Todas</span>
+                                    </label>
+                                    <?php
+                                    $document = ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"];
+                                    foreach ($document as $id) {
+                                        echo "<label class='col s6 m2 relative'><input type='checkbox' class='image-format oneformat' rel='image' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col s12 formato-div hide" id="formato-video">
+                                <div class="row padding-small"></div>
+                                <div class="padding-medium row color-grey-light round">
+                                    <label class="col s6 m2 relative">
+                                        <input type="checkbox" class="allformat" rel="video" id="all-video"/>
+                                        <span>Todos</span>
+                                    </label>
+                                    <?php
+                                    $document = ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"];
+                                    foreach ($document as $id) {
+                                        echo "<label class='col s6 m2 relative'><input type='checkbox' class='video-format oneformat' rel='video' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col s12 formato-div hide" id="formato-audio">
+                                <div class="row padding-small"></div>
+                                <div class="padding-medium row color-grey-light round">
+                                    <label class="col s6 m2 relative">
+                                        <input type="checkbox" class="allformat" rel="audio" id="all-audio"/>
+                                        <span>Todos</span>
+                                    </label>
+                                    <?php
+                                    $document = ["mp3", "aac", "ogg", "wma", "mid", "alac", "flac", "wav", "pcm", "aiff", "ac3"];
+                                    foreach ($document as $id) {
+                                        echo "<label class='col s6 m2 relative'><input type='checkbox' class='audio-format oneformat' rel='audio' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col s12 formato-div hide" id="formato-document">
+                                <div class="row padding-small"></div>
+                                <div class="padding-medium row color-grey-light round">
+                                    <label class="col s6 m2 relative">
+                                        <input type="checkbox" class="allformat" rel="document" id="all-document"/>
+                                        <span>Todas</span>
+                                    </label>
+                                    <?php
+                                    $document = ["txt", "doc", "docx", "dot", "dotx", "dotm", "ppt", "pptx", "pps", "potm", "potx", "pdf", "xls", "xlsx", "xltx", "rtf"];
+                                    foreach ($document as $id) {
+                                        echo "<label class='col s6 m2 relative'><input type='checkbox' class='document-format oneformat' rel='document' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
+                                    }
+
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col s12 formato-div hide" id="formato-compact">
+                                <div class="row padding-small"></div>
+                                <div class="padding-medium row color-grey-light round">
+                                    <label class="col s6 m2 relative">
+                                        <input type="checkbox" class="allformat" rel="compact" id="all-compact"/>
+                                        <span>Todas</span>
+                                    </label>
+                                    <?php
+                                    $document = ["rar", "zip", "tar", "7z"];
+                                    foreach ($document as $id) {
+                                        echo "<label class='col s6 m2 relative'><input type='checkbox' class='compact-format oneformat' rel='compact' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col s12 formato-div hide" id="formato-denveloper">
+                                <div class="row padding-small"></div>
+                                <div class="padding-medium row color-grey-light round">
+                                    <label class="col s6 m2 relative">
+                                        <input type="checkbox" class="allformat" rel="denveloper" id="all-denveloper"/>
+                                        <span>Todas</span>
+                                    </label>
+                                    <?php
+                                    $document = ["html", "css", "scss", "js", "tpl", "mst", "json", "xml", "md", "sql", "dll", "eot", "woff", "woff2", "ttf"];
+                                    foreach ($document as $id) {
+                                        echo "<label class='col s6 m2 relative'><input type='checkbox' class='denveloper-format oneformat' rel='denveloper' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="panel">
-                        <div class="col s12 formato-div hide" id="formato-image">
-                            <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
-                                <label class="col s6 m2 relative">
-                                    <input type="checkbox" class="allformat" rel="image" id="all-image"/>
-                                    <span>Todas</span>
-                                </label>
-                                <?php
-                                $document = ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"];
-                                foreach ($document as $id) {
-                                    echo "<label class='col s6 m2 relative'><input type='checkbox' class='image-format oneformat' rel='image' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col s12 formato-div hide" id="formato-video">
-                            <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
-                                <label class="col s6 m2 relative">
-                                    <input type="checkbox" class="allformat" rel="video" id="all-video"/>
-                                    <span>Todos</span>
-                                </label>
-                                <?php
-                                $document = ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"];
-                                foreach ($document as $id) {
-                                    echo "<label class='col s6 m2 relative'><input type='checkbox' class='video-format oneformat' rel='video' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col s12 formato-div hide" id="formato-audio">
-                            <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
-                                <label class="col s6 m2 relative">
-                                    <input type="checkbox" class="allformat" rel="audio" id="all-audio"/>
-                                    <span>Todos</span>
-                                </label>
-                                <?php
-                                $document = ["mp3", "aac", "ogg", "wma", "mid", "alac", "flac", "wav", "pcm", "aiff", "ac3"];
-                                foreach ($document as $id) {
-                                    echo "<label class='col s6 m2 relative'><input type='checkbox' class='audio-format oneformat' rel='audio' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col s12 formato-div hide" id="formato-document">
-                            <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
-                                <label class="col s6 m2 relative">
-                                    <input type="checkbox" class="allformat" rel="document" id="all-document"/>
-                                    <span>Todas</span>
-                                </label>
-                                <?php
-                                $document = ["txt", "doc", "docx", "dot", "dotx", "dotm", "ppt", "pptx", "pps", "potm", "potx", "pdf", "xls", "xlsx", "xltx", "rtf"];
-                                foreach ($document as $id) {
-                                    echo "<label class='col s6 m2 relative'><input type='checkbox' class='document-format oneformat' rel='document' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
-                                }
+                    <div class="col s12" id="spaceValueAllow"></div>
 
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col s12 formato-div hide" id="formato-compact">
-                            <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
-                                <label class="col s6 m2 relative">
-                                    <input type="checkbox" class="allformat" rel="compact" id="all-compact"/>
-                                    <span>Todas</span>
-                                </label>
-                                <?php
-                                $document = ["rar", "zip", "tar", "7z"];
-                                foreach ($document as $id) {
-                                    echo "<label class='col s6 m2 relative'><input type='checkbox' class='compact-format oneformat' rel='compact' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col s12 formato-div hide" id="formato-denveloper">
-                            <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
-                                <label class="col s6 m2 relative">
-                                    <input type="checkbox" class="allformat" rel="denveloper" id="all-denveloper"/>
-                                    <span>Todas</span>
-                                </label>
-                                <?php
-                                $document = ["html", "css", "scss", "js", "tpl", "mst", "json", "xml", "md", "sql", "dll", "eot", "woff", "woff2", "ttf"];
-                                foreach ($document as $id) {
-                                    echo "<label class='col s6 m2 relative'><input type='checkbox' class='denveloper-format oneformat' rel='denveloper' id='{$id}'/><span class='upper left padding-8'>{$id}</span></label>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <div class="col s12 font-medium hide allow" id="tplValueAllow">
+                        <label class="input-field col s12 m4 padding-small">
+                            <span>Valor Interno <small class="color-text-gray"> (armazenamento)</small></span>
+                            <input class="values" type="text"
+                                   onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 49 && event.charCode <= 57">
+                        </label>
 
-                <div class="col s12" id="spaceValueAllow"></div>
-
-                <div class="col s12 font-medium hide allow" id="tplValueAllow">
-                    <label class="input-field col s12 m4 padding-small">
-                        <span>Valor Interno <small class="color-text-gray"> (armazenamento)</small></span>
-                        <input class="values" type="text"
-                               onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 49 && event.charCode <= 57">
-                    </label>
-
-                    <label class="input-field col s12 m8 padding-small">
+                        <label class="input-field col s12 m8 padding-small">
                         <span>Valor Representativo <small
                                     class="color-text-gray"> (exibido para o usuário)</small></span>
-                        <input class="names" type="text">
-                    </label>
-                </div>
+                            <input class="names" type="text">
+                        </label>
+                    </div>
 
-                <div class="clearfix col"></div>
+                    <div class="clearfix col"></div>
+                </div>
             </div>
 
             <div class="clearfix"><br></div>

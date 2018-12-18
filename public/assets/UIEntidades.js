@@ -496,17 +496,27 @@ function setFormat(val) {
         $("." + $(this).attr("id") + "-format").prop("checked", false);
     });
 
-    if (val === "source" || val === "sources") {
-        $("#format-source").removeClass("hide");
-        $("#allowBtnAdd, #spaceValueAllow").addClass("hide");
-        $("#image").prop("checked");
-    } else {
-        $("#format-source, .relation_creation_container, #requireListFilter, .relation_container").addClass("hide");
-        $("#allowBtnAdd, #spaceValueAllow").removeClass("hide");
+    /* Determinar opções de entrada */
+    $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
+    if(['boolean', 'select', 'radio', 'checkbox', 'source', 'sources'].indexOf(val) > -1) {
+        $("#definirvalores").removeClass("hide");
 
-        if (["extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(val) > -1) {
-            $(".relation_container, .relation_creation_container").removeClass("hide");
+        if (val === "source" || val === "sources") {
+            $("#format-source").removeClass("hide");
+            $("#allowBtnAdd, #spaceValueAllow").addClass("hide");
+            $("#image").prop("checked");
+        } else if(val === 'boolean') {
+            $("#allowBtnAdd").addClass('hide');
         }
+
+    } else {
+        $("#definirvalores").addClass("hide");
+    }
+
+    if (val !== "source" && val !== "sources") {
+        $("#format-source, .relation_creation_container, #requireListFilter, .relation_container").addClass("hide");
+        if (["extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(val) > -1)
+            $(".relation_container, .relation_creation_container").removeClass("hide");
     }
 
     $(".requireName, #nomeAttr").removeClass("hide");
