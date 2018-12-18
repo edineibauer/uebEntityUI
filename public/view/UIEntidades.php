@@ -243,14 +243,17 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </div>
 
                         <div class="col s12 m6 l3 relative hide" id="size_field_container">
-                            <div class="col s12 relative hide" style="padding: 2px 10px 0px!important;" id="size_container">
+                            <div class="col s12 relative hide" style="padding: 2px 10px 0px!important;"
+                                 id="size_container">
                                 <div class="col s6" style="padding-right: 5px;">
                                     <label for="minimo">Min</label>
-                                    <input id="minimo" type="number" step="1" max="1000000" value="127" min="1" class="input">
+                                    <input id="minimo" type="number" step="1" max="1000000" value="127" min="1"
+                                           class="input">
                                 </div>
                                 <div class="col s6">
                                     <label for="size">Max</label>
-                                    <input id="size" type="number" step="1" max="1000000" value="127" min="1" class="input">
+                                    <input id="size" type="number" step="1" max="1000000" value="127" min="1"
+                                           class="input">
                                 </div>
                             </div>
                         </div>
@@ -499,22 +502,24 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                 </div>
             </div>
 
-            <div class="requireName hide card padding-medium">
-                <header class="row padding-16">
-                    <i class="material-icons left">check</i>
-                    <span class="left padding-left">Validação</span>
-                </header>
-                <div class="collapsible-body">
-                    <div class="clearfix"></div>
+            <div class="requireName hide col">
+                <div class="hide card padding-medium" id="regexp_field">
+                    <header class="row padding-16">
+                        <i class="material-icons left">check</i>
+                        <span class="left padding-left">Validação</span>
+                    </header>
+                    <div class="collapsible-body">
+                        <div class="clearfix"></div>
 
-                    <div class="col s12">
-                        <label class="input-field col s12">
-                            <span>Expressão Regular</span>
-                            <input id="regex" type="text" class="input font-medium">
-                        </label>
+                        <div class="col s12">
+                            <label class="input-field col s12">
+                                <span>Expressão Regular</span>
+                                <input id="regex" type="text" class="input font-medium">
+                            </label>
+                        </div>
+
+                        <div class="clearfix"></div>
                     </div>
-
-                    <div class="clearfix"></div>
                 </div>
             </div>
 

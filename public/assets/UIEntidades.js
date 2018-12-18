@@ -526,15 +526,22 @@ function setFormat(val) {
         $("#update_field").removeClass("hide");
     }
 
+    /* Determina Expressão regular */
+    if(['textarea', 'html', 'boolean', 'select', 'radio', 'checkbox', 'color', 'source', 'sources', 'information', 'status', 'date', 'datetime', 'time', 'passwordRequired',
+        'extend', 'extend_add', 'extend_mult', 'list', 'list_mult', 'selecao', 'selecao_mult', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
+        $("#regexp_field").addClass("hide");
+    } else {
+        $("#regexp_field").removeClass("hide");
+    }
+
     /* Transforma campo padrão em Textarea no tipo informação */
     if(val === "information") {
         $("#default_container").css("width", "100%");
         $("#default").replaceWith($('<textarea id="default" class="input" rows="9"></textarea>'));
     } else {
-        $("#default_container").css("width", "initial");
+        $("#default_container").css("width", "");
         $("#default").replaceWith($('<input type="text" id="default" class="input" />'));
     }
-
 
     /* Determinar opções de entrada */
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
