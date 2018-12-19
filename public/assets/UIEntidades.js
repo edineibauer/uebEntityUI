@@ -500,7 +500,7 @@ function setFormat(val) {
     });
 
     /* Determina campo de tamanho */
-    if(['boolean', 'select', 'radio', 'color', 'information', 'status', 'email', 'tel', 'cpf', 'cnpj', 'ie', 'rg', 'cep', 'date', 'datetime', 'time', 'passwordRequired',
+    if(['boolean', 'select', 'radio', 'color', 'file', 'information', 'status', 'email', 'tel', 'cpf', 'cnpj', 'ie', 'rg', 'cep', 'date', 'datetime', 'time', 'passwordRequired',
         'extend', 'extend_add', 'list', 'selecao', 'checkbox_rel'].indexOf(val) > -1) {
         $("#size_field, #size_field_container").addClass("hide");
     } else {

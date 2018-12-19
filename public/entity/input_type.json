@@ -18,7 +18,7 @@
       "validate": null
     },
     "form": {
-      "input": "text",
+      "input": "input",
       "class": null,
       "style": null,
       "cols": 12,
@@ -78,7 +78,7 @@
     "format": "number",
     "type": "int",
     "form": {
-      "input": "text"
+      "input": "input"
     }
   },
   "float": {
@@ -471,6 +471,7 @@
     "type": "json",
     "nome": "Imagem",
     "key": "source",
+    "size": 1,
     "allow": {
       "options": [{
         "option": "png",
@@ -555,7 +556,7 @@
       "validate": "email"
     },
     "form": {
-      "input": "text"
+      "input": "input"
     }
   },
   "password": {
@@ -588,7 +589,7 @@
       "regex": "/^https?:\\/\\//"
     },
     "form": {
-      "input": "text"
+      "input": "input"
     }
   },
   "cpf": {
@@ -674,7 +675,7 @@
       "regex": "/^\\d{10,14}$/"
     },
     "form": {
-      "input": "text"
+      "input": "input"
     }
   },
   "valor": {
