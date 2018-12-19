@@ -74,11 +74,11 @@
       "input": "html"
     }
   },
-  "int": {
-    "format": "int",
+  "number": {
+    "format": "number",
     "type": "int",
     "form": {
-      "input": "int"
+      "input": "text"
     }
   },
   "float": {

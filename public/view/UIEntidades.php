@@ -139,7 +139,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <option value="text">Texto</option>
                             <option value="textarea">Área de Texto</option>
                             <option value="html">Área de HTML</option>
-                            <option value="int">Inteiro</option>
+                            <option value="number">Número</option>
                             <option value="float">Float</option>
                             <option value="boolean">Boleano</option>
                             <option value="select">Select</option>
