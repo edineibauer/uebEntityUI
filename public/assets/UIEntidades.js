@@ -4,7 +4,7 @@ var info = {};
 var dicionariosNomes = {};
 var identifier = {};
 var defaults = {};
-var data = {
+var source_types = {
     "image": ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"],
     "video": ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"],
     "audio": ["mp3", "aac", "ogg", "wma", "mid", "alac", "flac", "wav", "pcm", "aiff", "ac3"],
@@ -289,8 +289,7 @@ function saveAttrInputs() {
             saveAttrValue($(this));
     });
 
-    dicionarios[entity.name][entity.edit]['allow']['values'] = [];
-    dicionarios[entity.name][entity.edit]['allow']['names'] = [];
+    dicionarios[entity.name][entity.edit]['allow']['options'] = [];
 
     checkSaveFilter();
     checkSaveSelect();
@@ -375,8 +374,7 @@ function checkSaveSource() {
         if ($(this).prop("checked")) {
             $("." + $(this).attr("id") + "-format").each(function () {
                 if ($(this).prop("checked")) {
-                    dicionarios[entity.name][entity.edit]['allow']['values'].push($(this).attr("id"));
-                    dicionarios[entity.name][entity.edit]['allow']['names'].push($(this).attr("id"));
+                    dicionarios[entity.name][entity.edit]['allow']['options'].push({'option': $(this).attr("id"), 'name': $(this).attr("id")});
                 }
             });
         }
@@ -405,16 +403,14 @@ function saveAttrValue($input) {
     else if (dicionarios[entity.name][entity.edit]['datagrid'] !== false && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
         dicionarios[entity.name][entity.edit]['datagrid'][name] = $input.val();
     else if ("regex" === name)
-        dicionarios[entity.name][entity.edit]['allow'][name] = $input.val();
+        dicionarios[entity.name][entity.edit]['allow']["regex"] = $input.val();
     else
         dicionarios[entity.name][entity.edit][name] = ($input.attr("type") === "checkbox" ? $input.prop("checked") : $input.val());
 }
 
 function saveAllowValue($input) {
-    if ($input.find(".values").val() !== "") {
-        dicionarios[entity.name][entity.edit]['allow']['values'].push($input.find(".values").val());
-        dicionarios[entity.name][entity.edit]['allow']['names'].push($input.find(".names").val());
-    }
+    if ($input.find(".values").val() !== "")
+        dicionarios[entity.name][entity.edit]['allow']['options'].push({'option': $input.find(".values").val(), 'name': $input.find(".names").val()});
 }
 
 function applyAttr(data) {
@@ -433,8 +429,8 @@ function applyAttr(data) {
 function applyValueAttr(name, value) {
     var $input = $("#" + name);
 
-    if (name === "values" || name === "names") {
-        setAllow(name, value);
+    if (name === "options") {
+        setAllow(value);
     } else if (name === "filter") {
         $.each(value, function (i, e) {
             addFilter(e);
@@ -462,24 +458,31 @@ function checkValuesEspAttr(name, value) {
     }
 }
 
-function setAllow(name, value) {
-    if (name === "values" && entity.edit !== null && (dicionarios[entity.name][entity.edit]['format'] === "source" || dicionarios[entity.name][entity.edit]['format'] === "sources")) {
+function setAllow(value) {
+    if (entity.edit !== null && (dicionarios[entity.name][entity.edit]['format'] === "source" || dicionarios[entity.name][entity.edit]['format'] === "sources")) {
+
+        //sources
         $.each(value, function (i, e) {
-            $.each(data, function (name, dados) {
-                if (dados.indexOf(e) > -1 && !$("#" + name).prop("checked")) {
-                    $("#" + name).prop("checked", true);
-                    $("#formato-" + name).removeClass("hide");
+            $.each(source_types, function (n, dados) {
+                if (dados.indexOf(e.option) > -1 && !$("#" + n).prop("checked")) {
+                    $("#" + n).prop("checked", true);
+                    $("#formato-" + n).removeClass("hide");
                 }
             });
-            $("#" + e).prop("checked", true);
+            $("#" + e.option).prop("checked", true);
         });
 
     } else {
-        var copia = $("#spaceValueAllow").html() === "";
+
+        //others
+        let copia = $("#spaceValueAllow").html() === "";
         $.each(value, function (i, e) {
-            if (copia) copy('#tplValueAllow', '#spaceValueAllow', '', 'append');
-            var $allow = (copia ? $("#spaceValueAllow").find(".allow:last-child") : $("#spaceValueAllow").find(".allow:eq(" + i + ")"));
-            $allow.find("." + name).val(e);
+            if (copia)
+                copy('#tplValueAllow', '#spaceValueAllow', '', 'append');
+
+            let $allow = (copia ? $("#spaceValueAllow").find(".allow:last-child") : $("#spaceValueAllow").find(".allow:eq(" + i + ")"));
+            $allow.find(".values").val(e.option);
+            $allow.find(".names").val(e.name);
         });
     }
 }
