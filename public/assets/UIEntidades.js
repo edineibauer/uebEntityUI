@@ -546,6 +546,13 @@ function setFormat(val) {
         $("#default").replaceWith($('<input type="text" id="default" class="input" />'));
     }
 
+    /* Determina Orientação */
+    if(['checkbox', 'radio', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
+        $("#orientation_field").removeClass("hide");
+    } else {
+        $("#orientation_field").addClass("hide");
+    }
+
     /* Determinar opções de entrada */
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
     if(['boolean', 'select', 'radio', 'checkbox', 'source', 'sources'].indexOf(val) > -1) {

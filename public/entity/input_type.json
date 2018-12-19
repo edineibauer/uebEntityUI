@@ -25,7 +25,8 @@
       "colm": null,
       "coll": null,
       "atributos": null,
-      "template": null
+      "template": null,
+      "orientation": 0
     },
     "datagrid": {
       "grid_relevant": null,

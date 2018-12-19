@@ -132,7 +132,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
         <div class="col s12 hide requireNameEntity">
             <div class="card padding-medium">
                 <div class="row">
-                    <div class="col s12 m4 padding-small pad">
+                    <div class="col s12 l4 padding-small pad">
                         <label class="row" for="funcaoPrimary">Genérico</label>
                         <select class="selectInput" id="funcaoPrimary">
                             <option value="" disabled selected>Input Genérica</option>
@@ -152,7 +152,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <option value="information">Informação</option>
                         </select>
                     </div>
-                    <div class="col s12 m4 padding-small">
+                    <div class="col s12 l4 padding-small">
                         <label class="row" for="funcaoIdentifier">Semântico</label>
                         <select class="selectInput" id="funcaoIdentifier">
                             <option value="" disabled selected>Input de Identidade</option>
@@ -180,7 +180,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <option value="passwordRequired">Confirmar Senha</option>
                         </select>
                     </div>
-                    <div class="col s12 m4 padding-small">
+                    <div class="col s12 l4 padding-small">
                         <label class="row" for="funcaoRelation">Relacional</label>
                         <select class="selectInput" id="funcaoRelation">
                             <option value="" disabled selected>Input Relacional</option>
@@ -350,7 +350,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         <div class="col padding-12"></div>
                     </div>
 
-                    <div class="col s4 padding-small form_body">
+                    <div class="col s12 l4 padding-small form_body">
                         <label>Largura do Campo no Smartphone</label>
                         <select class="input form_body" id="cols">
                             <option value="12" selected>100.% &nbsp;|&nbsp; Proporção 12/12</option>
@@ -368,7 +368,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </select>
                     </div>
 
-                    <div class="col s4 padding-small form_body">
+                    <div class="col s12 l4 padding-small form_body">
                         <label>Largura do Campo no Tablet</label>
                         <select class="input form_body" id="colm">
                             <option value="" selected disabled></option>
@@ -387,7 +387,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </select>
                     </div>
 
-                    <div class="col s4 padding-small form_body">
+                    <div class="col s12 l4 padding-small form_body">
                         <label>Largura do Campo no Desktop</label>
                         <select class="input form_body" id="coll">
                             <option value="" selected disabled></option>
@@ -405,6 +405,18 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
                         </select>
                     </div>
+                    <div class="clearfix"></div>
+
+                    <div class="col hide" id="orientation_field">
+                        <div class="col s12 padding-small form_body">
+                            <label>Orientação</label>
+                            <select class="input form_body" id="orientation">
+                                <option value="0">horizontal</option>
+                                <option value="1">vertical</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="clearfix"></div>
 
                     <div class="col s12 m6 padding-small form_body">
