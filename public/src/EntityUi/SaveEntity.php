@@ -104,8 +104,7 @@ class SaveEntity
             "relation" => "",
             "allow" => [
                 "regex" => "",
-                "values" => "",
-                "names" => "",
+                "options" => "",
                 "validate" => ""
             ],
             "form" => [
@@ -158,7 +157,7 @@ class SaveEntity
                 $data["publisher"] = $i;
 
             if ($dados['key'] === "source" || $dados['key'] === "sources")
-                $data['source'][$this->checkSource($dados['allow']['values'])][] = $i;
+                $data['source'][$this->checkSource($dados['allow']['options'])][] = $i;
 
             if ($dados['default'] === false)
                 $data['required'][] = $i;
@@ -286,8 +285,13 @@ class SaveEntity
             "denveloper" => ["html", "css", "scss", "js", "tpl", "json", "xml", "md", "sql", "dll"]
         ];
 
+        $values = [];
+        foreach ($valores as $valore) {
+            $values[] = $valore['option'];
+        }
+
         foreach ($data as $tipo => $dados) {
-            if (count(array_intersect($dados, $valores)) > 0)
+            if (count(array_intersect($dados, $values)) > 0)
                 $type[] = $tipo;
         }
 
