@@ -14,8 +14,7 @@
     "relation": null,
     "allow": {
       "regex": null,
-      "values": [],
-      "names": [],
+      "options": [],
       "validate": null
     },
     "form": {
@@ -94,8 +93,13 @@
     "size": 1,
     "default": 0,
     "allow": {
-      "values" : [0,1],
-      "names": ["não", "sim"]
+      "options": [{
+        "option": 0,
+        "name": "não"
+      },{
+        "option": 1,
+        "name": "sim"
+      }]
     },
     "form": {
       "input": "switch"
@@ -108,8 +112,13 @@
     "size": 1,
     "default": 0,
     "allow": {
-      "values" : [0,1],
-      "names": ["desativado", "ativado"]
+      "options": [{
+        "option": 0,
+        "name": "desativado"
+      },{
+        "option": 1,
+        "name": "ativado"
+      }]
     },
     "form": {
       "input": "switch"
@@ -157,8 +166,28 @@
     "type": "tinyint",
     "nome": "Semana",
     "allow": {
-      "values": [1,2,3,4,5,6,7],
-      "names": ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"]
+      "options": [{
+        "option": 1,
+        "name": "domingo"
+      },{
+        "option": 2,
+        "name": "segunda"
+      },{
+        "option": 3,
+        "name": "terça"
+      },{
+        "option": 4,
+        "name": "quarta"
+      },{
+        "option": 5,
+        "name": "quinta"
+      },{
+        "option": 6,
+        "name": "sexta"
+      },{
+        "option": 7,
+        "name": "sábado"
+      }]
     },
     "form": {
       "input": "select"
@@ -169,8 +198,43 @@
     "type": "tinyint",
     "nome": "Mês",
     "allow": {
-      "values": [1,2,3,4,5,6,7,8,9,10,11,12],
-      "names": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+      "options": [{
+        "option": 1,
+        "name": "janeiro"
+      },{
+        "option": 2,
+        "name": "fevereiro"
+      },{
+        "option": 3,
+        "name": "março"
+      },{
+        "option": 4,
+        "name": "abril"
+      },{
+        "option": 5,
+        "name": "maio"
+      },{
+        "option": 6,
+        "name": "junho"
+      },{
+        "option": 7,
+        "name": "julho"
+      },{
+        "option": 8,
+        "name": "agosto"
+      },{
+        "option": 9,
+        "name": "setembro"
+      },{
+        "option": 10,
+        "name": "outubro"
+      },{
+        "option": 11,
+        "name": "novembro"
+      },{
+        "option": 12,
+        "name": "dezembro"
+      }]
     },
     "form": {
       "input": "select"
@@ -211,8 +275,10 @@
   "select": {
     "format": "select",
     "allow": {
-      "values": [1],
-      "names": ["opção 1"]
+      "options": [{
+        "option": 1,
+        "name": "opção 1"
+      }]
     },
     "form": {
       "input": "select"
@@ -223,8 +289,10 @@
     "type": "tinyint",
     "default": 1,
     "allow": {
-      "values": [1],
-      "names": ["opção 1"]
+      "options": [{
+        "option": 1,
+        "name": "opção 1"
+      }]
     },
     "form": {
       "input": "radio"
@@ -234,8 +302,10 @@
     "format": "checkbox",
     "type": "json",
     "allow": {
-      "values": [1],
-      "names": ["opção 1"]
+      "options": [{
+        "option": 1,
+        "name": "opção 1"
+      }]
     },
     "form": {
       "input": "checkbox"
@@ -401,28 +471,34 @@
     "nome": "Imagem",
     "key": "source",
     "allow": {
-      "values": [
-        "png",
-        "jpg",
-        "jpeg",
-        "gif",
-        "bmp",
-        "tif",
-        "tiff",
-        "psd",
-        "svg"
-      ],
-      "names": [
-        "png",
-        "jpg",
-        "jpeg",
-        "gif",
-        "bmp",
-        "tif",
-        "tiff",
-        "psd",
-        "svg"
-      ]
+      "options": [{
+        "option": "png",
+        "name": "png"
+      },{
+        "option": "jpg",
+        "name": "jpg"
+      },{
+        "option": "jpeg",
+        "name": "jpeg"
+      },{
+        "option": "gif",
+        "name": "gif"
+      },{
+        "option": "bmp",
+        "name": "bmp"
+      },{
+        "option": "tif",
+        "name": "tif"
+      },{
+        "option": "tiff",
+        "name": "tiff"
+      },{
+        "option": "psd",
+        "name": "psd"
+      },{
+        "option": "svg",
+        "name": "svg"
+      }]
     },
     "form": {
       "input": "file"
@@ -434,28 +510,34 @@
     "nome": "Arquivos",
     "key": "sources",
     "allow": {
-      "values": [
-        "png",
-        "jpg",
-        "jpeg",
-        "gif",
-        "bmp",
-        "tif",
-        "tiff",
-        "psd",
-        "svg"
-      ],
-      "names": [
-        "png",
-        "jpg",
-        "jpeg",
-        "gif",
-        "bmp",
-        "tif",
-        "tiff",
-        "psd",
-        "svg"
-      ]
+      "options": [{
+        "option": "png",
+        "name": "png"
+      },{
+        "option": "jpg",
+        "name": "jpg"
+      },{
+        "option": "jpeg",
+        "name": "jpeg"
+      },{
+        "option": "gif",
+        "name": "gif"
+      },{
+        "option": "bmp",
+        "name": "bmp"
+      },{
+        "option": "tif",
+        "name": "tif"
+      },{
+        "option": "tiff",
+        "name": "tiff"
+      },{
+        "option": "psd",
+        "name": "psd"
+      },{
+        "option": "svg",
+        "name": "svg"
+      }]
     },
     "form": {
       "input": "files"
