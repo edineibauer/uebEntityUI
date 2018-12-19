@@ -199,19 +199,19 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
                 <div class="col s12">
                     <div class="col s12 m8 l8 padding-small hide" id="nomeAttr">
-                        <label for="nome">Nome do Atributo</label>
+                        <label for="nome" class="color-text-gray">Nome do Atributo</label>
                         <input id="nome" autocomplete="off" type="text" class="input">
                     </div>
 
                     <div class="col s12 m4 l4 hide relation_container">
-                        <label>Entidade Relacionada</label>
+                        <label class="color-text-gray">Entidade Relacionada</label>
                         <select class="input" id="relation"></select>
                     </div>
 
                     <div class="row requireName hide">
 
                         <div class="col s6 m3 l1" id="update_field">
-                            <label class="row" for="update">Atualizar</label>
+                            <label class="color-text-gray row" for="update">Atualizar</label>
                             <label class="switch">
                                 <input type="checkbox" class="input" id="update">
                                 <div class="slider"></div>
@@ -219,7 +219,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </div>
 
                         <div class="col s6 m3 l1" id="unique_field">
-                            <label class="row" for="unique">Único</label>
+                            <label class="color-text-gray row" for="unique">Único</label>
                             <label class="switch">
                                 <input type="checkbox" class="input" id="unique">
                                 <div class="slider"></div>
@@ -227,7 +227,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </div>
 
                         <div class="col s6 m3 l1" id="default_field">
-                            <label class="row" for="default_custom">Nulo</label>
+                            <label class="color-text-gray row" for="default_custom">Nulo</label>
                             <label class="switch">
                                 <input type="checkbox" id="default_custom">
                                 <div class="slider"></div>
@@ -235,7 +235,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </div>
 
                         <div class="col s6 m3 l1" id="size_field" style="margin-bottom: 10px;">
-                            <label class="row" for="size_custom">Tamanho</label>
+                            <label class="color-text-gray row" for="size_custom">Tamanho</label>
                             <label class="switch">
                                 <input type="checkbox" id="size_custom">
                                 <div class="slider"></div>
@@ -246,12 +246,12 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <div class="col s12 relative hide" style="padding: 2px 10px 0px!important;"
                                  id="size_container">
                                 <div class="col s6" style="padding-right: 5px;">
-                                    <label for="minimo">Min</label>
+                                    <label for="minimo" class="color-text-gray">Min</label>
                                     <input id="minimo" type="number" step="1" max="1000000" value="127" min="1"
                                            class="input">
                                 </div>
                                 <div class="col s6">
-                                    <label for="size">Max</label>
+                                    <label for="size" class="color-text-gray">Max</label>
                                     <input id="size" type="number" step="1" max="1000000" value="127" min="1"
                                            class="input">
                                 </div>
@@ -259,7 +259,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </div>
 
                         <div class="col s12 m8 l5 padding-tiny hide" id="default_container">
-                            <label for="default">Valor Padrão</label>
+                            <label for="default" class="color-text-gray">Valor Padrão</label>
                             <input type="text" id="default" class="input">
                         </div>
                     </div>
@@ -317,8 +317,8 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </label>
 
             <div class="requireName hide card padding-medium">
-                <header class="row padding-16">
-                    <span class="left padding-12 padding-right">Formulário</span>
+                <header class="row padding-8">
+                    <span class="left padding-12 padding-right upper font-bold">Formulário</span>
                     <label class="switch">
                         <input type="checkbox" class="input" id="form">
                         <div class="slider"></div>
@@ -351,7 +351,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     </div>
 
                     <div class="col s12 l4 padding-small form_body">
-                        <label>Largura do Campo no Smartphone</label>
+                        <label class="color-text-gray">Largura do Campo no Smartphone</label>
                         <select class="input form_body" id="cols">
                             <option value="12" selected>100.% &nbsp;|&nbsp; Proporção 12/12</option>
                             <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
@@ -369,7 +369,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     </div>
 
                     <div class="col s12 l4 padding-small form_body">
-                        <label>Largura do Campo no Tablet</label>
+                        <label class="color-text-gray">Largura do Campo no Tablet</label>
                         <select class="input form_body" id="colm">
                             <option value="" selected disabled></option>
                             <option value="12">100.% &nbsp;|&nbsp; Proporção 12/12</option>
@@ -388,7 +388,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     </div>
 
                     <div class="col s12 l4 padding-small form_body">
-                        <label>Largura do Campo no Desktop</label>
+                        <label class="color-text-gray">Largura do Campo no Desktop</label>
                         <select class="input form_body" id="coll">
                             <option value="" selected disabled></option>
                             <option value="12">100.% &nbsp;|&nbsp; Proporção 12/12</option>
@@ -409,7 +409,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
                     <div class="col hide" id="orientation_field">
                         <div class="col s12 padding-small form_body">
-                            <label>Orientação</label>
+                            <label class="color-text-gray">Orientação</label>
                             <select class="input form_body" id="orientation">
                                 <option value="0">horizontal</option>
                                 <option value="1">vertical</option>
@@ -420,19 +420,19 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     <div class="clearfix"></div>
 
                     <div class="col s12 m6 padding-small form_body">
-                        <label for="class">Class</label>
+                        <label for="class" class="color-text-gray">Class</label>
                         <input id="class" type="text" class="input form_body">
                     </div>
                     <div class="col s12 m6 padding-small form_body">
-                        <label for="style">Style</label>
+                        <label for="style" class="color-text-gray">Style</label>
                         <input id="style" type="text" class="input form_body">
                     </div>
                     <div class="col s12 m6 padding-small form_body">
-                        <label for="template">Template</label>
+                        <label for="template" class="color-text-gray">Template</label>
                         <input id="template" type="text" class="input form_body">
                     </div>
                     <div class="col s12 m6 padding-small form_body">
-                        <label for="atributos">Atributos</label>
+                        <label for="atributos" class="color-text-gray">Atributos</label>
                         <input id="atributos" type="text" class="input form_body">
                     </div>
                     <div class="clearfix"><br></div>
@@ -440,8 +440,8 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
             </div>
 
             <div class="requireName hide card padding-medium">
-                <header class="row padding-16">
-                    <span class="left padding-12 padding-right">Tabela de Listagem</span>
+                <header class="row padding-8">
+                    <span class="left padding-12 padding-right upper font-bold">Tabela de Listagem</span>
                     <label class="switch">
                         <input type="checkbox" class="input" id="datagrid">
                         <div class="slider"></div>
@@ -452,7 +452,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     <div class="clearfix"></div>
 
                     <div class="col s12 m6 l2 padding-small">
-                        <label for="grid_relevant">Posição</label>
+                        <label for="grid_relevant" class="color-text-gray">Posição</label>
                         <select class="input" id="grid_relevant" style="padding: 8px 0 5px;">
                             <option value="" selected>auto</option>
                             <option value="1">1°</option>
@@ -464,15 +464,15 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         </select>
                     </div>
                     <div class="col s6 m6 l3 padding-small">
-                        <label for="grid_class">Class</label>
+                        <label for="grid_class" class="color-text-gray">Class</label>
                         <input id="grid_class" type="text" class="input">
                     </div>
                     <div class="col s6 m4 padding-small">
-                        <label for="grid_style">Style</label>
+                        <label for="grid_style" class="color-text-gray">Style</label>
                         <input id="grid_style" type="text" class="input">
                     </div>
                     <div class="col s6 m6 l3 padding-small">
-                        <label for="grid_template">Template</label>
+                        <label for="grid_template" class="color-text-gray">Template</label>
                         <input id="grid_template" type="text" class="input">
                     </div>
 
@@ -486,7 +486,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             </div>
                         </div>
                         <div class="col s12 m4 l2 padding-small">
-                            <label for="grid_relevant_relational">Posição</label>
+                            <label for="grid_relevant_relational" class="color-text-gray">Posição</label>
                             <select class="input" id="grid_relevant_relational" style="padding: 8px 0 5px;">
                                 <option value="" selected>não</option>
                                 <option value="1">1°</option>
@@ -498,15 +498,15 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             </select>
                         </div>
                         <div class="col s6 m6 l3 padding-small">
-                            <label for="grid_class_relational">Class</label>
+                            <label for="grid_class_relational" class="color-text-gray">Class</label>
                             <input id="grid_class_relational" type="text" class="input">
                         </div>
                         <div class="col s6 m4 padding-small">
-                            <label for="grid_style_relational">Style</label>
+                            <label for="grid_style_relational" class="color-text-gray">Style</label>
                             <input id="grid_style_relational" type="text" class="input">
                         </div>
                         <div class="col s6 m6 l3 padding-small">
-                            <label for="grid_template_relational">Template</label>
+                            <label for="grid_template_relational" class="color-text-gray">Template</label>
                             <input id="grid_template_relational" type="text" class="input">
                         </div>
                     </div>
@@ -516,16 +516,16 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
             <div class="requireName hide col">
                 <div class="hide card padding-medium" id="regexp_field">
-                    <header class="row padding-16">
+                    <header class="row padding-8">
                         <i class="material-icons left">check</i>
-                        <span class="left padding-left">Validação</span>
+                        <span class="left padding-left upper font-bold">Validação</span>
                     </header>
                     <div class="collapsible-body">
                         <div class="clearfix"></div>
 
                         <div class="col s12">
                             <label class="input-field col s12">
-                                <span>Expressão Regular</span>
+                                <span class="color-text-gray">Expressão Regular</span>
                                 <input id="regex" type="text" class="input font-medium">
                             </label>
                         </div>
@@ -537,15 +537,15 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
             <div class="hide col" id="definirvalores">
                 <div class="hide card padding-medium requireName">
-                    <header class="row padding-16">
-                    <span class="left padding-8 padding-right">
-                        <i class="material-icons left">assignment</i>
-                        <span class="left padding-left">Definir Valores Permitidos para este Campo&nbsp;&nbsp;</span>
-                    </span>
+                    <header class="row padding-8 margin-bottom">
+                        <span class="left padding-8 padding-right">
+                            <i class="material-icons left">assignment</i>
+                            <span class="left padding-left upper font-bold">Definir Valores&nbsp;&nbsp;</span>
+                        </span>
                         <span class="btn-floating left theme" id="allowBtnAdd"
                               onclick="copy('#tplValueAllow', '#spaceValueAllow');$('#spaceValueAllow').find('.allow:first-child').find('.values').focus()">
-                        <i class="material-icons">add</i>
-                    </span>
+                            <i class="material-icons">add</i>
+                        </span>
                     </header>
 
                     <div class="col s12 hide" id="format-source">
@@ -677,14 +677,13 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
 
                     <div class="col s12 font-medium hide allow" id="tplValueAllow">
                         <label class="input-field col s12 m4 padding-small">
-                            <span>Valor Interno <small class="color-text-gray"> (armazenamento)</small></span>
+                            <span class="color-text-gray">Valor Interno <small> (armazenamento)</small></span>
                             <input class="values" type="text"
                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 49 && event.charCode <= 57">
                         </label>
 
                         <label class="input-field col s12 m8 padding-small">
-                        <span>Valor Representativo <small
-                                    class="color-text-gray"> (exibido para o usuário)</small></span>
+                            <span class="color-text-gray">Valor Representativo <small> (exibido para o usuário)</small></span>
                             <input class="names" type="text">
                         </label>
                     </div>
