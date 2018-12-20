@@ -43,9 +43,10 @@ class SaveEntity
                 $this->id = (int)$i;
         }
         $this->id++;
-        $this->createEntityJson($this->generateInfo($data), "info");
+        $tmp['info'] = $this->generateInfo($data);
+        $this->createEntityJson($tmp['info'], "info");
 
-        new EntityCreateEntityDatabase($this->entity, []);
+        new EntityCreateEntityDatabase($this->entity, $tmp);
     }
 
     /**
@@ -285,25 +286,28 @@ class SaveEntity
             "denveloper" => ["html", "css", "scss", "js", "tpl", "json", "xml", "md", "sql", "dll"]
         ];
 
-        $values = [];
-        foreach ($valores as $valore) {
-            $values[] = $valore['option'];
-        }
+        if (!empty($valores)) {
+            $values = [];
+            foreach ($valores as $valore)
+                $values[] = $valore['option'];
 
-        foreach ($data as $tipo => $dados) {
-            if (count(array_intersect($dados, $values)) > 0)
-                $type[] = $tipo;
-        }
+            foreach ($data as $tipo => $dados) {
+                if (count(array_intersect($dados, $values)) > 0)
+                    $type[] = $tipo;
+            }
 
-        if (count($type) > 1) {
-            if (count(array_intersect(["document", "compact", "denveloper"], $type)) === 0 && count(array_intersect(["image", "video", "audio"], $type)) > 1)
-                return "multimidia";
-            else if (count(array_intersect(["document", "compact", "denveloper"], $type)) > 1 && count(array_intersect(["image", "video", "audio"], $type)) === 0)
-                return "arquivo";
-            else
-                return "source";
+            if (count($type) > 1) {
+                if (count(array_intersect(["document", "compact", "denveloper"], $type)) === 0 && count(array_intersect(["image", "video", "audio"], $type)) > 1)
+                    return "multimidia";
+                else if (count(array_intersect(["document", "compact", "denveloper"], $type)) > 1 && count(array_intersect(["image", "video", "audio"], $type)) === 0)
+                    return "arquivo";
+                else
+                    return "source";
+            } else {
+                return $type[0];
+            }
         } else {
-            return $type[0];
+            return "source";
         }
     }
 }

@@ -526,7 +526,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         <div class="col s12">
                             <label class="input-field col s12">
                                 <span class="color-text-gray">Expressão Regular</span>
-                                <input id="regex" type="text" class="input font-medium">
+                                <input id="regexp" type="text" class="input font-medium">
                             </label>
                         </div>
 

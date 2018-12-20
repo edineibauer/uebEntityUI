@@ -15,6 +15,9 @@ class EntityCreateEntityDatabase extends EntityDatabase
     public function __construct(string $entity, array $dados, int $autor = null)
     {
         parent::__construct($entity);
+        
+        $info = $dados['info'];
+        unset($dados['info']);
 
         if ($data = Metadados::getDicionario($entity)) {
 
@@ -35,9 +38,9 @@ class EntityCreateEntityDatabase extends EntityDatabase
             $base = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
 
             //remove owner and autor if necessary
-            if($dados['info']['autor'] === 1) {
+            if($info['autor'] === 1) {
                 $dados['dicionario'][9998] = array_merge($base['default'], $base['publisher']);
-            } elseif($dados['info']['autor'] === 2) {
+            } elseif($info['autor'] === 2) {
                 $dados['dicionario'][9997] = array_merge($base['default'], $base['owner']);
             }
 
