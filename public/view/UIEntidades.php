@@ -435,6 +435,9 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                         <label for="atributos" class="color-text-gray">Atributos</label>
                         <input id="atributos" type="text" class="input form_body">
                     </div>
+
+                    <input type="hidden" class="input" id="type" />
+
                     <div class="clearfix"><br></div>
                 </div>
             </div>
