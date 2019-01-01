@@ -397,7 +397,7 @@ function saveAttrValue($input) {
     if (["default", "size"].indexOf(name) > -1 && !$("#" + name + "_custom").prop("checked"))
         dicionarios[entity.name][entity.edit][name] = false;
     else if ("form" === name || "datagrid" === name)
-        dicionarios[entity.name][entity.edit][name] = $input.prop("checked") ? {} : false;
+        dicionarios[entity.name][entity.edit][name] = $input.prop("checked") ? Object.assign({}, defaults.default.form, defaults[getType()].form) : false;
     else if (dicionarios[entity.name][entity.edit]['form'] !== false && ["class", "style", "orientation", "template", "atributos", "coll", "cols", "colm", "input", "type"].indexOf(name) > -1)
         dicionarios[entity.name][entity.edit]['form'][name] = $input.val();
     else if (dicionarios[entity.name][entity.edit]['datagrid'] !== false && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
