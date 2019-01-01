@@ -656,11 +656,6 @@
     "nome": "Telefone",
     "minimo": 10,
     "size": 14,
-    "unique": true,
-    "default": false,
-    "allow": {
-      "regexp": "^\\d{10,14}$"
-    },
     "form": {
       "type": "tel"
     }
