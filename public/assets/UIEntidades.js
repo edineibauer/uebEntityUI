@@ -397,7 +397,7 @@ function saveAttrValue($input) {
     if (["default", "size"].indexOf(name) > -1 && !$("#" + name + "_custom").prop("checked"))
         dicionarios[entity.name][entity.edit][name] = false;
     else if ("form" === name || "datagrid" === name)
-        dicionarios[entity.name][entity.edit][name] = $input.prop("checked") ? Object.assign({}, defaults.default.form, defaults[getType()].form) : false;
+        dicionarios[entity.name][entity.edit][name] = $input.prop("checked") ? {} : false;
     else if (dicionarios[entity.name][entity.edit]['form'] !== false && ["class", "style", "orientation", "template", "atributos", "coll", "cols", "colm", "input", "type"].indexOf(name) > -1)
         dicionarios[entity.name][entity.edit]['form'][name] = $input.val();
     else if (dicionarios[entity.name][entity.edit]['datagrid'] !== false && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
@@ -935,16 +935,20 @@ $(function () {
         if ($(this).is(":checked") && $("#default_custom").is(":checked")) $("#default_custom").trigger("click");
 
     }).off("change", "#form").on("change", "#form", function () {
-        if ($(this).is(":checked"))
+        if ($(this).is(":checked")) {
             $(".form_body").removeClass("hide");
-        else
-            $(".form_body").addClass("hide");
+            dicionarios[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
+        } else {
+            $(".form_body").addClass("hide")
+        }
 
     }).off("change", "#datagrid").on("change", "#datagrid", function () {
-        if ($(this).is(":checked"))
+        if ($(this).is(":checked")) {
             $(".datagrid_body").removeClass("hide");
-        else
+            dicionarios[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form);
+        } else {
             $(".datagrid_body").addClass("hide");
+        }
     }).off("change", ".file-format").on("change", ".file-format", function () {
         if ($(this).is(":checked"))
             $("#formato-" + $(this).attr("id")).removeClass("hide");
