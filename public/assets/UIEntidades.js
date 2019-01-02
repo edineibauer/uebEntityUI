@@ -784,7 +784,7 @@ function checkAttrRelationToShow() {
             $.each(dicRelation, function (i, e) {
                 i = parseInt(i);
                 let checked = $.inArray(i, dic.form.fields) > -1 ? 'checked="checked"' : '';
-                let value = typeof(dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "";
+                let value = dic.form !== !1 && typeof(dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "";
                 copy("#tpl_relation_fields_show", "#relation_fields_show", {0: i, 1: e.nome, 2: checked}, "append");
                 copy("#tpl_relation_fields_default", "#relation_fields_default", {0: i, 1: e.nome, 2: value}, "append")
             })
@@ -799,7 +799,7 @@ function checkAttrRelationToShow() {
                 copy("#tpl_relation_fields_default", "#relation_fields_default", {
                     0: i,
                     1: e.nome,
-                    2: (typeof(dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "")
+                    2: (dic.form !== !1 && typeof(dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "")
                 }, "append")
             })
         }
@@ -937,7 +937,10 @@ $(function () {
     }).off("change", "#form").on("change", "#form", function () {
         if ($(this).is(":checked")) {
             $(".form_body").removeClass("hide");
-            dicionarios[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
+            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit].form !== "undefined") {
+                dicionarios[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
+                $("#cols").val(12);
+            }
         } else {
             $(".form_body").addClass("hide")
         }
@@ -945,7 +948,8 @@ $(function () {
     }).off("change", "#datagrid").on("change", "#datagrid", function () {
         if ($(this).is(":checked")) {
             $(".datagrid_body").removeClass("hide");
-            dicionarios[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form);
+            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit].datagrid !== "undefined")
+                dicionarios[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form);
         } else {
             $(".datagrid_body").addClass("hide");
         }
