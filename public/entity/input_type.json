@@ -3,48 +3,48 @@
   "default": {
     "format": "text",
     "type": "varchar",
-    "nome": null,
-    "column": null,
+    "nome": "",
+    "column": "",
     "minimo": false,
     "size": false,
-    "key": null,
-    "group": null,
+    "key": "",
+    "group": "",
     "unique": false,
-    "default": null,
+    "default": "",
     "update": true,
-    "relation": null,
+    "relation": "",
     "allow": {
-      "regexp": null,
+      "regexp": "",
       "options": [],
-      "validate": null
+      "validate": ""
     },
     "form": {
       "input": "input",
       "type": "text",
-      "class": null,
-      "style": null,
+      "class": "",
+      "style": "",
       "cols": 12,
-      "colm": null,
-      "coll": null,
-      "atributos": null,
-      "template": null,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
       "fields": "",
       "defaults": "",
       "orientation": 0
     },
     "datagrid": {
-      "grid_relevant": null,
-      "grid_class": null,
-      "grid_style": null,
-      "grid_template": null,
-      "grid_relevant_relational": null,
-      "grid_class_relational": null,
-      "grid_style_relational": null,
-      "grid_template_relational": null
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
     },
     "select": [],
     "filter": [],
-    "value": null
+    "value": ""
   },
   "text": {
     "size": 127
