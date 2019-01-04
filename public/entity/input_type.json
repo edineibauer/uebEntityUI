@@ -354,7 +354,6 @@
     "type": "json",
     "key": "relation",
     "group": "one",
-    "update": false,
     "form": {
       "input": "extend"
     }
