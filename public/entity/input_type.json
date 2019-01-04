@@ -135,6 +135,7 @@
     "nome": "Data",
     "key": "date",
     "default": "date",
+    "group": "date",
     "allow": {
       "regexp": "^\\d{4}-\\d{2}-\\d{2}$"
     },
@@ -157,6 +158,7 @@
     "type": "datetime",
     "nome": "Data",
     "default": "datetime",
+    "group": "date",
     "allow": {
       "regexp": "^\\d{4}-\\d{2}-\\d{2}(\\s|T)\\d{2}:\\d{2}(:\\d{2})*$"
     },
@@ -167,6 +169,7 @@
   "week": {
     "format": "week",
     "type": "tinyint",
+    "group": "select",
     "nome": "Semana",
     "allow": {
       "options": [{
@@ -199,6 +202,7 @@
   "month": {
     "format": "month",
     "type": "tinyint",
+    "group": "select",
     "nome": "Mês",
     "allow": {
       "options": [{
@@ -278,6 +282,7 @@
   },
   "select": {
     "format": "select",
+    "group": "select",
     "allow": {
       "options": [{
         "option": 1,
@@ -290,6 +295,7 @@
   },
   "radio": {
     "format": "radio",
+    "group": "select",
     "allow": {
       "options": [{
         "option": 1,
@@ -303,6 +309,7 @@
   "checkbox": {
     "format": "checkbox",
     "type": "json",
+    "group": "select",
     "allow": {
       "options": [{
         "option": 1,
