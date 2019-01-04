@@ -49,10 +49,10 @@ abstract class EntityDatabase
 
     protected function prepareSqlColumn($dados)
     {
-        if ($dados['type'] === "json") {
+        /*if ($dados['type'] === "json") {
             $dados['type'] = "varchar";
             $dados['size'] = !empty($dados['size']) ? $dados['size'] : 8192;
-        }
+        }*/
 
         $type = in_array($dados['type'], ["float", "real", "double"]) ? "double" : $dados['type'];
         $size = $dados['type'] === "decimal" ? "{$dados['size']},2" : $dados['size'];

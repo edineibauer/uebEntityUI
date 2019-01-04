@@ -351,7 +351,7 @@
   },
   "extend": {
     "format": "extend",
-    "type": "int",
+    "type": "json",
     "key": "relation",
     "group": "one",
     "update": false,
@@ -362,6 +362,7 @@
   "extend_mult": {
     "format": "extend_mult",
     "type": "json",
+    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
@@ -370,7 +371,7 @@
   },
   "extend_add": {
     "format": "extend_add",
-    "type": "int",
+    "type": "json",
     "key": "relation",
     "group": "one",
     "form": {
@@ -398,6 +399,7 @@
   "list_mult": {
     "format": "list_mult",
     "type": "json",
+    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
@@ -407,6 +409,7 @@
   "selecao_mult": {
     "format": "selecao_mult",
     "type": "json",
+    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
@@ -425,6 +428,7 @@
   "checkbox_mult": {
     "format": "checkbox_mult",
     "type": "json",
+    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
