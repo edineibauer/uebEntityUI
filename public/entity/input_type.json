@@ -495,45 +495,6 @@
       "input": "file"
     }
   },
-  "sources": {
-    "format": "sources",
-    "type": "json",
-    "nome": "Arquivos",
-    "key": "source",
-    "allow": {
-      "options": [{
-        "option": "png",
-        "name": "png"
-      },{
-        "option": "jpg",
-        "name": "jpg"
-      },{
-        "option": "jpeg",
-        "name": "jpeg"
-      },{
-        "option": "gif",
-        "name": "gif"
-      },{
-        "option": "bmp",
-        "name": "bmp"
-      },{
-        "option": "tif",
-        "name": "tif"
-      },{
-        "option": "tiff",
-        "name": "tiff"
-      },{
-        "option": "psd",
-        "name": "psd"
-      },{
-        "option": "svg",
-        "name": "svg"
-      }]
-    },
-    "form": {
-      "input": "files"
-    }
-  },
   "email": {
     "format": "email",
     "key": "email",

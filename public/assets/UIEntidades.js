@@ -295,7 +295,7 @@ function saveAttrInputs() {
     checkSaveSelect();
     checkSaveAssociacaoShowAttr();
 
-    if (dicionarios[entity.name][entity.edit]['format'] === "source" || dicionarios[entity.name][entity.edit]['format'] === "sources")
+    if (dicionarios[entity.name][entity.edit]['format'] === "source")
         checkSaveSource();
     else
         checkSaveAllow();
@@ -459,7 +459,7 @@ function checkValuesEspAttr(name, value) {
 }
 
 function setAllow(value) {
-    if (entity.edit !== null && (dicionarios[entity.name][entity.edit]['format'] === "source" || dicionarios[entity.name][entity.edit]['format'] === "sources")) {
+    if (entity.edit !== null && dicionarios[entity.name][entity.edit]['format'] === "source") {
 
         //sources
         $.each(value, function (i, e) {
@@ -530,7 +530,7 @@ function setFormat(val) {
     }
 
     /* Determina Expressão regular */
-    if(['textarea', 'html', 'boolean', 'select', 'radio', 'checkbox', 'color', 'source', 'sources', 'information', 'status', 'date', 'datetime', 'time', 'passwordRequired',
+    if(['textarea', 'html', 'boolean', 'select', 'radio', 'checkbox', 'color', 'source', 'information', 'status', 'date', 'datetime', 'time', 'passwordRequired',
         'extend', 'extend_add', 'extend_mult', 'list', 'list_mult', 'selecao', 'selecao_mult', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
         $("#regexp_field").addClass("hide");
     } else {
@@ -555,10 +555,10 @@ function setFormat(val) {
 
     /* Determinar opções de entrada */
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
-    if(['boolean', 'select', 'radio', 'checkbox', 'source', 'sources'].indexOf(val) > -1) {
+    if(['boolean', 'select', 'radio', 'checkbox', 'source'].indexOf(val) > -1) {
         $("#definirvalores").removeClass("hide");
 
-        if (val === "source" || val === "sources") {
+        if (val === "source") {
             $("#format-source").removeClass("hide");
             $("#allowBtnAdd, #spaceValueAllow").addClass("hide");
             $("#image").prop("checked");
@@ -570,7 +570,7 @@ function setFormat(val) {
         $("#definirvalores").addClass("hide");
     }
 
-    if (val !== "source" && val !== "sources") {
+    if (val !== "source") {
         $("#format-source, .relation_creation_container, #requireListFilter, .relation_container").addClass("hide");
         if (["extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(val) > -1)
             $(".relation_container, .relation_creation_container").removeClass("hide");
@@ -581,7 +581,7 @@ function setFormat(val) {
 }
 
 function getSelectInput(val) {
-    if (["text", "textarea", "html", "number", "float", "boolean", "select", "radio", "checkbox", "range", "color", "source", "sources", "information"].indexOf(val) > -1)
+    if (["text", "textarea", "html", "number", "float", "boolean", "select", "radio", "checkbox", "range", "color", "source", "information"].indexOf(val) > -1)
         return $("#funcaoPrimary");
     else if (["extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult", "publisher", "owner"].indexOf(val) > -1)
         return $("#funcaoRelation");

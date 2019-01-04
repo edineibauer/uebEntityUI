@@ -148,7 +148,6 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                             <!--                        <option value="range">Range</option>-->
                             <option value="color">Cor</option>
                             <option value="source">Arquivo</option>
-                            <option value="sources">Arquivos Multiplos</option>
                             <option value="information">Informação</option>
                         </select>
                     </div>
