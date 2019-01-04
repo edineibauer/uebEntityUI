@@ -290,8 +290,6 @@
   },
   "radio": {
     "format": "radio",
-    "type": "tinyint",
-    "default": 1,
     "allow": {
       "options": [{
         "option": 1,
@@ -361,7 +359,6 @@
   "extend_mult": {
     "format": "extend_mult",
     "type": "json",
-    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
@@ -398,7 +395,6 @@
   "list_mult": {
     "format": "list_mult",
     "type": "json",
-    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
@@ -408,7 +404,6 @@
   "selecao_mult": {
     "format": "selecao_mult",
     "type": "json",
-    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {
@@ -427,7 +422,6 @@
   "checkbox_mult": {
     "format": "checkbox_mult",
     "type": "json",
-    "size": 512,
     "key": "relation",
     "group": "many",
     "form": {

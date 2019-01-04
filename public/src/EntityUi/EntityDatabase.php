@@ -53,6 +53,8 @@ abstract class EntityDatabase
             $dados['type'] = "varchar";
             $dados['size'] = !empty($dados['size']) ? $dados['size'] : 8192;
         }*/
+        if ($dados['type'] === "json")
+            $dados['size'] = "";
 
         $type = in_array($dados['type'], ["float", "real", "double"]) ? "double" : $dados['type'];
         $size = $dados['type'] === "decimal" ? "{$dados['size']},2" : $dados['size'];
