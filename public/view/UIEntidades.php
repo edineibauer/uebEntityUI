@@ -74,7 +74,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || 
                     <div class="left" style="width: 50px">
                         <input id="entityIcon" placeholder="ícone" type="text">
                     </div>
-                    <label class="col relative" style="width: 65px">
+                    <label class="col relative" style="width: 70px">
                         <input type="checkbox" class="left" id="haveAutor"/>
                         <span class="left pointer" style="padding:10px 0">Autor</span>
                     </label>
