@@ -96,6 +96,7 @@
     "type": "tinyint",
     "size": 1,
     "default": 0,
+    "group": "boolean",
     "allow": {
       "options": [{
         "option": 0,
@@ -114,6 +115,7 @@
     "type": "tinyint",
     "nome": "Status",
     "key": "status",
+    "group": "boolean",
     "size": 1,
     "default": 0,
     "allow": {
