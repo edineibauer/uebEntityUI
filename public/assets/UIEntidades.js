@@ -516,7 +516,7 @@ function setFormat(val) {
     }
 
     /* Determina campo de NULL */
-    if(['boolean', 'information', 'status', 'passwordRequired'].indexOf(val) > -1) {
+    if(['information', 'passwordRequired'].indexOf(val) > -1) {
         $("#default_field").addClass("hide");
     } else {
         $("#default_field").removeClass("hide");
