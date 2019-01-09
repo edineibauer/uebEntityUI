@@ -336,7 +336,7 @@
     "format": "color",
     "nome": "Cor",
     "key": "color",
-    "size": 40,
+    "size": 7,
     "allow": {
       "regexp": "^(#[0-9abcdefABCDEF]{3}|#[0-9abcdefABCDEF]{6}|\\s*rgb\\s*\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)\\s*|\\s*rgba\\s*\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*(0\\.\\d{1,2}|1)\\s*\\)\\s*)$"
     },
