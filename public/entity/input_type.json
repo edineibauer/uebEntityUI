@@ -445,7 +445,9 @@
     "relation": "usuarios",
     "key": "publisher",
     "update": false,
-    "form": false
+    "form": {
+      "input": "hidden"
+    }
   },
   "owner": {
     "format": "owner",
