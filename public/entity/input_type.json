@@ -645,9 +645,6 @@
     "key": "percent",
     "nome": "porcentagem",
     "type": "float",
-    "allow": {
-      "regexp": "^\\d{1,4}$"
-    },
     "form": {
       "class": "percent"
     }
