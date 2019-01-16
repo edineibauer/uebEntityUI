@@ -279,7 +279,6 @@
     "size": 127,
     "key": "link",
     "unique": true,
-    "default": false,
     "form": false
   },
   "select": {
