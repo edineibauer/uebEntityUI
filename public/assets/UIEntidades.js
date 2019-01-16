@@ -939,7 +939,7 @@ $(function () {
     }).off("change", "#form").on("change", "#form", function () {
         if ($(this).is(":checked")) {
             $(".form_body").removeClass("hide");
-            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit].form !== "undefined") {
+            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit] !== "undefined" && typeof dicionarios[entity.name][entity.edit].form !== "undefined") {
                 dicionarios[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
                 $("#cols").val(12);
             }
@@ -950,7 +950,7 @@ $(function () {
     }).off("change", "#datagrid").on("change", "#datagrid", function () {
         if ($(this).is(":checked")) {
             $(".datagrid_body").removeClass("hide");
-            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit].datagrid !== "undefined")
+            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit] !== "undefined" && typeof dicionarios[entity.name][entity.edit].datagrid !== "undefined")
                 dicionarios[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form);
         } else {
             $(".datagrid_body").addClass("hide");
