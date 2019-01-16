@@ -55,6 +55,11 @@ abstract class EntityDatabase
         }*/
         if ($dados['type'] === "json")
             $dados['size'] = "";
+        elseif($dados['type'] === "datetime-local")
+            $dados['type'] = "datetime";
+
+        if($dados['type'] === "text" && !empty($dados['size']) && $dados['size'] < 14000)
+            $dados['type'] = "varchar";
 
         $type = in_array($dados['type'], ["float", "real", "double"]) ? "double" : $dados['type'];
         $size = $dados['type'] === "decimal" ? "{$dados['size']},2" : $dados['size'];
