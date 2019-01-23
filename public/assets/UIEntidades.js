@@ -156,6 +156,14 @@ function saveEntity(silent) {
             "id": identifier[entity.name],
             "newName": newName
         }, function (g) {
+
+            //atualiza lista de permissões
+            get("dicionarios").then(dicionarios => {
+                dbLocal.clear('__dicionario').then(() => {
+                    dbLocal.exeCreate("__dicionario", dicionarios);
+                });
+            })
+
             if (entity.name !== $("#entityName").val()) {
                 dicionarios[newName] = dicionarios[entity.name];
                 entity.name = newName;
