@@ -157,12 +157,21 @@ function saveEntity(silent) {
             "newName": newName
         }, function (g) {
 
-            //atualiza lista de permissões
+            //atualiza lista de dicionarios
             get("dicionarios").then(dicionarios => {
                 dbLocal.clear('__dicionario').then(() => {
                     dbLocal.exeCreate("__dicionario", dicionarios);
                 });
-            })
+            });
+
+            //atualiza lista de infos
+            get("info").then(info => {
+                dbLocal.clear('__info').then(() => {
+                    dbLocal.exeCreate("__info", info);
+                });
+            });
+
+            setUpdateVersion();
 
             if (entity.name !== $("#entityName").val()) {
                 dicionarios[newName] = dicionarios[entity.name];
