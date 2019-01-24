@@ -10,9 +10,8 @@ class EntityCreateEntityDatabase extends EntityDatabase
      * EntityCreateEntityDatabase constructor.
      * @param string $entity
      * @param array $dados
-     * @param int|null $autor
      */
-    public function __construct(string $entity, array $dados, int $autor = null)
+    public function __construct(string $entity, array $dados)
     {
         parent::__construct($entity);
 
@@ -44,13 +43,6 @@ class EntityCreateEntityDatabase extends EntityDatabase
                 } elseif ($info['autor'] === 2) {
                     $dados['dicionario'][9997] = array_merge($base['default'], $base['owner']);
                 }
-            }
-
-            //add owner and autor if necessary
-            if ($autor === 1) {
-                $data[9998] = array_merge($base['default'], $base['publisher']);
-            } elseif ($autor === 2) {
-                $data[9997] = array_merge($base['default'], $base['owner']);
             }
 
             $sql = new \Conn\SqlCommand();
