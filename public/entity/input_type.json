@@ -443,7 +443,6 @@
     "column": "autorpub",
     "relation": "usuarios",
     "key": "publisher",
-    "update": false,
     "form": {
       "input": "hidden"
     }
@@ -455,7 +454,6 @@
     "column": "ownerpub",
     "relation": "usuarios",
     "key": "publisher",
-    "update": false,
     "form": false
   },
   "source": {
