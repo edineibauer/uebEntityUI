@@ -7,7 +7,7 @@ foreach (\Helpers\Helper::listFolder("entity/cache") as $json) {
         if($dados && count($dados) > 0) {
             $e = 1;
             foreach ($dados as $i => $dado) {
-                if($dado['column'] === "autorpub") {
+                if($dado['column'] === "autorpub" || $dado['column'] === "ownerpub") {
                     unset($dados[$i]);
                 } elseif(empty($dado['indice'])) {
                     $dados[$i]['indice'] = $e;

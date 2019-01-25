@@ -143,6 +143,24 @@ function showEntity() {
     }
 }
 
+function updateDicionarioIndex() {
+    //atualiza lista de dicionarios
+    get("dicionarios").then(dicionarios => {
+        dbLocal.clear('__dicionario').then(() => {
+            dbLocal.exeCreate("__dicionario", dicionarios);
+        });
+    });
+
+    //atualiza lista de infos
+    get("info").then(info => {
+        dbLocal.clear('__info').then(() => {
+            dbLocal.exeCreate("__info", info);
+        });
+    });
+
+    setUpdateVersion();
+}
+
 function saveEntity(silent) {
     if (checkSaveAttr() && entity.name.length > 2 && typeof(dicionarios[entity.name]) !== "undefined" && !$.isEmptyObject(dicionarios[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
@@ -157,21 +175,7 @@ function saveEntity(silent) {
             "newName": newName
         }, function (g) {
 
-            //atualiza lista de dicionarios
-            get("dicionarios").then(dicionarios => {
-                dbLocal.clear('__dicionario').then(() => {
-                    dbLocal.exeCreate("__dicionario", dicionarios);
-                });
-            });
-
-            //atualiza lista de infos
-            get("info").then(info => {
-                dbLocal.clear('__info').then(() => {
-                    dbLocal.exeCreate("__info", info);
-                });
-            });
-
-            setUpdateVersion();
+            updateDicionarioIndex();
 
             if (entity.name !== $("#entityName").val()) {
                 dicionarios[newName] = dicionarios[entity.name];
@@ -700,6 +704,7 @@ function removeEntity(entity) {
     if (confirm("Excluir esta entidade e todos os seus dados?")) {
         post("entity-ui", "delete/entity", {"name": entity}, function (g) {
             if (g) {
+                updateDicionarioIndex();
                 toast("Entidade Excluída", 3000, "toast-warning");
                 readDicionarios();
             }

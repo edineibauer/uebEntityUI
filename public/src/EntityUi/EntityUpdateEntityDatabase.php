@@ -81,7 +81,6 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         $del = $this->getDeletes();
 
         if ($del) {
-            $delete = new Delete();
             foreach ($del as $id => $dic) {
                 $this->dropKeysFromColumnRemoved($id, $dic);
 

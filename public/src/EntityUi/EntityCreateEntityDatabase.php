@@ -32,19 +32,6 @@ class EntityCreateEntityDatabase extends EntityDatabase
                     unset($dados[$i]);
             }
 
-            //verifica se tem autor ou owner
-            $sql = new \Conn\SqlCommand();
-            $base = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-
-            //remove owner and autor if necessary
-            if (!empty($info)) {
-                if ($info['autor'] === 1) {
-                    $dados['dicionario'][9998] = array_merge($base['default'], $base['publisher']);
-                } elseif ($info['autor'] === 2) {
-                    $dados['dicionario'][9997] = array_merge($base['default'], $base['owner']);
-                }
-            }
-
             $sql = new \Conn\SqlCommand();
             $sql->exeCommand("SELECT 1 FROM " . PRE . "{$entity} LIMIT 1");
             if (!$sql->getErro() && !empty($dados['dicionario']))
