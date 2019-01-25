@@ -15,7 +15,6 @@ class EntityCreateEntityDatabase extends EntityDatabase
     {
         parent::__construct($entity);
 
-        $info = $dados['info'] ?? [];
         unset($dados['info']);
 
         if ($data = Metadados::getDicionario($entity)) {

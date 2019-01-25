@@ -148,16 +148,16 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             //deleta dados da tabela relacional
             $sql->exeCommand("DROP TABLE " . PRE . $this->entity . "_" . $dados['column']);
 
-        } elseif ($id < 10000) {
+        }
+
+        if ($id < 10000) {
 
             //INDEX
             $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='index_{$id}'");
             if ($sql->getRowCount() > 0)
                 $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX index_" . $id);
-        }
 
-        //UNIQUE
-        if ($id < 10000) {
+            //UNIQUE
             $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'");
             if ($sql->getRowCount() > 0)
                 $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id);
