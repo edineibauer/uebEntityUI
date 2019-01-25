@@ -143,7 +143,7 @@ function showEntity() {
     }
 }
 
-function updateDicionarioIndex() {
+function updateDicionarioIndex(entity) {
     //atualiza lista de dicionarios
     get("dicionarios").then(dicionarios => {
         dbLocal.clear('__dicionario').then(() => {
@@ -157,6 +157,8 @@ function updateDicionarioIndex() {
             dbLocal.exeCreate("__info", info);
         });
     });
+
+    dbRemote.sync(entity);
 
     setUpdateVersion();
 }
@@ -175,7 +177,7 @@ function saveEntity(silent) {
             "newName": newName
         }, function (g) {
 
-            updateDicionarioIndex();
+            updateDicionarioIndex(entity.name);
 
             if (entity.name !== $("#entityName").val()) {
                 dicionarios[newName] = dicionarios[entity.name];
@@ -704,7 +706,7 @@ function removeEntity(entity) {
     if (confirm("Excluir esta entidade e todos os seus dados?")) {
         post("entity-ui", "delete/entity", {"name": entity}, function (g) {
             if (g) {
-                updateDicionarioIndex();
+                updateDicionarioIndex(entity);
                 toast("Entidade Excluída", 3000, "toast-warning");
                 readDicionarios();
             }
