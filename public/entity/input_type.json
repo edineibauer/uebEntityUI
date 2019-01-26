@@ -631,7 +631,6 @@
     "key": "valor",
     "type": "decimal",
     "nome": "Valor",
-    "size": 11,
     "allow": {
       "regexp": "^(\\d{1,15})?(\\.)?\\d{1,2}$"
     },
