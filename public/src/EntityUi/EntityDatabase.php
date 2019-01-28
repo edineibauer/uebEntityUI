@@ -62,7 +62,7 @@ abstract class EntityDatabase
             $dados['type'] = "varchar";
 
         $type = in_array($dados['type'], ["float", "real", "double"]) ? "double" : $dados['type'];
-        $size = $dados['type'] === "decimal" ? "{$dados['size']},2" : $dados['size'];
+        $size = $dados['type'] === "decimal" ? (!empty($dados['size']) ? $dados['size'] : 19) . ",2" : $dados['size'];
         return "`{$dados['column']}` {$type} "
             . (!empty($size) ? "({$size}) " : ($dados['type'] === "varchar" ? "(254) " : ($dados['type'] === "decimal" ? "(15,2) " : " ")))
             . ($dados['default'] === false ? "NOT NULL " : "")
