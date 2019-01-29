@@ -149,7 +149,7 @@
     "nome": "Hora",
     "default": "time",
     "allow": {
-      "regexp": "^\\d{2}:\\d{2}:\\d{2}$"
+      "regexp": "^\\d{2}:\\d{2}(:\\d{2})*$"
     },
     "form": {
       "type": "time"
