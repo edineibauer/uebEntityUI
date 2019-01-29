@@ -158,9 +158,8 @@ function updateDicionarioIndex(entity) {
         });
     });
 
-    dbRemote.sync(entity);
-
     setUpdateVersion();
+    dbLocal.clear(entity);
 }
 
 function saveEntity(silent) {
