@@ -159,6 +159,10 @@ function updateDicionarioIndex(entity) {
     });
 
     setUpdateVersion();
+
+    let t = {};
+    t[entity] = 0;
+    dbLocal.exeUpdate("__historic", t, 1);
     dbLocal.clear(entity);
 }
 
