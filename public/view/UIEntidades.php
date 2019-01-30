@@ -1,7 +1,7 @@
 <?php
-if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1" || $_SESSION['userlogin']['nivel'] !== "1") {
+if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
     $data['response'] = 3;
-    $data['data'] = HOME . "logout";
+    $data['data'] = HOME . "dashboard";
 } else {
     ob_start();
     ?>
