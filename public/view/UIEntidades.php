@@ -138,7 +138,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                             <option value="" disabled selected>Input Genérica</option>
                             <option value="text">Texto</option>
                             <option value="textarea">Área de Texto</option>
-                            <option value="html">Área de HTML</option>
+<!--                            <option value="html">Área de HTML</option>-->
                             <option value="number">Número</option>
                             <option value="float">Float</option>
                             <option value="boolean">Boleano</option>
@@ -184,14 +184,14 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                         <select class="selectInput" id="funcaoRelation">
                             <option value="" disabled selected>Input Relacional</option>
                             <option value="extend">Extensão</option>
-                            <option value="extend_add">Extensão Add</option>
+                     <!--       <option value="extend_add">Extensão Add</option>
                             <option value="extend_mult">Extensão Multipla</option>
                             <option value="list">Lista</option>
                             <option value="list_mult">Lista Multipla</option>
                             <option value="selecao">Seleção</option>
                             <option value="selecao_mult">Seleção Multipla</option>
                             <option value="checkbox_rel">CheckBox</option>
-                            <option value="checkbox_mult">CheckBox Multiplo</option>
+                            <option value="checkbox_mult">CheckBox Multiplo</option>-->
                         </select>
                     </div>
                 </div>
