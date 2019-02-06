@@ -378,7 +378,6 @@
   "extend_folder": {
     "format": "extend_folder",
     "type": "json",
-    "default": "Nova Pasta",
     "key": "relation",
     "group": "many",
     "form": {
