@@ -375,6 +375,16 @@
       "input": "extend_mult"
     }
   },
+  "extend_folder": {
+    "format": "extend_folder",
+    "type": "json",
+    "nome": "Nova Pasta",
+    "key": "relation",
+    "group": "many",
+    "form": {
+      "input": "extend_folder"
+    }
+  },
   "extend_add": {
     "format": "extend_add",
     "type": "json",
