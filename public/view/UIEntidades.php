@@ -15,9 +15,9 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                     <button class="btn theme btn-floating right" id="newEntityBtn" onclick="entityEdit()">
                         <i class="material-icons">add</i>
                     </button>
-                    <button class="btn theme btn-floating right" onclick="uploadEntity()">
-                        <i class="material-icons">backup</i>
-                    </button>
+                    <!-- <button class="btn theme btn-floating right" onclick="uploadEntity()">
+                         <i class="material-icons">backup</i>
+                     </button>-->
                 </div>
             </div>
         </div>
@@ -138,7 +138,7 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                             <option value="" disabled selected>Input Genérica</option>
                             <option value="text">Texto</option>
                             <option value="textarea">Área de Texto</option>
-<!--                            <option value="html">Área de HTML</option>-->
+                            <!--                            <option value="html">Área de HTML</option>-->
                             <option value="number">Número</option>
                             <option value="float">Float</option>
                             <option value="boolean">Boleano</option>
@@ -180,19 +180,25 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                         </select>
                     </div>
                     <div class="col s12 l4 padding-small">
-                        <label class="row" for="funcaoRelation">Relacional</label>
+                        <label class="row" for="funcaoRelation">Relacionamento</label>
                         <select class="selectInput" id="funcaoRelation">
-                            <option value="" disabled selected>Input Relacional</option>
-                            <option value="extend">Extensão</option>
-                            <option value="extend_folder">Pastas</option>
-                     <!--       <option value="extend_add">Extensão Add</option>-->
-                            <option value="extend_mult">Extensão Multipla</option>
-                             <!--<option value="list">Lista</option>
-                            <option value="list_mult">Lista Multipla</option>
-                            <option value="selecao">Seleção</option>
-                            <option value="selecao_mult">Seleção Multipla</option>
-                            <option value="checkbox_rel">CheckBox</option>
-                            <option value="checkbox_mult">CheckBox Multiplo</option>-->
+                            <option value="" disabled selected>Tipo de Relação</option>
+                            <option value="extend">Importar Formulário</option>
+                            <option value="extend_folder"
+                                    title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
+                                Mult-tenancy Pasta
+                            </option>
+                            <option value="extend_mult"
+                                    title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
+                                Mult-tenancy Lista
+                            </option>
+                            <!--       <option value="extend_add">Extensão Add</option>-->
+                            <!--<option value="list">Lista</option>
+                           <option value="list_mult">Lista Multipla</option>
+                           <option value="selecao">Seleção</option>
+                           <option value="selecao_mult">Seleção Multipla</option>
+                           <option value="checkbox_rel">CheckBox</option>
+                           <option value="checkbox_mult">CheckBox Multiplo</option>-->
                         </select>
                     </div>
                 </div>
@@ -316,6 +322,68 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                 <span class="left padding-medium font-medium pointer">__$1__ </span>
             </label>
 
+            <div class="hide card padding-medium <?php //relation_container?>">
+                <header class="row padding-8">
+                    <span class="left padding-12 padding-right upper font-bold">Configurar Campos do Formulário Relacional</span>
+                </header>
+
+                <div class="col padding-bottom">
+                    <div class="col s12 m5 padding-small">
+                        <h4>Mostrar Campos</h4>
+                        <div class="col" id="relation_fields_show"></div>
+
+                        <label class="col s12 relativep pointer border-bottom hide" id="tpl_relation_fields_show">
+                            <input type="checkbox" class="relation_fields_show" rel="__$0__" __$2__/>
+                            <span class="left padding-8 font-medium">__$1__</span>
+                        </label>
+                    </div>
+                    <div class="col s12 m7 padding-small">
+                        <h4>Valor de Entrada Padrão</h4>
+                        <div class="col" id="relation_fields_default" style="padding-top:4px"></div>
+
+                        <div class="col hide" id="tpl_relation_fields_default">
+                            <input type="text" class="col font-medium relation_fields_default" value="__$2__"
+                                   style="margin-bottom: 4px;" rel="__$0__">
+                        </div>
+                    </div>
+                    <div class="col padding-12"></div>
+                </div>
+            </div>
+
+            <div class="hide card padding-medium <?php //relation_container ?>">
+                <header class="row padding-8">
+                    <span class="left padding-12 padding-right upper font-bold">Listagem de Dados da Entidade Relacional</span>
+                </header>
+                <div class="row padding-top">
+                    <div class="col s12 m4 l2 padding-small">
+                        <label for="grid_relevant_relational" class="color-text-gray">Posição</label>
+                        <select class="input" id="grid_relevant_relational" style="padding: 8px 0 5px;">
+                            <option value="" selected>não</option>
+                            <option value="1">1°</option>
+                            <option value="2">2°</option>
+                            <option value="3">3°</option>
+                            <option value="4">4°</option>
+                            <option value="5">5°</option>
+                            <option value="6">6°</option>
+                        </select>
+                    </div>
+                    <div class="col s6 m6 l3 padding-small">
+                        <label for="grid_class_relational" class="color-text-gray">Class</label>
+                        <input id="grid_class_relational" type="text" class="input">
+                    </div>
+                    <div class="col s6 m4 padding-small">
+                        <label for="grid_style_relational" class="color-text-gray">Style</label>
+                        <input id="grid_style_relational" type="text" class="input">
+                    </div>
+                    <div class="col s6 m6 l3 padding-small">
+                        <label for="grid_template_relational" class="color-text-gray">Template</label>
+                        <input id="grid_template_relational" type="text" class="input">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+
             <div class="requireName hide card padding-medium">
                 <header class="row padding-8">
                     <span class="left padding-12 padding-right upper font-bold">Formulário</span>
@@ -328,81 +396,59 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
 
                 <div class="row hide form_body">
 
-                    <div class="col hide relation_creation_container padding-bottom">
-                        <div class="col s12 m5 padding-small">
-                            <h4>Mostrar Campo</h4>
-                            <div class="col" id="relation_fields_show"></div>
-
-                            <label class="col s12 relativep pointer border-bottom hide" id="tpl_relation_fields_show">
-                                <input type="checkbox" class="relation_fields_show" rel="__$0__" __$2__/>
-                                <span class="left padding-8 font-medium">__$1__</span>
-                            </label>
-                        </div>
-                        <div class="col s12 m7 padding-small">
-                            <h4>Definir Valor Padrão</h4>
-                            <div class="col" id="relation_fields_default" style="padding-top:4px"></div>
-
-                            <div class="col hide" id="tpl_relation_fields_default">
-                                <input type="text" class="col font-medium relation_fields_default" value="__$2__"
-                                       style="margin-bottom: 4px;" rel="__$0__">
-                            </div>
-                        </div>
-                        <div class="col padding-12"></div>
-                    </div>
-
                     <div class="col s12 l4 padding-small form_body">
-                        <label class="color-text-gray">Largura do Campo no Smartphone</label>
+                        <label class="color-text-gray">Largura do Campo</label>
                         <select class="input form_body" id="cols">
-                            <option value="12" selected>100.% &nbsp;|&nbsp; Proporção 12/12</option>
-                            <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
-                            <option value="10">83.3% &nbsp;|&nbsp; Proporção 10/12</option>
-                            <option value="9">75.0% &nbsp;|&nbsp; Proporção 9/12</option>
-                            <option value="8">66.6% &nbsp;|&nbsp; Proporção 8/12</option>
-                            <option value="7">58.3% &nbsp;|&nbsp; Proporção 7/12</option>
-                            <option value="6">50.0% &nbsp;|&nbsp; Proporção 6/12</option>
-                            <option value="5">41.6% &nbsp;|&nbsp; Proporção 5/12</option>
-                            <option value="4">33.3% &nbsp;|&nbsp; Proporção 4/12</option>
-                            <option value="3">25.0% &nbsp;|&nbsp; Proporção 3/12</option>
-                            <option value="2">16.6% &nbsp;|&nbsp; Proporção 2/12</option>
-                            <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
+                            <option value="12" selected>100.% &nbsp;|&nbsp; 12/12</option>
+                            <option value="11">91.6% &nbsp;|&nbsp; 11/12</option>
+                            <option value="10">83.3% &nbsp;|&nbsp; 10/12</option>
+                            <option value="9">75.0% &nbsp;|&nbsp; 9/12</option>
+                            <option value="8">66.6% &nbsp;|&nbsp; 8/12</option>
+                            <option value="7">58.3% &nbsp;|&nbsp; 7/12</option>
+                            <option value="6">50.0% &nbsp;|&nbsp; 6/12</option>
+                            <option value="5">41.6% &nbsp;|&nbsp; 5/12</option>
+                            <option value="4">33.3% &nbsp;|&nbsp; 4/12</option>
+                            <option value="3">25.0% &nbsp;|&nbsp; 3/12</option>
+                            <option value="2">16.6% &nbsp;|&nbsp; 2/12</option>
+                            <option value="1">08.3% &nbsp;|&nbsp; 1/12</option>
                         </select>
                     </div>
 
                     <div class="col s12 l4 padding-small form_body">
-                        <label class="color-text-gray">Largura do Campo no Tablet</label>
+                        <label class="color-text-gray">Tablet</label>
                         <select class="input form_body" id="colm">
                             <option value="" selected disabled></option>
-                            <option value="12">100.% &nbsp;|&nbsp; Proporção 12/12</option>
-                            <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
-                            <option value="10">83.3% &nbsp;|&nbsp; Proporção 10/12</option>
-                            <option value="9">75.0% &nbsp;|&nbsp; Proporção 9/12</option>
-                            <option value="8">66.6% &nbsp;|&nbsp; Proporção 8/12</option>
-                            <option value="7">58.3% &nbsp;|&nbsp; Proporção 7/12</option>
-                            <option value="6">50.0% &nbsp;|&nbsp; Proporção 6/12</option>
-                            <option value="5">41.6% &nbsp;|&nbsp; Proporção 5/12</option>
-                            <option value="4">33.3% &nbsp;|&nbsp; Proporção 4/12</option>
-                            <option value="3">25.0% &nbsp;|&nbsp; Proporção 3/12</option>
-                            <option value="2">16.6% &nbsp;|&nbsp; Proporção 2/12</option>
-                            <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
+                            <option value="12">100.% &nbsp;|&nbsp; 12/12</option>
+                            <option value="11">91.6% &nbsp;|&nbsp; 11/12</option>
+                            <option value="10">83.3% &nbsp;|&nbsp; 10/12</option>
+                            <option value="9">75.0% &nbsp;|&nbsp; 9/12</option>
+                            <option value="8">66.6% &nbsp;|&nbsp; 8/12</option>
+                            <option value="7">58.3% &nbsp;|&nbsp; 7/12</option>
+                            <option value="6">50.0% &nbsp;|&nbsp; 6/12</option>
+                            <option value="5">41.6% &nbsp;|&nbsp; 5/12</option>
+                            <option value="4">33.3% &nbsp;|&nbsp; 4/12</option>
+                            <option value="3">25.0% &nbsp;|&nbsp; 3/12</option>
+                            <option value="2">16.6% &nbsp;|&nbsp; 2/12</option>
+                            <option value="1">08.3% &nbsp;|&nbsp; 1/12</option>
                         </select>
                     </div>
 
                     <div class="col s12 l4 padding-small form_body">
-                        <label class="color-text-gray">Largura do Campo no Desktop</label>
+                        <label class="color-text-gray">Desktop</label>
                         <select class="input form_body" id="coll">
                             <option value="" selected disabled></option>
-                            <option value="12">100.% &nbsp;|&nbsp; Proporção 12/12</option>
-                            <option value="11">91.6% &nbsp;|&nbsp; Proporção 11/12</option>
-                            <option value="10">83.3% &nbsp;|&nbsp; Proporção 10/12</option>
-                            <option value="9">75.0% &nbsp;|&nbsp; Proporção 9/12</option>
-                            <option value="8">66.6% &nbsp;|&nbsp; Proporção 8/12</option>
-                            <option value="7">58.3% &nbsp;|&nbsp; Proporção 7/12</option>
-                            <option value="6">50.0% &nbsp;|&nbsp; Proporção 6/12</option>
-                            <option value="5">41.6% &nbsp;|&nbsp; Proporção 5/12</option>
-                            <option value="4">33.3% &nbsp;|&nbsp; Proporção 4/12</option>
-                            <option value="3">25.0% &nbsp;|&nbsp; Proporção 3/12</option>
-                            <option value="2">16.6% &nbsp;|&nbsp; Proporção 2/12</option>
-                            <option value="1">08.3% &nbsp;|&nbsp; Proporção 1/12</option>
+                            <option value="12">100.% &nbsp;|&nbsp; 12/12</option>
+                            <option value="11">91.6% &nbsp;|&nbsp; 11/12</option>
+                            <option value="10">83.3% &nbsp;|&nbsp; 10/12</option>
+                            <option value="9">75.0% &nbsp;|&nbsp; 9/12</option>
+                            <option value="8">66.6% &nbsp;|&nbsp; 8/12</option>
+                            <option value="7">58.3% &nbsp;|&nbsp; 7/12</option>
+                            <option value="6">50.0% &nbsp;|&nbsp; 6/12</option>
+                            <option value="5">41.6% &nbsp;|&nbsp; 5/12</option>
+                            <option value="4">33.3% &nbsp;|&nbsp; 4/12</option>
+                            <option value="3">25.0% &nbsp;|&nbsp; 3/12</option>
+                            <option value="2">16.6% &nbsp;|&nbsp; 2/12</option>
+                            <option value="1">08.3% &nbsp;|&nbsp; 1/12</option>
                         </select>
                     </div>
                     <div class="clearfix"></div>
@@ -419,24 +465,31 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
 
                     <div class="clearfix"></div>
 
-                    <div class="col s12 m6 padding-small form_body">
-                        <label for="class" class="color-text-gray">Class</label>
-                        <input id="class" type="text" class="input form_body">
-                    </div>
-                    <div class="col s12 m6 padding-small form_body">
-                        <label for="style" class="color-text-gray">Style</label>
-                        <input id="style" type="text" class="input form_body">
-                    </div>
-                    <div class="col s12 m6 padding-small form_body">
-                        <label for="template" class="color-text-gray">Template</label>
-                        <input id="template" type="text" class="input form_body">
-                    </div>
-                    <div class="col s12 m6 padding-small form_body">
-                        <label for="atributos" class="color-text-gray">Atributos</label>
-                        <input id="atributos" type="text" class="input form_body">
+                    <div id="form-sup" class="col hide">
+                        <div class="col s12 m6 padding-small form_body">
+                            <label for="class" class="color-text-gray">Class</label>
+                            <input id="class" type="text" class="input form_body">
+                        </div>
+                        <div class="col s12 m6 padding-small form_body">
+                            <label for="style" class="color-text-gray">Style</label>
+                            <input id="style" type="text" class="input form_body">
+                        </div>
+                        <div class="col s12 m6 padding-small form_body">
+                            <label for="template" class="color-text-gray">Template</label>
+                            <input id="template" type="text" class="input form_body">
+                        </div>
+                        <div class="col s12 m6 padding-small form_body">
+                            <label for="atributos" class="color-text-gray">Atributos</label>
+                            <input id="atributos" type="text" class="input form_body">
+                        </div>
                     </div>
 
-                    <input type="hidden" class="input" id="type" />
+                    <button class="btn theme padding-small opacity hover-opacity-off hover-shadow right"
+                            onclick="showhideFormSup()">
+                        Avançado
+                    </button>
+
+                    <input type="hidden" class="input" id="type"/>
 
                     <div class="clearfix"><br></div>
                 </div>
@@ -444,29 +497,31 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
 
             <div class="requireName hide card padding-medium">
                 <header class="row padding-8">
-                    <span class="left padding-12 padding-right upper font-bold">Tabela de Listagem</span>
-                    <label class="switch">
+                    <span class="left padding-12 padding-right upper font-bold">Listagem de Dados</span>
+                    <label class="switch" style="margin: 0 !important">
                         <input type="checkbox" class="input" id="datagrid">
                         <div class="slider"></div>
                     </label>
+                    <select class="input left datagrid_body" id="grid_relevant" style="width: auto;margin:2px 0 0 25px;padding: 8px 0 5px;">
+                        <option value="" selected>Posicionamento automático</option>
+                        <option value="1">1° Primeiro</option>
+                        <option value="2">2° Segundo</option>
+                        <option value="3">3° Terceiro</option>
+                        <option value="4">4° Quarto</option>
+                        <option value="5">5° Quinto</option>
+                        <option value="6">6° Sexto</option>
+                    </select>
+
+                    <button class="btn theme padding-small datagrid_body margin-small opacity hover-opacity-off hover-shadow right"
+                            onclick="showhideListSup()">
+                        Avançado
+                    </button>
+
                 </header>
 
-                <div class="row hide datagrid_body">
+                <div class="row hide" id="list-sup">
                     <div class="clearfix"></div>
-
-                    <div class="col s12 m6 l2 padding-small">
-                        <label for="grid_relevant" class="color-text-gray">Posição</label>
-                        <select class="input" id="grid_relevant" style="padding: 8px 0 5px;">
-                            <option value="" selected>auto</option>
-                            <option value="1">1°</option>
-                            <option value="2">2°</option>
-                            <option value="3">3°</option>
-                            <option value="4">4°</option>
-                            <option value="5">5°</option>
-                            <option value="6">6°</option>
-                        </select>
-                    </div>
-                    <div class="col s6 m6 l3 padding-small">
+                    <div class="col s6 m4 padding-small">
                         <label for="grid_class" class="color-text-gray">Class</label>
                         <input id="grid_class" type="text" class="input">
                     </div>
@@ -474,45 +529,11 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                         <label for="grid_style" class="color-text-gray">Style</label>
                         <input id="grid_style" type="text" class="input">
                     </div>
-                    <div class="col s6 m6 l3 padding-small">
+                    <div class="col s6 m4 padding-small">
                         <label for="grid_template" class="color-text-gray">Template</label>
                         <input id="grid_template" type="text" class="input">
                     </div>
 
-                    <div class="clearfix"></div>
-
-                    <div class="row padding-top hide relation_container">
-
-                        <div class="col padding-top margin-top margin-bottom theme-text upper">
-                            <div class="col border-bottom margin-small" style="width: 400px">
-                                Tabela Relacional
-                            </div>
-                        </div>
-                        <div class="col s12 m4 l2 padding-small">
-                            <label for="grid_relevant_relational" class="color-text-gray">Posição</label>
-                            <select class="input" id="grid_relevant_relational" style="padding: 8px 0 5px;">
-                                <option value="" selected>não</option>
-                                <option value="1">1°</option>
-                                <option value="2">2°</option>
-                                <option value="3">3°</option>
-                                <option value="4">4°</option>
-                                <option value="5">5°</option>
-                                <option value="6">6°</option>
-                            </select>
-                        </div>
-                        <div class="col s6 m6 l3 padding-small">
-                            <label for="grid_class_relational" class="color-text-gray">Class</label>
-                            <input id="grid_class_relational" type="text" class="input">
-                        </div>
-                        <div class="col s6 m4 padding-small">
-                            <label for="grid_style_relational" class="color-text-gray">Style</label>
-                            <input id="grid_style_relational" type="text" class="input">
-                        </div>
-                        <div class="col s6 m6 l3 padding-small">
-                            <label for="grid_template_relational" class="color-text-gray">Template</label>
-                            <input id="grid_template_relational" type="text" class="input">
-                        </div>
-                    </div>
                     <div class="clearfix"></div>
                 </div>
             </div>

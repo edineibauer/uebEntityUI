@@ -93,12 +93,8 @@ function entityEdit(id) {
             entity.owner = info[id]["owner"];
 
             $("#entityIconDemo").text(entity.icon || "");
-
-            $("#haveOwner, #haveAutor").prop("checked", false);
-            if(entity.autor === 1)
-                $("#haveAutor").prop("checked", true);
-            else if(entity.autor === 2)
-                $("#haveOwner").prop("checked", true);
+            $("#haveAutor").prop("checked", entity.autor === 1);
+            $("#haveOwner").prop("checked", entity.autor === 2);
         }
 
         showEntity();
@@ -117,13 +113,8 @@ function showEntity() {
     $("#entityName").val(entity.name).focus();
     $("#entityIcon").val(entity.icon);
     $("#entityIconDemo").text(entity.icon);
-
-    $("#haveOwner, #haveAutor").prop("checked", false);
-    if(entity.autor === 1)
-        $("#haveAutor").prop("checked", true);
-    else if(entity.autor === 2)
-        $("#haveOwner").prop("checked", true);
-
+    $("#haveAutor").prop("checked", entity.autor === 1);
+    $("#haveOwner").prop("checked", entity.autor === 2);
     $("#entityAttr").html("");
 
     let maxIndice = 1;
@@ -262,6 +253,9 @@ function editAttr(id) {
 var alert = false;
 function checkSaveAttr() {
     var yes = true;
+    entity.icon = $("#entityIcon").val();
+    entity.autor = $("#haveAutor").prop("checked") ? 1 : ($("#haveOwner").prop("checked") ? 2 : null);
+
     if (checkRequiresFields()) {
         if (entity.edit === null) {
             if (entity.name === "") {
@@ -277,11 +271,8 @@ function checkSaveAttr() {
                         },2000);
                     }
                 });
-
                 if (yes && allowName(temp, 1)) {
                     entity.name = temp;
-                    entity.icon = $("#entityIcon").val();
-                    entity.autor = $("#haveAutor").prop("checked") === "on" ? 1 : ($("#haveOwner").prop("checked") === "on" ? 2 : null);
 
                     identifier[entity.name] = 1;
                     dicionarios[entity.name] = {};
@@ -596,6 +587,12 @@ function setFormat(val) {
         $("#definirvalores").addClass("hide");
     }
 
+    if(['extend_mult', 'extend', 'extend_folder'].indexOf(val) > -1) {
+        $("#default_container").addClass("hide");
+    } else {
+        $("#default_container").removeClass("hide");
+    }
+
     if (val !== "source") {
         $("#format-source, .relation_creation_container, #requireListFilter, .relation_container").addClass("hide");
         if (["extend", "extend_add", "extend_mult", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(val) > -1)
@@ -899,6 +896,13 @@ function getType() {
     return result;
 }
 
+function showhideFormSup() {
+    $("#form-sup").toggleClass("hide");
+}
+function showhideListSup() {
+    $("#list-sup").toggleClass("hide");
+}
+
 $(function () {
     let headerHeight = $("#core-header").height() + parseInt($("#core-header").css("padding-top")) + parseInt($("#core-header").css("padding-bottom"));
     $("#entity-space").css("height", $(document).height() - headerHeight - 64);
@@ -945,7 +949,7 @@ $(function () {
         checkFieldsOpenOrClose($(this).val());
 
     }).off("change", "#default_custom").on("change", "#default_custom", function () {
-        if ($(this).is(":checked")) {
+        if ($(this).is(":checked") && ['extend_mult', 'extend', 'extend_folder'].indexOf(getType()) === -1) {
             $("#default_container").removeClass("hide");
             if ($("#unique").is(":checked"))
                 $("#unique").trigger("click");
