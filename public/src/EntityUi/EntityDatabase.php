@@ -61,7 +61,7 @@ abstract class EntityDatabase
         if($dados['type'] === "text" && !empty($dados['size']) && $dados['size'] < 14000)
             $dados['type'] = "varchar";
 
-        $type = in_array($dados['type'], ["float", "real", "double"]) ? "double" : $dados['type'];
+        $type = (in_array($dados['type'], ["float", "real", "double"]) ? "double" : ($dados['type'] === "number" ? "int" : $dados['type']));
         $size = $dados['type'] === "decimal" ? (!empty($dados['size']) ? $dados['size'] : 19) . ",2" : $dados['size'];
         $size = (in_array($dados['type'], ['smallint', 'tinyint', 'mediumint', 'int', 'bigint']) ? "" : $size);
         return "`{$dados['column']}` {$type} "
