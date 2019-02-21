@@ -593,7 +593,6 @@ function setFormat(val) {
         $("#default_container").removeClass("hide");
     }
 
-    console.log(val);
     if (val !== "source") {
         $("#format-source, .relation_creation_container, #requireListFilter, .relation_container").addClass("hide");
         if (["extend", "extend_add", "extend_mult", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(val) > -1)
