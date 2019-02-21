@@ -184,6 +184,9 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                         <select class="selectInput" id="funcaoRelation">
                             <option value="" disabled selected>Tipo de Relação</option>
                             <option value="extend">Importar Formulário</option>
+                            <option value="folder" title="permite criar uma pasta que direciona para um formulário associado">
+                                Pasta
+                            </option>
                             <option value="extend_folder"
                                     title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
                                 Mult-tenancy Pasta
