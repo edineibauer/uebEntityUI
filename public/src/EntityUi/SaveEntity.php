@@ -134,17 +134,7 @@ class SaveEntity
             "autor" => $autor,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
             "required" => null, "unique" => null, "publisher" => null, "constant" => null, "extend" => null, "extend_add" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "selecao" => null, "selecao_mult" => null, "checkbox_rel" => null, "checkbox_mult" => null, "owner" => null, "ownerPublisher" => null,
-            "source" => [
-                "image" => null,
-                "audio" => null,
-                "video" => null,
-                "multimidia" => null,
-                "compact" => null,
-                "document" => null,
-                "denveloper" => null,
-                "arquivo" => null,
-                "source" => null
-            ]
+            "source" => null
         ];
 
         foreach ($metadados as $i => $dados) {
@@ -158,7 +148,7 @@ class SaveEntity
                 $data["publisher"] = $i;
 
             if ($dados['key'] === "source" || $dados['key'] === "sources")
-                $data['source'][$this->checkSource($dados['allow']['options'])][] = $i;
+                $data['source'][] = $i;
 
             if ($dados['default'] === false)
                 $data['required'][] = $i;
@@ -272,42 +262,5 @@ class SaveEntity
         }
 
         return $data;
-    }
-
-    private function checkSource($valores)
-    {
-        $type = [];
-        $data = [
-            "image" => ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"],
-            "video" => ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"],
-            "audio" => ["mp3", "aac", "ogg", "wma", "mid", "alac", "flac", "wav", "pcm", "aiff", "ac3"],
-            "document" => ["txt", "doc", "docx", "dot", "dotx", "dotm", "ppt", "pptx", "pps", "potm", "potx", "pdf", "xls", "xlsx", "xltx", "rtf"],
-            "compact" => ["rar", "zip", "tar", "7z"],
-            "denveloper" => ["html", "css", "scss", "js", "tpl", "json", "xml", "md", "sql", "dll"]
-        ];
-
-        if (!empty($valores)) {
-            $values = [];
-            foreach ($valores as $valore)
-                $values[] = $valore['option'];
-
-            foreach ($data as $tipo => $dados) {
-                if (count(array_intersect($dados, $values)) > 0)
-                    $type[] = $tipo;
-            }
-
-            if (count($type) > 1) {
-                if (count(array_intersect(["document", "compact", "denveloper"], $type)) === 0 && count(array_intersect(["image", "video", "audio"], $type)) > 1)
-                    return "multimidia";
-                else if (count(array_intersect(["document", "compact", "denveloper"], $type)) > 1 && count(array_intersect(["image", "video", "audio"], $type)) === 0)
-                    return "arquivo";
-                else
-                    return "source";
-            } else {
-                return $type[0];
-            }
-        } else {
-            return "source";
-        }
     }
 }
