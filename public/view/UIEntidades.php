@@ -195,6 +195,9 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                                     title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
                                 Mult-tenancy Lista
                             </option>
+                            <option value="list">
+                                Vínculo
+                            </option>
                             <!--       <option value="extend_add">Extensão Add</option>-->
                             <!--<option value="list">Lista</option>
                            <option value="list_mult">Lista Multipla</option>
@@ -212,13 +215,12 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                         <input id="nome" autocomplete="off" type="text" class="input">
                     </div>
 
-                    <div class="col s12 m4 l4 hide relation_container">
+                    <div class="col s12 m4 l4 hide relation_container" style="margin-top: 3px;">
                         <label class="color-text-gray">Entidade Relacionada</label>
                         <select class="input" id="relation"></select>
                     </div>
 
                     <div class="row requireName hide">
-
                         <div class="col s6 m3 l1" id="update_field">
                             <label class="color-text-gray row" for="update">Atualizar</label>
                             <label class="switch">
