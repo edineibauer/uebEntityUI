@@ -516,6 +516,46 @@
       "input": "file"
     }
   },
+  "source_list": {
+    "format": "source_list",
+    "type": "json",
+    "nome": "Imagem",
+    "key": "source",
+    "size": 1,
+    "allow": {
+      "options": [{
+        "option": "png",
+        "name": "png"
+      },{
+        "option": "jpg",
+        "name": "jpg"
+      },{
+        "option": "jpeg",
+        "name": "jpeg"
+      },{
+        "option": "gif",
+        "name": "gif"
+      },{
+        "option": "bmp",
+        "name": "bmp"
+      },{
+        "option": "tif",
+        "name": "tif"
+      },{
+        "option": "tiff",
+        "name": "tiff"
+      },{
+        "option": "psd",
+        "name": "psd"
+      },{
+        "option": "svg",
+        "name": "svg"
+      }]
+    },
+    "form": {
+      "input": "file_list"
+    }
+  },
   "email": {
     "format": "email",
     "key": "email",

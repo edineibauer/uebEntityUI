@@ -147,7 +147,8 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
                             <option value="checkbox">CheckBox</option>
                             <!--                        <option value="range">Range</option>-->
                             <option value="color">Cor</option>
-                            <option value="source">Arquivo</option>
+                            <option value="source">Arquivos Caixas</option>
+                            <option value="source_list">Arquivos Lista</option>
                             <option value="information">Informação</option>
                         </select>
                     </div>
