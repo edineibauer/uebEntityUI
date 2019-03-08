@@ -6,6 +6,7 @@ use Conn\Delete;
 use Conn\Read;
 use Conn\SqlCommand;
 use Entity\Metadados;
+use Helpers\Helper;
 
 class EntityUpdateEntityDatabase extends EntityDatabase
 {
@@ -16,16 +17,73 @@ class EntityUpdateEntityDatabase extends EntityDatabase
     /**
      * EntityUpdateEntityDatabase constructor.
      * @param string $entity
-     * @param array $novos
-     * @param array $dados
+     * @param array $dicionarioOld
+     * @param array $infoOld
      */
-    public function __construct(string $entity, array $novos, array $dados)
+    public function __construct(string $entity, array $dicionarioOld, array $infoOld)
     {
         parent::__construct($entity);
         $this->setEntity($entity);
-        $this->old = $dados;
-        $this->new = $novos;
+        $info = Metadados::getInfo($entity);
+        $this->old = $dicionarioOld;
+        $this->new = Metadados::getDicionario($entity);
+
+        $this->adicionaCamposUsuario($info, $infoOld);
         $this->start();
+    }
+
+    /**
+     *
+     *  Adiciona Campos de Usuário, Autor e Multi-tenancy
+     * @param array $info
+     * @param array $infoOld
+     */
+    private function adicionaCamposUsuario(array $info, array $infoOld)
+    {
+        if($infoOld['user'] === 1)
+            $this->old["999997"] = $this->generateUser();
+
+        if(!empty($infoOld['autor'])) {
+            if($infoOld['autor'] === 1) {
+                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+                $this->old["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => $_SESSION['userlogin']['id']]);
+            } elseif($infoOld['autor'] === 2) {
+                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+                $this->old["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => $_SESSION['userlogin']['id']]);
+            }
+        }
+
+        if($info['user'] === 1)
+            $this->new["999997"] = $this->generateUser();
+
+        if(!empty($info['autor'])) {
+            if($info['autor'] === 1) {
+                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+                $this->new["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => $_SESSION['userlogin']['id']]);
+            } elseif($info['autor'] === 2) {
+                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+                $this->new["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => $_SESSION['userlogin']['id']]);
+            }
+        }
+    }
+
+    private function generateUser()
+    {
+        $types = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), !0);
+        $mode = Helper::arrayMerge($types["default"], $types['list']);
+        $mode['nome'] = "Usuário Acesso Vínculo";
+        $mode['column'] = "usuarios_id";
+        $mode['form'] = "false";
+        $mode['datagrid'] = "false";
+        $mode['default'] = "";
+        $mode['unique'] = "false";
+        $mode['update'] = "false";
+        $mode['size'] = "";
+        $mode['minimo'] = "";
+        $mode['relation'] = "usuarios";
+        $mode['indice'] = "999997";
+
+        return $mode;
     }
 
     /**
@@ -81,11 +139,11 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         $del = $this->getDeletes();
 
         if ($del) {
-            foreach ($del as $id => $dic) {
-                $this->dropKeysFromColumnRemoved($id, $dic);
+            foreach ($del as $id => $meta) {
+                $this->dropKeysFromColumnRemoved($id, $meta);
 
                 $sql = new SqlCommand();
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP COLUMN " . $dic['column']);
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP COLUMN " . $meta['column']);
             }
         }
     }
@@ -117,20 +175,11 @@ class EntityUpdateEntityDatabase extends EntityDatabase
 
         $constraint = substr("c_{$this->entity}_{$dados['column']}_{$dados['relation']}", 0, 64);
 
-        if (in_array($dados['format'], ["list", "extend", "extend_add", "selecao", "checkbox_rel", "selecaoUnique", "publisher", "owner"]))
+        if (in_array($dados['format'], ["list", "publisher", "owner"]))
             $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP FOREIGN KEY {$constraint}, DROP INDEX fk_" . $dados['column']);
 
         //deleta dados armazenados da extensão
-        if (in_array($dados['format'], ['extend_add', 'extend'])) {
-            $read->exeRead($this->entity);
-            if ($read->getResult()) {
-                foreach ($read->getResult() as $ent) {
-                    if (!empty($ent[$dados['column']]))
-                        $delete->exeDelete($dados['relation'], "WHERE id = :id", "id={$ent[$dados['column']]}");
-                }
-            }
-
-        } elseif ($dados['format'] === 'extend_mult') {
+        /*if ($dados['format'] === 'extend_mult') {
             $read->exeRead($this->entity);
             if ($read->getResult()) {
                 foreach ($read->getResult() as $ent) {
@@ -143,14 +192,12 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             }
         }
 
-        if ($dados['format'] === "list_mult" || $dados['format'] === "extend_mult" || $dados['format'] === "selecao_mult" || $dados['format'] === "checkbox_mult") {
-
-            //deleta dados da tabela relacional
+        //deleta dados da tabela relacional
+        if ($dados['key'] === "relation" && $dados['group'] === "many")
             $sql->exeCommand("DROP TABLE " . PRE . $this->entity . "_" . $dados['column']);
+        */
 
-        }
-
-        if ($id < 10000) {
+        if ($id < 999900) {
 
             //INDEX
             $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='index_{$id}'");
@@ -171,19 +218,20 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         if ($add) {
             $sql = new SqlCommand();
             foreach ($add as $id => $dados) {
+
+                if($dados['group'] !== "many" || $dados['key'] !== "relation")
+                    $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
+
                 if ($dados['key'] === "relation") {
                     if ($dados['group'] === "many") {
 //                        parent::createRelationalTable($dados);
 
                     } else {
-                        $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
-
                         if ($dados['format'] === "list")
                             parent::createIndexFk($this->entity, $dados['column'], $dados['relation'], "", $dados['key']);
                     }
 
                 } elseif ($dados['key'] === "publisher") {
-                    $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
                     parent::createIndexFk($this->entity, $dados['column'], "usuarios", "", "publisher");
                 }
             }

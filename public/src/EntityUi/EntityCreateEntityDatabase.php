@@ -9,54 +9,58 @@ class EntityCreateEntityDatabase extends EntityDatabase
     /**
      * EntityCreateEntityDatabase constructor.
      * @param string $entity
-     * @param array $dados
+     * @param array $dicionarioOld
+     * @param array $infoOld
      */
-    public function __construct(string $entity, array $dados)
+    public function __construct(string $entity, array $dicionarioOld, array $infoOld)
     {
         parent::__construct($entity);
 
-        unset($dados['info']);
+        $sql = new \Conn\SqlCommand();
+        $sql->exeCommand("SELECT 1 FROM " . PRE . "{$entity} LIMIT 1");
+        
+        if (!$sql->getErro() && !empty($dicionarioOld))
+            new EntityUpdateEntityDatabase($entity, $dicionarioOld, $infoOld);
+        elseif ($sql->getErro())
+            $this->createTableFromEntityJson($entity);
+    }
 
-        if ($data = Metadados::getDicionario($entity)) {
+    private function generateUser()
+    {
+        $types = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), !0);
+        $mode = array_merge_recursive($types["default"], $types['list']);
+        $mode['nome'] = "Usuário Acesso Vínculo";
+        $mode['column'] = "usuarios_id";
+        $mode['form'] = "false";
+        $mode['datagrid'] = "false";
+        $mode['default'] = "false";
+        $mode['unique'] = "false";
+        $mode['update'] = "false";
+        $mode['size'] = "";
+        $mode['minimo'] = "";
+        $mode['relation'] = "usuarios";
+        $mode['indice'] = "999998";
 
-            //remove Strings from metadados para não salvar no banco
-            foreach ($data as $i => $datum) {
-                if ($datum['key'] === 'information')
-                    unset($data[$i]);
-            }
-
-            //remove Strings from metadados para não salvar no banco
-            foreach ($dados as $i => $dadosm) {
-                if (!empty($dadosm['key']) && $dadosm['key'] === 'information')
-                    unset($dados[$i]);
-            }
-
-            $sql = new \Conn\SqlCommand();
-            $sql->exeCommand("SELECT 1 FROM " . PRE . "{$entity} LIMIT 1");
-            if (!$sql->getErro() && !empty($dados['dicionario']))
-                new EntityUpdateEntityDatabase($entity, $data, $dados['dicionario']);
-            elseif ($sql->getErro())
-                $this->createTableFromEntityJson($entity, $data);
-        }
+        return $mode;
     }
 
     /**
      * @param string $entity
      * @param array $data
      */
-    private function createTableFromEntityJson(string $entity, array $data)
+    private function createTableFromEntityJson(string $entity)
     {
-        $data = $this->checkCreateMultSelectField($data);
+        $data = $this->checkCreateMultSelectField();
         $this->prepareCommandToCreateTable($entity, $data);
         $this->createKeys($entity, $data);
     }
 
     /**
-     * @param array $dicionario
      * @return array
      */
-    private function checkCreateMultSelectField(array $dicionario): array
+    private function checkCreateMultSelectField(): array
     {
+        $dicionario = Metadados::getDicionario($entity);
         foreach ($dicionario as $dic) {
             if (in_array($dic['key'], ["list_mult", "extend_mult", "selecao_mult", "list", "extend_add", "extend", "selecao", "checkbox_rel", "checkbox_mult"]) && !empty($dic['select'])) {
                 $relDic = Metadados::getDicionario($dic['relation']);

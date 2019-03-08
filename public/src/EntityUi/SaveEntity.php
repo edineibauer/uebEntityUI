@@ -59,27 +59,21 @@ class SaveEntity
     private function start($metadados = null, string $icon = null, int $autor = null, int $user)
     {
         try {
-            $data['dicionario'] = Metadados::getDicionario($this->entity);
-
-            if ($data['dicionario']) {
-                $data['info'] = Metadados::getInfo($this->entity);
-            } else {
+            
+            //obtém dicionario atual (old)
+            $infoOld = Metadados::getInfo($this->entity);
+            if (!$metadadosOld = Metadados::getDicionario($this->entity)) {
                 Helper::createFolderIfNoExist(PATH_HOME . "entity");
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache");
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache/info");
             }
-
-            if($user)
-                $metadados["999998"] = $this->generateUser();
-            elseif(!empty($metadados['999998']))
-                unset($metadados['999998']);
-
-            $metadados["0"] = $this->generatePrimary();
-
+            
+            //criar novo dicionario
             $this->createEntityJson($metadados);
             $this->createEntityJson($this->generateInfo($metadados, $icon, $autor, $user), "info");
 
-            new EntityCreateEntityDatabase($this->entity, $data);
+            //criar/atualizar banco
+            new EntityCreateEntityDatabase($this->entity, $metadadosOld, $infoOld);
 
         } catch (\Exception $e) {
             echo $e->getMessage() . " #linha {$e->getLine()}";
