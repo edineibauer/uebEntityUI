@@ -1,5 +1,5 @@
 <?php
-if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
+if (empty($_SESSION['userlogin']) || !empty($_SESSION['userlogin']['setor'])) {
     $data['response'] = 3;
     $data['data'] = HOME . "dashboard";
 } else {
