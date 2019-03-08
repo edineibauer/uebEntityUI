@@ -69,7 +69,13 @@ class SaveEntity
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache/info");
             }
 
+            if($user)
+                $metadados["999998"] = $this->generateUser();
+            elseif(!empty($metadados['999998']))
+                unset($metadados['999998']);
+
             $metadados["0"] = $this->generatePrimary();
+
             $this->createEntityJson($metadados);
             $this->createEntityJson($this->generateInfo($metadados, $icon, $autor, $user), "info");
 
@@ -105,6 +111,7 @@ class SaveEntity
             "default" => "false",
             "update" => "false",
             "relation" => "",
+            "minimo" => "",
             "allow" => [
                 "regex" => "",
                 "options" => "",
@@ -123,6 +130,25 @@ class SaveEntity
         ];
     }
 
+    private function generateUser()
+    {
+        $types = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), !0);
+        $mode = Helper::arrayMerge($types["default"], $types['list']);
+        $mode['nome'] = "Usuário Acesso Vínculo";
+        $mode['column'] = "usuarios_id";
+        $mode['form'] = "false";
+        $mode['datagrid'] = "false";
+        $mode['default'] = "false";
+        $mode['unique'] = "false";
+        $mode['update'] = "false";
+        $mode['size'] = "";
+        $mode['minimo'] = "";
+        $mode['relation'] = "usuarios";
+        $mode['indice'] = "999998";
+
+        return $mode;
+    }
+
     /**
      * @param array $metadados
      * @param string|null $icon
@@ -136,7 +162,7 @@ class SaveEntity
             "icon" => $icon, "autor" => $autor, "user" => $user,
             "required" => null, "unique" => null, "update" => null,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
-            "extend" => null, "extend_add" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
+            "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "extend_add" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
         ];
 
         foreach ($metadados as $i => $dados) {
@@ -149,11 +175,17 @@ class SaveEntity
             if (in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
                 $data[$dados['format']] = $i;
 
+            if ($dados['key'] === "publisher")
+                $data["publisher"] = $i;
+
             if ($dados['default'] === false || $dados['default'] === "false")
                 $data['required'][] = $i;
 
             if ($dados['update'] === "true" || $dados['update'] === true || $dados['update'] == 1)
                 $data["update"][] = $i;
+
+            if ($dados['relation'] === "usuarios" && $dados['format'] === "extend")
+                $data = $this->checkOwnerList($data, $metadados, $dados['column']);
         }
 
         $this->createGeneral($data);
@@ -237,5 +269,26 @@ class SaveEntity
         $fp = fopen(PATH_HOME . "entity/general/general_info.json", "w");
         fwrite($fp, json_encode($general));
         fclose($fp);
+    }
+
+    /**
+     * @param array $data
+     * @param array $metadados
+     * @param string $column
+     * @return array
+     */
+    private function checkOwnerList(array $data, array $metadados, string $column)
+    {
+        foreach ($metadados as $i => $metadado) {
+            if ($metadado['relation'] !== "usuarios") {
+                if (in_array($metadado['format'], ["extend", "extend_add", "extend_mult"])) {
+                    $data['owner'][] = ["entity" => $metadado['relation'], "column" => $metadado['column'], "userColumn" => $column];
+                } elseif (in_array($metadado['format'], ["list", "list_mult"])) {
+                    $data['ownerPublisher'][] = ["entity" => $metadado['relation'], "column" => $metadado['column'], "userColumn" => $column];
+                }
+            }
+        }
+
+        return $data;
     }
 }

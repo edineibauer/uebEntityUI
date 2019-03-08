@@ -171,16 +171,20 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         if ($add) {
             $sql = new SqlCommand();
             foreach ($add as $id => $dados) {
-                if (in_array($dados['key'], ["list_mult", "extend_mult", "selecao_mult", "checkbox_mult"])) {
-                    parent::createRelationalTable($dados);
+                if ($dados['key'] === "relation") {
+                    if ($dados['group'] === "many") {
+//                        parent::createRelationalTable($dados);
 
-                } else {
+                    } else {
+                        $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
+
+                        if ($dados['format'] === "list")
+                            parent::createIndexFk($this->entity, $dados['column'], $dados['relation'], "", $dados['key']);
+                    }
+
+                } elseif ($dados['key'] === "publisher") {
                     $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
-
-                    if (in_array($dados['key'], array('extend', "extend_add", 'list', "selecao", "checkbox_rel", "selecaoUnique")))
-                        parent::createIndexFk($this->entity, $dados['column'], $dados['relation'], "", $dados['key']);
-                    elseif ($dados['key'] === "publisher")
-                        parent::createIndexFk($this->entity, $dados['column'], "usuarios", "", "publisher");
+                    parent::createIndexFk($this->entity, $dados['column'], "usuarios", "", "publisher");
                 }
             }
         }
