@@ -60,8 +60,14 @@ if (empty($_SESSION['userlogin']) || $_SESSION['userlogin']['setor'] !== "1") {
         <div class="panel" id="space-attr-entity" style="margin-top: 0!important;">
             <div class="row">
                 <label class="col s12">
-                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large"
-                           style="margin:0">
+                    <label class="col right relative" style="width: 90px">
+                        <input type="checkbox" class="left" id="user"/>
+                        <span class="left pointer" style="padding:10px 0">Usuário</span>
+                    </label>
+                    <div class="rest">
+                        <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col"
+                               style="margin:0">
+                    </div>
                 </label>
 
                 <div class="row font-small hide requireNameEntity">

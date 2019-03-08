@@ -17,11 +17,12 @@ class SaveEntity
 
      * @param string|null $entity
      * @param string|null $icon
+     * @param int $user
      * @param int|null $autor
      * @param null $data
      * @param int|null $id
      */
-    public function __construct(string $entity = null, string $icon = null, int $autor = null, $data = null, int $id = null)
+    public function __construct(string $entity = null, string $icon = null, int $user, int $autor = null, $data = null, int $id = null)
     {
         if ($entity) {
             $this->entity = $entity;
@@ -29,7 +30,7 @@ class SaveEntity
                 $this->id = $id;
 
             if ($data)
-                $this->start($data, $icon, $autor);
+                $this->start($data, $icon, $autor, $user);
         }
     }
 
@@ -53,8 +54,9 @@ class SaveEntity
      * @param null $metadados
      * @param string|null $icon
      * @param int|null $autor
+     * @param int $user
      */
-    private function start($metadados = null, string $icon = null, int $autor = null)
+    private function start($metadados = null, string $icon = null, int $autor = null, int $user)
     {
         try {
             $data['dicionario'] = Metadados::getDicionario($this->entity);
@@ -69,7 +71,7 @@ class SaveEntity
 
             $metadados["0"] = $this->generatePrimary();
             $this->createEntityJson($metadados);
-            $this->createEntityJson($this->generateInfo($metadados, $icon, $autor), "info");
+            $this->createEntityJson($this->generateInfo($metadados, $icon, $autor, $user), "info");
 
             new EntityCreateEntityDatabase($this->entity, $data);
 
@@ -125,39 +127,33 @@ class SaveEntity
      * @param array $metadados
      * @param string|null $icon
      * @param int|null $autor
+     * @param int $user
      * @return array
      */
-    private function generateInfo(array $metadados, string $icon = null, int $autor = null): array
+    private function generateInfo(array $metadados, string $icon = null, int $autor = null, int $user): array
     {
         $data = [
-            "icon" => $icon,
-            "autor" => $autor,
+            "icon" => $icon, "autor" => $autor, "user" => $user,
+            "required" => null, "unique" => null, "update" => null,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
-            "required" => null, "unique" => null, "publisher" => null, "constant" => null, "extend" => null, "extend_add" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "selecao" => null, "selecao_mult" => null, "checkbox_rel" => null, "checkbox_mult" => null, "owner" => null, "ownerPublisher" => null,
-            "source" => null
+            "extend" => null, "extend_add" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
         ];
 
         foreach ($metadados as $i => $dados) {
-            if (in_array($dados['key'], ["unique", "extend", "extend_add", "extend_mult", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"]))
+            if($dados['unique'] === "true" || $dados['unique'] === true || $dados['unique'] == 1)
+                $data['unique'][] = $i;
+
+            if (in_array($dados['key'], ["extend", "extend_add", "extend_mult", "list", "list_mult", "folder", "extend_folder"]))
                 $data[$dados['key']][] = $i;
 
             if (in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
                 $data[$dados['format']] = $i;
 
-            if ($dados['key'] === "publisher")
-                $data["publisher"] = $i;
-
-            if ($dados['key'] === "source" || $dados['key'] === "sources")
-                $data['source'][] = $i;
-
-            if ($dados['default'] === false)
+            if ($dados['default'] === false || $dados['default'] === "false")
                 $data['required'][] = $i;
 
-            if (!$dados['update'])
-                $data["constant"][] = $i;
-
-            if ($dados['relation'] === "usuarios" && $dados['format'] === "extend")
-                $data = $this->checkOwnerList($data, $metadados, $dados['column']);
+            if ($dados['update'] === "true" || $dados['update'] === true || $dados['update'] == 1)
+                $data["update"][] = $i;
         }
 
         $this->createGeneral($data);
@@ -241,26 +237,5 @@ class SaveEntity
         $fp = fopen(PATH_HOME . "entity/general/general_info.json", "w");
         fwrite($fp, json_encode($general));
         fclose($fp);
-    }
-
-    /**
-     * @param array $data
-     * @param array $metadados
-     * @param string $column
-     * @return array
-     */
-    private function checkOwnerList(array $data, array $metadados, string $column)
-    {
-        foreach ($metadados as $i => $metadado) {
-            if ($metadado['relation'] !== "usuarios") {
-                if (in_array($metadado['format'], ["extend", "extend_add", "extend_mult"])) {
-                    $data['owner'][] = ["entity" => $metadado['relation'], "column" => $metadado['column'], "userColumn" => $column];
-                } elseif (in_array($metadado['format'], ["list", "list_mult"])) {
-                    $data['ownerPublisher'][] = ["entity" => $metadado['relation'], "column" => $metadado['column'], "userColumn" => $column];
-                }
-            }
-        }
-
-        return $data;
     }
 }

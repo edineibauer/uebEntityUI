@@ -14,10 +14,10 @@ var source_types = {
 };
 
 function tplObject(obj, $elem, prefix) {
-    prefix = typeof(prefix) === "undefined" ? "" : prefix;
-    if (typeof(obj) === "object") {
+    prefix = typeof (prefix) === "undefined" ? "" : prefix;
+    if (typeof (obj) === "object") {
         $.each(obj, function (key, value) {
-            if (obj instanceof Array) $elem = tplObject(value, $elem, prefix + key); else $elem = typeof(value) === "object" ? tplObject(value, $elem, prefix + key + ".") : $elem.replace(regexTpl(prefix + key), value)
+            if (obj instanceof Array) $elem = tplObject(value, $elem, prefix + key); else $elem = typeof (value) === "object" ? tplObject(value, $elem, prefix + key + ".") : $elem.replace(regexTpl(prefix + key), value)
         })
     } else {
         $elem = $elem.replace(regexTpl(prefix), obj)
@@ -30,11 +30,11 @@ function regexTpl(v) {
 }
 
 function copy($elem, $destino, variable, position) {
-    $elem = (typeof($elem) === "string" ? $($elem) : $elem);
-    $destino = (typeof($destino) === "string" ? $($destino) : $destino);
+    $elem = (typeof ($elem) === "string" ? $($elem) : $elem);
+    $destino = (typeof ($destino) === "string" ? $($destino) : $destino);
     $elem = $elem.clone().removeClass("hide").removeAttr("id").prop('outerHTML');
     $elem = tplObject(variable, $elem);
-    if (typeof(position) === "undefined") $($elem).prependTo($destino); else if (position === "after") $($elem).insertAfter($destino); else if (position === "before") $($elem).insertBefore($destino); else $($elem).appendTo($destino)
+    if (typeof (position) === "undefined") $($elem).prependTo($destino); else if (position === "after") $($elem).insertAfter($destino); else if (position === "before") $($elem).insertBefore($destino); else $($elem).appendTo($destino)
 }
 
 function readDefaults() {
@@ -76,25 +76,28 @@ function entityReset() {
         "icon": "",
         "autor": "",
         "owner": "",
+        "user": !1,
         "edit": null
     };
 }
 
 function entityEdit(id) {
     $("#importForm").addClass("hide");
-    if ((typeof(id) === "undefined" && entity.name !== "") || (typeof(id) !== "undefined" && id !== entity.name)) {
+    if ((typeof (id) === "undefined" && entity.name !== "") || (typeof (id) !== "undefined" && id !== entity.name)) {
         resetAttr();
         entityReset();
 
-        if (typeof(id) !== "undefined") {
+        if (typeof (id) !== "undefined") {
             entity.name = id;
             entity.icon = info[id]["icon"];
             entity.autor = info[id]["autor"];
             entity.owner = info[id]["owner"];
+            entity.user = typeof info[id]["user"] === "number" ? info[id]["user"] : 0;
 
             $("#entityIconDemo").text(entity.icon || "");
             $("#haveAutor").prop("checked", entity.autor === 1);
             $("#haveOwner").prop("checked", entity.autor === 2);
+            $("#user").prop("checked", entity.user);
         }
 
         showEntity();
@@ -115,6 +118,7 @@ function showEntity() {
     $("#entityIconDemo").text(entity.icon);
     $("#haveAutor").prop("checked", entity.autor === 1);
     $("#haveOwner").prop("checked", entity.autor === 2);
+    $("#user").prop("checked", entity.user);
     $("#entityAttr").html("");
 
     let maxIndice = 1;
@@ -158,7 +162,8 @@ function updateDicionarioIndex(entity) {
 }
 
 function saveEntity(silent) {
-    if (checkSaveAttr() && entity.name.length > 2 && typeof(dicionarios[entity.name]) !== "undefined" && !$.isEmptyObject(dicionarios[entity.name])) {
+    $("#saveEntityBtn").addClass("disabled");
+    if (checkSaveAttr() && entity.name.length > 2 && typeof (dicionarios[entity.name]) !== "undefined" && !$.isEmptyObject(dicionarios[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
 
         post("entity-ui", "save/entity", {
@@ -166,10 +171,12 @@ function saveEntity(silent) {
             "icon": $("#entityIcon").val(),
             "autor": $("#haveAutor").prop("checked"),
             "owner": $("#haveOwner").prop("checked"),
+            "user": $("#user").prop("checked"),
             "dados": dicionarios[entity.name],
             "id": identifier[entity.name],
             "newName": newName
         }, function (g) {
+            $("#saveEntityBtn").removeClass("disabled");
 
             updateDicionarioIndex(entity.name);
 
@@ -177,21 +184,23 @@ function saveEntity(silent) {
                 dicionarios[newName] = dicionarios[entity.name];
                 entity.name = newName;
                 readInfo();
-                if(typeof(info[entity.name]) !== "undefined")
+                if (typeof (info[entity.name]) !== "undefined")
                     info[entity.name]["icon"] = $("#entityIcon").val();
             }
 
-            if(typeof(silent) === "undefined")
+            if (typeof (silent) === "undefined")
                 toast("Salvo", 1500);
 
-            if (g && typeof(silent) === "undefined")
+            if (g && typeof (silent) === "undefined")
                 readDicionarios()
         });
+    } else {
+        $("#saveEntityBtn").removeClass("disabled");
     }
 }
 
 function resetAttr(id) {
-    entity.edit = typeof(id) !== "undefined" ? id : null;
+    entity.edit = typeof (id) !== "undefined" ? id : null;
     $("#atributos, #template, #style, #class, #orientation, .input").val("");
     $(".selectInput").css("color", "#AAAAAA").val("");
     $(".allformat").prop("checked", false);
@@ -251,10 +260,24 @@ function editAttr(id) {
 }
 
 var alert = false;
+
 function checkSaveAttr() {
     var yes = true;
     entity.icon = $("#entityIcon").val();
     entity.autor = $("#haveAutor").prop("checked") ? 1 : ($("#haveOwner").prop("checked") ? 2 : null);
+    entity.user = $("#user").prop("checked");
+
+    let userRequisite = {'title': !1, 'password': !1};
+    if(entity.user) {
+        $.each(dicionarios[entity.name], function (col, meta) {
+            if(meta.format === "title" || meta.format === "password")
+                userRequisite[meta.format] = !0;
+        });
+        if(!userRequisite.title || !userRequisite.password) {
+            toast("Entidades do tipo USUÁRIO precisam de um campo " + (!userRequisite.title ? "Título" : "Senha") + "!", 4000);
+            return !1;
+        }
+    }
 
     if (checkRequiresFields()) {
         if (entity.edit === null) {
@@ -268,7 +291,7 @@ function checkSaveAttr() {
 
                         setTimeout(function () {
                             alert = false;
-                        },2000);
+                        }, 2000);
                     }
                 });
                 if (yes && allowName(temp, 1)) {
@@ -292,11 +315,12 @@ function checkSaveAttr() {
             showEntity();
         }
     }
+
     return yes;
 }
 
 function saveAttrInputs() {
-    if (typeof(dicionarios[entity.name][entity.edit]) !== "undefined")
+    if (typeof (dicionarios[entity.name][entity.edit]) !== "undefined")
         var oldData = dicionarios[entity.name][entity.edit];
 
     dicionarios[entity.name][entity.edit] = assignObject(defaults.default, defaults[getType()]);
@@ -317,7 +341,7 @@ function saveAttrInputs() {
     else
         checkSaveAllow();
 
-    if (typeof(oldData) === "undefined" || typeof(oldData['indice']) === "undefined") {
+    if (typeof (oldData) === "undefined" || typeof (oldData['indice']) === "undefined") {
         let lastIndice = 0;
         $.each(dicionarios[entity.name], function (i, e) {
             if (e.indice > lastIndice)
@@ -391,7 +415,10 @@ function checkSaveSource() {
         if ($(this).prop("checked")) {
             $("." + $(this).attr("id") + "-format").each(function () {
                 if ($(this).prop("checked")) {
-                    dicionarios[entity.name][entity.edit]['allow']['options'].push({'option': $(this).attr("id"), 'name': $(this).attr("id")});
+                    dicionarios[entity.name][entity.edit]['allow']['options'].push({
+                        'option': $(this).attr("id"),
+                        'name': $(this).attr("id")
+                    });
                 }
             });
         }
@@ -427,13 +454,16 @@ function saveAttrValue($input) {
 
 function saveAllowValue($input) {
     if ($input.find(".values").val() !== "")
-        dicionarios[entity.name][entity.edit]['allow']['options'].push({'option': $input.find(".values").val(), 'name': $input.find(".names").val()});
+        dicionarios[entity.name][entity.edit]['allow']['options'].push({
+            'option': $input.find(".values").val(),
+            'name': $input.find(".names").val()
+        });
 }
 
 function applyAttr(data) {
     if (typeof (data) !== "undefined" && data !== null) {
         $.each(data, function (name, value) {
-            if (typeof(value) === "object")
+            if (typeof (value) === "object")
                 applyAttr(value);
 
             applyValueAttr(name, value);
@@ -517,7 +547,7 @@ function setFormat(val) {
     });
 
     /* Determina campo de tamanho */
-    if(['boolean', 'select', 'radio', 'color', 'file', 'information', 'status', 'email', 'cpf', 'cnpj', 'ie', 'rg', 'cep', 'date', 'datetime', 'time', 'passwordRequired',
+    if (['boolean', 'select', 'radio', 'color', 'file', 'information', 'status', 'email', 'cpf', 'cnpj', 'ie', 'rg', 'cep', 'date', 'datetime', 'time', 'passwordRequired',
         'extend', 'extend_add', 'list', 'selecao', 'checkbox_rel'].indexOf(val) > -1) {
         $("#size_field, #size_field_container").addClass("hide");
     } else {
@@ -525,7 +555,7 @@ function setFormat(val) {
     }
 
     /* Determina campo de UNIQUE */
-    if(['boolean', 'information', 'status', 'passwordRequired',
+    if (['boolean', 'information', 'status', 'passwordRequired',
         'extend', 'extend_add', 'extend_mult', "folder", "extend_folder", 'list', 'list_mult', 'selecao', 'selecao_mult', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
         $("#unique_field").addClass("hide");
     } else {
@@ -533,21 +563,21 @@ function setFormat(val) {
     }
 
     /* Determina campo de NULL */
-    if(['information', 'passwordRequired'].indexOf(val) > -1) {
+    if (['information', 'passwordRequired'].indexOf(val) > -1) {
         $("#default_field").addClass("hide");
     } else {
         $("#default_field").removeClass("hide");
     }
 
     /* Determina campo de UPDATE */
-    if(['information', 'extend', 'passwordRequired'].indexOf(val) > -1) {
+    if (['information', 'extend', 'passwordRequired'].indexOf(val) > -1) {
         $("#update_field").addClass("hide");
     } else {
         $("#update_field").removeClass("hide");
     }
 
     /* Determina Expressão regular */
-    if(['textarea', 'html', 'boolean', 'select', 'radio', 'checkbox', 'color', 'source', 'source_list', 'information', 'status', 'date', 'datetime', 'time', 'passwordRequired',
+    if (['textarea', 'html', 'boolean', 'select', 'radio', 'checkbox', 'color', 'source', 'source_list', 'information', 'status', 'date', 'datetime', 'time', 'passwordRequired',
         'extend', 'extend_add', 'extend_mult', "folder", "extend_folder", 'list', 'list_mult', 'selecao', 'selecao_mult', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
         $("#regexp_field").addClass("hide");
     } else {
@@ -555,7 +585,7 @@ function setFormat(val) {
     }
 
     /* Transforma campo padrão em Textarea no tipo informação */
-    if(val === "information") {
+    if (val === "information") {
         $("#default_container").css("width", "100%");
         $("#default").replaceWith($('<textarea id="default" class="input" rows="9"></textarea>'));
     } else {
@@ -564,7 +594,7 @@ function setFormat(val) {
     }
 
     /* Determina Orientação */
-    if(['checkbox', 'radio', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
+    if (['checkbox', 'radio', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
         $("#orientation_field").removeClass("hide");
     } else {
         $("#orientation_field").addClass("hide");
@@ -572,14 +602,14 @@ function setFormat(val) {
 
     /* Determinar opções de entrada */
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
-    if(['boolean', 'select', 'radio', 'checkbox', 'source', 'source_list'].indexOf(val) > -1) {
+    if (['boolean', 'select', 'radio', 'checkbox', 'source', 'source_list'].indexOf(val) > -1) {
         $("#definirvalores").removeClass("hide");
 
         if (val === "source" || val === "source_list") {
             $("#format-source").removeClass("hide");
             $("#allowBtnAdd, #spaceValueAllow").addClass("hide");
             $("#image").prop("checked");
-        } else if(val === 'boolean') {
+        } else if (val === 'boolean') {
             $("#allowBtnAdd").addClass('hide');
         }
 
@@ -587,7 +617,7 @@ function setFormat(val) {
         $("#definirvalores").addClass("hide");
     }
 
-    if(['extend_mult', 'extend', "folder", 'extend_folder'].indexOf(val) > -1) {
+    if (['extend_mult', 'extend', "folder", 'extend_folder'].indexOf(val) > -1) {
         $("#default_container").addClass("hide");
     } else {
         $("#default_container").removeClass("hide");
@@ -618,7 +648,7 @@ function checkRequiresFields() {
 }
 
 function checkFieldsOpenOrClose(nome) {
-    if(typeof nome === "undefined") {
+    if (typeof nome === "undefined") {
         $(".requireName").removeClass("hide");
     } else {
         if (allowName(nome, 2)) {
@@ -642,7 +672,7 @@ function allowName(nome, tipo) {
 
         //tamanho máximo de caracteres
         if (nome.length > 28) {
-            if(!alert) {
+            if (!alert) {
                 alert = true;
                 toast("Nome " + (tipo === 1 ? "da Entidade" : "do Campo") + " deve ter no máximo 28 caracteres. [" + nome.length + "]", 3000, "toast-warning");
                 setTimeout(function () {
@@ -658,7 +688,7 @@ function allowName(nome, tipo) {
             let tt = slug(nome, "_");
             $.each(dicionarios[entity.name], function (i, e) {
                 if (tt === e.column) {
-                    if(!alert) {
+                    if (!alert) {
                         alert = true;
                         toast("Nome " + (tipo === 1 ? "da Entidade" : "do Campo") + " já esta em uso", 4500, "toast-warning");
                         setTimeout(function () {
@@ -679,7 +709,7 @@ function checkUniqueNameColumn() {
     $.each(dicionarios[entity.name], function (j, k) {
         $.each(dicionarios[entity.name], function (i, e) {
             if (k.column === e.column) {
-                if(!alert) {
+                if (!alert) {
                     alert = true;
                     toast("Nome do Campo" + k.column + " precisa ser único", 3000, "toast-warning");
                     setTimeout(function () {
@@ -745,7 +775,7 @@ function sendImport() {
 }
 
 function addFilter(value) {
-    if(value !== "" && typeof value === "string" && value !== null) {
+    if (value !== "" && typeof value === "string" && value !== null) {
         var field = "";
         var operator = "";
         var valor = "";
@@ -800,7 +830,7 @@ function checkAttrRelationToShow() {
     if (entity.edit !== null) {
         let dic = dicionarios[entity.name][entity.edit];
 
-        if (dic.form !== !1 && (typeof(dic.form.fields) === "undefined" || typeof(dic.form.defaults) === "undefined")) {
+        if (dic.form !== !1 && (typeof (dic.form.fields) === "undefined" || typeof (dic.form.defaults) === "undefined")) {
             dic.form.fields = [];
             dic.form.defaults = {};
             $.each(dicRelation, function (i, e) {
@@ -810,7 +840,7 @@ function checkAttrRelationToShow() {
             $.each(dicRelation, function (i, e) {
                 i = parseInt(i);
                 let checked = $.inArray(i, dic.form.fields) > -1 ? 'checked="checked"' : '';
-                let value = dic.form !== !1 && typeof(dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "";
+                let value = dic.form !== !1 && typeof (dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "";
                 copy("#tpl_relation_fields_show", "#relation_fields_show", {0: i, 1: e.nome, 2: checked}, "append");
                 copy("#tpl_relation_fields_default", "#relation_fields_default", {0: i, 1: e.nome, 2: value}, "append")
             })
@@ -825,7 +855,7 @@ function checkAttrRelationToShow() {
                 copy("#tpl_relation_fields_default", "#relation_fields_default", {
                     0: i,
                     1: e.nome,
-                    2: (dic.form !== !1 && typeof(dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "")
+                    2: (dic.form !== !1 && typeof (dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "")
                 }, "append")
             })
         }
@@ -877,9 +907,9 @@ function getDefaultsInfo() {
 }
 
 function assignObject(ob1, ob2) {
-    var t = typeof(ob1) === "object" ? JSON.parse(JSON.stringify(ob1)) : {};
+    var t = typeof (ob1) === "object" ? JSON.parse(JSON.stringify(ob1)) : {};
     $.each(ob2, function (name, value) {
-        if (typeof(value) === "object")
+        if (typeof (value) === "object")
             t[name] = assignObject(t[name], value);
         else
             t[name] = value;
@@ -899,6 +929,7 @@ function getType() {
 function showhideFormSup() {
     $("#form-sup").toggleClass("hide");
 }
+
 function showhideListSup() {
     $("#list-sup").toggleClass("hide");
 }
@@ -938,12 +969,18 @@ $(function () {
     }).off("change", "#haveAutor, #haveOwner").on("change", "#haveAutor, #haveOwner", function (e) {
         let alt = $(this).attr("id") === "haveAutor" ? "#haveOwner" : "#haveAutor";
 
-        if(!$(this).prop("checked") || $(alt).prop("checked")) {
-            if(confirm("Os dados com Referência a esta entidade serão perdidos.\n\nDeseja Formatar?"))
-                $(alt).prop("checked", false);
+        if (!$(this).prop("checked") || $(alt).prop("checked")) {
+            if (confirm("Os dados com Referência a esta entidade serão perdidos.\n\nDeseja Formatar?"))
+                $(alt).prop("checked", !1);
             else
                 $(this).prop("checked", !$(alt).prop("checked"));
         }
+
+    }).off("change", "#user").on("change", "#user", function (e) {
+        if (!$(this).prop("checked") && confirm("Todos os usuários vinculados serão desativados.\n\nDeseja Prosseguir?"))
+            $("#user").prop("checked", !1);
+        else
+            $("#user").prop("checked", !0);
 
     }).off("keyup change", "#nome").on("keyup change", "#nome", function () {
         checkFieldsOpenOrClose($(this).val());
