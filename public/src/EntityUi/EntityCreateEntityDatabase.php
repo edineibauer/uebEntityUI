@@ -50,57 +50,56 @@ class EntityCreateEntityDatabase extends EntityDatabase
      */
     private function createTableFromEntityJson(string $entity)
     {
-        $data = $this->checkCreateMultSelectField();
-        $this->prepareCommandToCreateTable($entity, $data);
-        $this->createKeys($entity, $data);
-    }
+        $metadados = $this->adicionaCamposUsuario($entity);
 
-    /**
-     * @return array
-     */
-    private function checkCreateMultSelectField(): array
-    {
-        $dicionario = Metadados::getDicionario($entity);
-        foreach ($dicionario as $dic) {
-            if (in_array($dic['key'], ["list_mult", "extend_mult", "selecao_mult", "list", "extend_add", "extend", "selecao", "checkbox_rel", "checkbox_mult"]) && !empty($dic['select'])) {
-                $relDic = Metadados::getDicionario($dic['relation']);
-                foreach ($dic['select'] as $select) {
-                    foreach ($relDic as $item) {
-                        if ($item['column'] === $select) {
-                            $ret = parent::getSelecaoUnique($dic, $select);
-                            $dicionario[$ret[0]] = $ret[1];
-                        }
-                    }
-                }
-            }
-        }
-
-        return $dicionario;
-    }
-
-    /**
-     * @param string $entity
-     * @param array $data
-     */
-    private function prepareCommandToCreateTable(string $entity, array $data)
-    {
         $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL";
-        foreach ($data as $dados) {
-            if (!in_array($dados['key'], ["list_mult", "extend_mult", "selecao_mult", "checkbox_mult"])) {
-                $string .= ", " . parent::prepareSqlColumn($dados);
-            }
-        }
+        foreach ($metadados as $dados)
+            $string .= ", " . parent::prepareSqlColumn($dados);
 
         $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
         parent::exeSql($string);
+
+        $this->createKeys($entity, $metadados);
     }
 
-    private function createKeys(string $entity, array $data)
+    /**
+     *
+     *  Adiciona Campos de Usuário, Autor e Multi-tenancy
+     * @param array $info
+     * @param array $infoOld
+     * @return array
+     */
+    private function adicionaCamposUsuario(string $entity): array
+    {
+        $info = Metadados::getInfo($entity);
+        $metadados = Metadados::getDicionario($entity);
+
+        if($info['user'] === 1)
+            $metadados["999997"] = $this->generateUser();
+
+        if(!empty($info['autor'])) {
+            if($info['autor'] === 1) {
+                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+                $metadados["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => $_SESSION['userlogin']['id']]);
+            } elseif($info['autor'] === 2) {
+                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
+                $metadados["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => $_SESSION['userlogin']['id']]);
+            }
+        }
+
+        return $metadados;
+    }
+
+    /**
+     * @param string $entity
+     * @param array $metadados
+     */
+    private function createKeys(string $entity, array $metadados)
     {
         parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
 
-        foreach ($data as $i => $dados) {
+        foreach ($metadados as $i => $dados) {
             if ($dados['unique'])
                 parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`)");
 
@@ -116,5 +115,37 @@ class EntityCreateEntityDatabase extends EntityDatabase
                 parent::createIndexFk($entity, $dados['column'], "usuarios", "", "publisher");
             }
         }
+    }
+
+    private function generatePrimary()
+    {
+        return [
+            "format" => "none",
+            "type" => "int",
+            "nome" => "id",
+            "column" => "id",
+            "size" => "",
+            "key" => "identifier",
+            "unique" => "true",
+            "default" => "false",
+            "update" => "false",
+            "relation" => "",
+            "minimo" => "",
+            "allow" => [
+                "regex" => "",
+                "options" => "",
+                "validate" => ""
+            ],
+            "form" => [
+                "input" => "hidden",
+                "cols" => "12",
+                "colm" => "",
+                "coll" => "",
+                "class" => "",
+                "style" => ""
+            ],
+            "select" => [],
+            "filter" => []
+        ];
     }
 }

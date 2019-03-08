@@ -63,6 +63,8 @@ class SaveEntity
             //obtém dicionario atual (old)
             $infoOld = Metadados::getInfo($this->entity);
             if (!$metadadosOld = Metadados::getDicionario($this->entity)) {
+                $metadadosOld = [];
+                $infoOld = [];
                 Helper::createFolderIfNoExist(PATH_HOME . "entity");
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache");
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache/info");
@@ -90,38 +92,6 @@ class SaveEntity
         $fp = fopen(PATH_HOME . "entity/cache/" . ($dir ? $dir . "/" : "") . $this->entity . ".json", "w");
         fwrite($fp, json_encode($data));
         fclose($fp);
-    }
-
-    private function generatePrimary()
-    {
-        return [
-            "format" => "none",
-            "type" => "int",
-            "nome" => "id",
-            "column" => "id",
-            "size" => "",
-            "key" => "identifier",
-            "unique" => "true",
-            "default" => "false",
-            "update" => "false",
-            "relation" => "",
-            "minimo" => "",
-            "allow" => [
-                "regex" => "",
-                "options" => "",
-                "validate" => ""
-            ],
-            "form" => [
-                "input" => "hidden",
-                "cols" => "12",
-                "colm" => "",
-                "coll" => "",
-                "class" => "",
-                "style" => ""
-            ],
-            "select" => [],
-            "filter" => []
-        ];
     }
 
     private function generateUser()
