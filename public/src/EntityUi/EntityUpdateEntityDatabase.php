@@ -6,7 +6,6 @@ use Conn\Delete;
 use Conn\Read;
 use Conn\SqlCommand;
 use Entity\Metadados;
-use Helpers\Helper;
 
 class EntityUpdateEntityDatabase extends EntityDatabase
 {
@@ -41,7 +40,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
     private function adicionaCamposUsuario(array $info, array $infoOld)
     {
         if($infoOld['user'] === 1)
-            $this->old["999997"] = $this->generateUser();
+            $this->old["999997"] = Metadados::generateUser();
 
         if(!empty($infoOld['autor'])) {
             if($infoOld['autor'] === 1) {
@@ -54,7 +53,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         }
 
         if($info['user'] === 1)
-            $this->new["999997"] = $this->generateUser();
+            $this->new["999997"] = Metadados::generateUser();
 
         if(!empty($info['autor'])) {
             if($info['autor'] === 1) {
@@ -65,25 +64,6 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                 $this->new["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => $_SESSION['userlogin']['id']]);
             }
         }
-    }
-
-    private function generateUser()
-    {
-        $types = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), !0);
-        $mode = Helper::arrayMerge($types["default"], $types['list']);
-        $mode['nome'] = "Usuário Acesso Vínculo";
-        $mode['column'] = "usuarios_id";
-        $mode['form'] = "false";
-        $mode['datagrid'] = "false";
-        $mode['default'] = "";
-        $mode['unique'] = "false";
-        $mode['update'] = "false";
-        $mode['size'] = "";
-        $mode['minimo'] = "";
-        $mode['relation'] = "usuarios";
-        $mode['indice'] = "999997";
-
-        return $mode;
     }
 
     /**

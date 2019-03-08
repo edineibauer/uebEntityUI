@@ -94,25 +94,6 @@ class SaveEntity
         fclose($fp);
     }
 
-    private function generateUser()
-    {
-        $types = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), !0);
-        $mode = Helper::arrayMerge($types["default"], $types['list']);
-        $mode['nome'] = "Usuário Acesso Vínculo";
-        $mode['column'] = "usuarios_id";
-        $mode['form'] = "false";
-        $mode['datagrid'] = "false";
-        $mode['default'] = "false";
-        $mode['unique'] = "false";
-        $mode['update'] = "false";
-        $mode['size'] = "";
-        $mode['minimo'] = "";
-        $mode['relation'] = "usuarios";
-        $mode['indice'] = "999998";
-
-        return $mode;
-    }
-
     /**
      * @param array $metadados
      * @param string|null $icon

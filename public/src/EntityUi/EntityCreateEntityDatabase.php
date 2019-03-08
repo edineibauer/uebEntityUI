@@ -25,25 +25,6 @@ class EntityCreateEntityDatabase extends EntityDatabase
             $this->createTableFromEntityJson($entity);
     }
 
-    private function generateUser()
-    {
-        $types = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), !0);
-        $mode = array_merge_recursive($types["default"], $types['list']);
-        $mode['nome'] = "Usuário Acesso Vínculo";
-        $mode['column'] = "usuarios_id";
-        $mode['form'] = "false";
-        $mode['datagrid'] = "false";
-        $mode['default'] = "false";
-        $mode['unique'] = "false";
-        $mode['update'] = "false";
-        $mode['size'] = "";
-        $mode['minimo'] = "";
-        $mode['relation'] = "usuarios";
-        $mode['indice'] = "999998";
-
-        return $mode;
-    }
-
     /**
      * @param string $entity
      * @param array $data
@@ -76,7 +57,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         $metadados = Metadados::getDicionario($entity);
 
         if($info['user'] === 1)
-            $metadados["999997"] = $this->generateUser();
+            $metadados["999997"] = Metadados::generateUser();
 
         if(!empty($info['autor'])) {
             if($info['autor'] === 1) {
@@ -115,37 +96,5 @@ class EntityCreateEntityDatabase extends EntityDatabase
                 parent::createIndexFk($entity, $dados['column'], "usuarios", "", "publisher");
             }
         }
-    }
-
-    private function generatePrimary()
-    {
-        return [
-            "format" => "none",
-            "type" => "int",
-            "nome" => "id",
-            "column" => "id",
-            "size" => "",
-            "key" => "identifier",
-            "unique" => "true",
-            "default" => "false",
-            "update" => "false",
-            "relation" => "",
-            "minimo" => "",
-            "allow" => [
-                "regex" => "",
-                "options" => "",
-                "validate" => ""
-            ],
-            "form" => [
-                "input" => "hidden",
-                "cols" => "12",
-                "colm" => "",
-                "coll" => "",
-                "class" => "",
-                "style" => ""
-            ],
-            "select" => [],
-            "filter" => []
-        ];
     }
 }
