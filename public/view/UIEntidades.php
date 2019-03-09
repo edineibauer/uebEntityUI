@@ -723,31 +723,6 @@
         </div>
 
         <div class="clearfix"><br></div>
-
-        <li style="display: none">
-            <div class="collapsible-header"><i class="material-icons">whatshot</i>Metadados
-            </div>
-            <div class="collapsible-body">
-                <div class="clearfix"></div>
-
-                <div class="col s12 m6">
-                    <div class="input-field col s12">
-                        <input id="pref" placeholder="separe com vírgula" type="text"
-                               class="validate" ng-model="attr.prefixo">
-                        <label for="pref">Prefixo</label>
-                    </div>
-                </div>
-                <div class="col s12 m6">
-                    <div class="input-field col s12">
-                        <input id="sulf" placeholder="separe com vírgula" type="text"
-                               class="validate" ng-model="attr.sulfixo">
-                        <label for="sulf">Sulfixo</label>
-                    </div>
-                </div>
-
-                <div class="clearfix col"></div>
-            </div>
-        </li>
     </div>
     <div class="clearfix col"><br><br><br></div>
 </div>
