@@ -33,15 +33,17 @@ class EntityCreateEntityDatabase extends EntityDatabase
     {
         $metadados = $this->adicionaCamposUsuario($entity);
 
-        $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL";
-        foreach ($metadados as $dados)
-            $string .= ", " . parent::prepareSqlColumn($dados);
+        if(!empty($metadados)) {
+            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL";
+            foreach ($metadados as $dados)
+                $string .= ", " . parent::prepareSqlColumn($dados);
 
-        $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
-        parent::exeSql($string);
+            parent::exeSql($string);
 
-        $this->createKeys($entity, $metadados);
+            $this->createKeys($entity, $metadados);
+        }
     }
 
     /**
@@ -54,7 +56,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
     private function adicionaCamposUsuario(string $entity): array
     {
         $info = Metadados::getInfo($entity);
-        $metadados = Metadados::getDicionario($entity);
+        $metadados = Metadados::getDicionario($entity) ?? [];
 
         if(!empty($info['user']) && $info['user'] === 1)
             $metadados["999997"] = Metadados::generateUser();
