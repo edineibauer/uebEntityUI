@@ -1,5 +1,4 @@
 var entity = {};
-var dicionarios = {};
 var info = {};
 var dicionariosNomes = {};
 var identifier = {};
@@ -58,15 +57,12 @@ function readIdentifier() {
 function readDicionarios() {
     readInfo();
     readIdentifier();
-    post("entity-ui", "load/dicionarios", function (data) {
-        dicionarios = data;
-        $("#entity-space, #relation").html("");
+    $("#entity-space, #relation").html("");
 
-        $.each(dicionarios, function (i, e) {
-            dicionariosNomes[i] = i;
-            copy("#tpl-entity", "#entity-space", i, true);
-            $("#relation").append("<option value='" + i + "'>" + i + "</option>");
-        });
+    $.each(dicionarios, function (i, e) {
+        dicionariosNomes[i] = i;
+        copy("#tpl-entity", "#entity-space", i, true);
+        $("#relation").append("<option value='" + i + "'>" + i + "</option>");
     });
 }
 
@@ -140,9 +136,10 @@ function showEntity() {
 
 function updateDicionarioIndex(entity) {
     //atualiza lista de dicionarios
-    get("dicionarios").then(dicionarios => {
+    get("dicionarios").then(dic => {
+        dicionarios = dic;
         dbLocal.clear('__dicionario').then(() => {
-            dbLocal.exeCreate("__dicionario", dicionarios);
+            dbLocal.exeCreate("__dicionario", dic);
         });
     });
 
