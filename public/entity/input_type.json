@@ -576,7 +576,6 @@
     "nome": "Senha",
     "minimo": 4,
     "size": 254,
-    "default": false,
     "form": {
       "type": "password"
     }
