@@ -37,17 +37,16 @@ class SaveEntity
     public function importMetadados(string $entity)
     {
         $this->entity = $entity;
-        $data = json_decode(file_get_contents(PATH_HOME . "entity/cache/{$this->entity}.json"), true);
+        $metadados = json_decode(file_get_contents(PATH_HOME . "entity/cache/{$this->entity}.json"), true);
         $this->id = 1;
-        foreach ($data as $i => $datum) {
+        foreach ($metadados as $i => $datum) {
             if ($i > $this->id)
                 $this->id = (int)$i;
         }
         $this->id++;
-        $tmp['info'] = $this->generateInfo($data);
-        $this->createEntityJson($tmp['info'], "info");
+        $this->createEntityJson($this->generateInfo($metadados), "info");
 
-        new EntityCreateEntityDatabase($this->entity, $tmp);
+        new EntityCreateEntityDatabase($this->entity);
     }
 
     /**
@@ -98,10 +97,10 @@ class SaveEntity
      * @param array $metadados
      * @param string|null $icon
      * @param int|null $autor
-     * @param int $user
+     * @param int|null $user
      * @return array
      */
-    private function generateInfo(array $metadados, string $icon = null, int $autor = null, int $user): array
+    private function generateInfo(array $metadados, string $icon = null, int $autor = null, int $user = null): array
     {
         $data = [
             "icon" => $icon, "autor" => $autor, "user" => $user,

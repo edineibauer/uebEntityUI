@@ -9,17 +9,17 @@ class EntityCreateEntityDatabase extends EntityDatabase
     /**
      * EntityCreateEntityDatabase constructor.
      * @param string $entity
-     * @param array $dicionarioOld
-     * @param array $infoOld
+     * @param array|null $dicionarioOld
+     * @param array|null $infoOld
      */
-    public function __construct(string $entity, array $dicionarioOld, array $infoOld)
+    public function __construct(string $entity, array $dicionarioOld = null, array $infoOld = null)
     {
         parent::__construct($entity);
 
         $sql = new \Conn\SqlCommand();
         $sql->exeCommand("SELECT 1 FROM " . PRE . "{$entity} LIMIT 1");
         
-        if (!$sql->getErro() && !empty($dicionarioOld))
+        if (!$sql->getErro() && !empty($dicionarioOld) && !empty($infoOld))
             new EntityUpdateEntityDatabase($entity, $dicionarioOld, $infoOld);
         elseif ($sql->getErro())
             $this->createTableFromEntityJson($entity);
