@@ -39,7 +39,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
      */
     private function adicionaCamposUsuario(array $info, array $infoOld)
     {
-        if($infoOld['user'] === 1)
+        if(!empty($infoOld['user']) && $infoOld['user'] === 1)
             $this->old["999997"] = Metadados::generateUser();
 
         if(!empty($infoOld['autor'])) {
@@ -52,7 +52,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             }
         }
 
-        if($info['user'] === 1)
+        if(!empty($info['user']) && $info['user'] === 1)
             $this->new["999997"] = Metadados::generateUser();
 
         if(!empty($info['autor'])) {

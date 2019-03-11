@@ -56,7 +56,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         $info = Metadados::getInfo($entity);
         $metadados = Metadados::getDicionario($entity);
 
-        if($info['user'] === 1)
+        if(!empty($info['user']) && $info['user'] === 1)
             $metadados["999997"] = Metadados::generateUser();
 
         if(!empty($info['autor'])) {

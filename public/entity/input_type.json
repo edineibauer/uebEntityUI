@@ -407,6 +407,7 @@
     "type": "int",
     "key": "relation",
     "group": "one",
+    "default": "",
     "form": {
       "input": "list"
     }
