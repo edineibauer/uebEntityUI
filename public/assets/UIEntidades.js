@@ -1,4 +1,5 @@
 var entity = {};
+var dicionariosEdit = {};
 var info = {};
 var dicionariosNomes = {};
 var identifier = {};
@@ -57,12 +58,15 @@ function readIdentifier() {
 function readDicionarios() {
     readInfo();
     readIdentifier();
-    $("#entity-space, #relation").html("");
+    post("entity-ui", "load/dicionarios", function (data) {
+        dicionariosEdit = data;
+        $("#entity-space, #relation").html("");
 
-    $.each(dicionarios, function (i, e) {
-        dicionariosNomes[i] = i;
-        copy("#tpl-entity", "#entity-space", i, true);
-        $("#relation").append("<option value='" + i + "'>" + i + "</option>");
+        $.each(dicionariosEdit, function (i, e) {
+            dicionariosNomes[i] = i;
+            copy("#tpl-entity", "#entity-space", i, true);
+            $("#relation").append("<option value='" + i + "'>" + i + "</option>");
+        });
     });
 }
 
@@ -118,14 +122,14 @@ function showEntity() {
     $("#entityAttr").html("");
 
     let maxIndice = 1;
-    $.each(dicionarios[entity.name], function (i, e) {
+    $.each(dicionariosEdit[entity.name], function (i, e) {
         if (maxIndice < e.indice)
             maxIndice = e.indice;
     });
     maxIndice++;
 
     for (c = 1; c < maxIndice; c++) {
-        $.each(dicionarios[entity.name], function (i, f) {
+        $.each(dicionariosEdit[entity.name], function (i, f) {
             if (f && f.indice == c) {
                 copy("#tpl-attrEntity", "#entityAttr", [i, f.column], true);
                 return;
@@ -160,7 +164,7 @@ function updateDicionarioIndex(entity) {
 
 function saveEntity(silent) {
     $("#saveEntityBtn").addClass("disabled");
-    if (checkSaveAttr() && entity.name.length > 2 && typeof (dicionarios[entity.name]) !== "undefined" && !$.isEmptyObject(dicionarios[entity.name])) {
+    if (checkSaveAttr() && entity.name.length > 2 && typeof (dicionariosEdit[entity.name]) !== "undefined" && !$.isEmptyObject(dicionariosEdit[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
 
         post("entity-ui", "save/entity", {
@@ -169,7 +173,7 @@ function saveEntity(silent) {
             "autor": $("#haveAutor").prop("checked"),
             "owner": $("#haveOwner").prop("checked"),
             "user": $("#user").prop("checked"),
-            "dados": dicionarios[entity.name],
+            "dados": dicionariosEdit[entity.name],
             "id": identifier[entity.name],
             "newName": newName
         }, function (g) {
@@ -178,7 +182,7 @@ function saveEntity(silent) {
             updateDicionarioIndex(entity.name);
 
             if (entity.name !== $("#entityName").val()) {
-                dicionarios[newName] = dicionarios[entity.name];
+                dicionariosEdit[newName] = dicionariosEdit[entity.name];
                 entity.name = newName;
                 readInfo();
                 if (typeof (info[entity.name]) !== "undefined")
@@ -221,7 +225,7 @@ function resetAttr(id) {
 }
 
 function indiceChange(id, val) {
-    let dic = dicionarios[entity.name];
+    let dic = dicionariosEdit[entity.name];
     let $li = $(".list-att-" + id);
     let max = 0;
     let nextId = null;
@@ -266,7 +270,7 @@ function checkSaveAttr() {
 
     let userRequisite = {'title': !1, 'password': !1};
     if(entity.user) {
-        $.each(dicionarios[entity.name], function (col, meta) {
+        $.each(dicionariosEdit[entity.name], function (col, meta) {
             if(meta.format === "title" || meta.format === "password")
                 userRequisite[meta.format] = !0;
         });
@@ -280,7 +284,7 @@ function checkSaveAttr() {
         if (entity.edit === null) {
             if (entity.name === "") {
                 let temp = slug($("#entityName").val(), '_');
-                $.each(dicionarios, function (nome, data) {
+                $.each(dicionariosEdit, function (nome, data) {
                     if (nome === temp && !alert) {
                         toast("Nome de Entidade já existe", 2000, "toast-warning");
                         alert = true;
@@ -295,7 +299,7 @@ function checkSaveAttr() {
                     entity.name = temp;
 
                     identifier[entity.name] = 1;
-                    dicionarios[entity.name] = {};
+                    dicionariosEdit[entity.name] = {};
                 }
 
                 if (yes)
@@ -317,36 +321,36 @@ function checkSaveAttr() {
 }
 
 function saveAttrInputs() {
-    if (typeof (dicionarios[entity.name][entity.edit]) !== "undefined")
-        var oldData = dicionarios[entity.name][entity.edit];
+    if (typeof (dicionariosEdit[entity.name][entity.edit]) !== "undefined")
+        var oldData = dicionariosEdit[entity.name][entity.edit];
 
-    dicionarios[entity.name][entity.edit] = assignObject(defaults.default, defaults[getType()]);
+    dicionariosEdit[entity.name][entity.edit] = assignObject(defaults.default, defaults[getType()]);
 
     $.each($(".input"), function () {
         if (!$(this).hasClass("hide"))
             saveAttrValue($(this));
     });
 
-    dicionarios[entity.name][entity.edit]['allow']['options'] = [];
+    dicionariosEdit[entity.name][entity.edit]['allow']['options'] = [];
 
     checkSaveFilter();
     checkSaveSelect();
     checkSaveAssociacaoShowAttr();
 
-    if (["source", "source_list"].indexOf(dicionarios[entity.name][entity.edit]['format']) > -1)
+    if (["source", "source_list"].indexOf(dicionariosEdit[entity.name][entity.edit]['format']) > -1)
         checkSaveSource();
     else
         checkSaveAllow();
 
     if (typeof (oldData) === "undefined" || typeof (oldData['indice']) === "undefined") {
         let lastIndice = 0;
-        $.each(dicionarios[entity.name], function (i, e) {
+        $.each(dicionariosEdit[entity.name], function (i, e) {
             if (e.indice > lastIndice)
                 lastIndice = e.indice;
         });
-        dicionarios[entity.name][entity.edit]['indice'] = lastIndice + 1;
+        dicionariosEdit[entity.name][entity.edit]['indice'] = lastIndice + 1;
     } else {
-        dicionarios[entity.name][entity.edit]['indice'] = oldData['indice'];
+        dicionariosEdit[entity.name][entity.edit]['indice'] = oldData['indice'];
     }
 }
 
@@ -360,19 +364,19 @@ function checkSaveFilter() {
             var filter_value = $this.find(".filter_value").val();
 
             if (filter !== "" && filter_operator !== "" && filter_value !== "")
-                dicionarios[entity.name][entity.edit]['filter'].push(filter + "," + filter_operator + "," + filter_value + "," + filter_column);
+                dicionariosEdit[entity.name][entity.edit]['filter'].push(filter + "," + filter_operator + "," + filter_value + "," + filter_column);
         });
     }
 }
 
 function checkSaveAssociacaoShowAttr() {
-    if ($.inArray(dicionarios[entity.name][entity.edit]['key'], ["extend", "extend_add", "extend_mult", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"]) > -1) {
+    if ($.inArray(dicionariosEdit[entity.name][entity.edit]['key'], ["extend", "extend_add", "extend_mult", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"]) > -1) {
 
-        if (dicionarios[entity.name][entity.edit]['form'] !== false) {
+        if (dicionariosEdit[entity.name][entity.edit]['form'] !== false) {
 
-            if (typeof (dicionarios[entity.name][entity.edit]['form']['fields']) === "undefined" || typeof (dicionarios[entity.name][entity.edit]['form']['defaults']) === "undefined") {
-                dicionarios[entity.name][entity.edit]['form']['fields'] = [];
-                dicionarios[entity.name][entity.edit]['form']['defaults'] = {};
+            if (typeof (dicionariosEdit[entity.name][entity.edit]['form']['fields']) === "undefined" || typeof (dicionariosEdit[entity.name][entity.edit]['form']['defaults']) === "undefined") {
+                dicionariosEdit[entity.name][entity.edit]['form']['fields'] = [];
+                dicionariosEdit[entity.name][entity.edit]['form']['defaults'] = {};
             }
 
             $.each($(".relation_fields_show"), function () {
@@ -380,10 +384,10 @@ function checkSaveAssociacaoShowAttr() {
                 if (id !== "__$0__") {
                     id = parseInt(id);
                     if ($(this).is(":checked")) {
-                        if ($.inArray(id, dicionarios[entity.name][entity.edit].form.fields) === -1)
-                            dicionarios[entity.name][entity.edit].form.fields.push(id);
+                        if ($.inArray(id, dicionariosEdit[entity.name][entity.edit].form.fields) === -1)
+                            dicionariosEdit[entity.name][entity.edit].form.fields.push(id);
                     } else {
-                        dicionarios[entity.name][entity.edit].form.fields = $.grep(dicionarios[entity.name][entity.edit].form.fields, function (value) {
+                        dicionariosEdit[entity.name][entity.edit].form.fields = $.grep(dicionariosEdit[entity.name][entity.edit].form.fields, function (value) {
                             return value != id;
                         });
                     }
@@ -391,7 +395,7 @@ function checkSaveAssociacaoShowAttr() {
             });
             $.each($(".relation_fields_default"), function () {
                 if ($(this).attr("rel") !== "__$0__") {
-                    dicionarios[entity.name][entity.edit].form.defaults[parseInt($(this).attr("rel"))] = $(this).val();
+                    dicionariosEdit[entity.name][entity.edit].form.defaults[parseInt($(this).attr("rel"))] = $(this).val();
                 }
             });
         }
@@ -402,7 +406,7 @@ function checkSaveSelect() {
     if ($("#requireListExtendDiv").html() !== "") {
         $("#requireListExtendDiv").find("input").each(function () {
             if ($(this).prop("checked"))
-                dicionarios[entity.name][entity.edit]['select'].push($(this).attr("id"));
+                dicionariosEdit[entity.name][entity.edit]['select'].push($(this).attr("id"));
         });
     }
 }
@@ -412,7 +416,7 @@ function checkSaveSource() {
         if ($(this).prop("checked")) {
             $("." + $(this).attr("id") + "-format").each(function () {
                 if ($(this).prop("checked")) {
-                    dicionarios[entity.name][entity.edit]['allow']['options'].push({
+                    dicionariosEdit[entity.name][entity.edit]['allow']['options'].push({
                         'option': $(this).attr("id"),
                         'name': $(this).attr("id")
                     });
@@ -433,25 +437,25 @@ function checkSaveAllow() {
 function saveAttrValue($input) {
     var name = $input.attr("id");
     if (name === "nome")
-        dicionarios[entity.name][entity.edit]['column'] = slug($input.val(), "_");
+        dicionariosEdit[entity.name][entity.edit]['column'] = slug($input.val(), "_");
 
     if (["default", "size"].indexOf(name) > -1 && !$("#" + name + "_custom").prop("checked"))
-        dicionarios[entity.name][entity.edit][name] = false;
+        dicionariosEdit[entity.name][entity.edit][name] = false;
     else if ("form" === name || "datagrid" === name)
-        dicionarios[entity.name][entity.edit][name] = $input.prop("checked") ? {} : false;
-    else if (dicionarios[entity.name][entity.edit]['form'] !== false && ["class", "style", "orientation", "template", "atributos", "coll", "cols", "colm", "input", "type"].indexOf(name) > -1)
-        dicionarios[entity.name][entity.edit]['form'][name] = $input.val();
-    else if (dicionarios[entity.name][entity.edit]['datagrid'] !== false && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
-        dicionarios[entity.name][entity.edit]['datagrid'][name] = $input.val();
+        dicionariosEdit[entity.name][entity.edit][name] = $input.prop("checked") ? {} : false;
+    else if (dicionariosEdit[entity.name][entity.edit]['form'] !== false && ["class", "style", "orientation", "template", "atributos", "coll", "cols", "colm", "input", "type"].indexOf(name) > -1)
+        dicionariosEdit[entity.name][entity.edit]['form'][name] = $input.val();
+    else if (dicionariosEdit[entity.name][entity.edit]['datagrid'] !== false && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
+        dicionariosEdit[entity.name][entity.edit]['datagrid'][name] = $input.val();
     else if ("regexp" === name)
-        dicionarios[entity.name][entity.edit]['allow']["regexp"] = $input.val();
+        dicionariosEdit[entity.name][entity.edit]['allow']["regexp"] = $input.val();
     else
-        dicionarios[entity.name][entity.edit][name] = ($input.attr("type") === "checkbox" ? $input.prop("checked") : $input.val());
+        dicionariosEdit[entity.name][entity.edit][name] = ($input.attr("type") === "checkbox" ? $input.prop("checked") : $input.val());
 }
 
 function saveAllowValue($input) {
     if ($input.find(".values").val() !== "")
-        dicionarios[entity.name][entity.edit]['allow']['options'].push({
+        dicionariosEdit[entity.name][entity.edit]['allow']['options'].push({
             'option': $input.find(".values").val(),
             'name': $input.find(".names").val()
         });
@@ -503,7 +507,7 @@ function checkValuesEspAttr(name, value) {
 }
 
 function setAllow(value) {
-    if (entity.edit !== null && ["source", "source_list"].indexOf(dicionarios[entity.name][entity.edit]['format']) > -1) {
+    if (entity.edit !== null && ["source", "source_list"].indexOf(dicionariosEdit[entity.name][entity.edit]['format']) > -1) {
 
         //sources
         $.each(value, function (i, e) {
@@ -681,9 +685,9 @@ function allowName(nome, tipo) {
         }
 
         //nome repetido
-        if (tipo === 2 && nome.length > 2 && (entity.edit < 1 || (entity.edit > 0 && nome !== dicionarios[entity.name][entity.edit]['nome']))) {
+        if (tipo === 2 && nome.length > 2 && (entity.edit < 1 || (entity.edit > 0 && nome !== dicionariosEdit[entity.name][entity.edit]['nome']))) {
             let tt = slug(nome, "_");
-            $.each(dicionarios[entity.name], function (i, e) {
+            $.each(dicionariosEdit[entity.name], function (i, e) {
                 if (tt === e.column) {
                     if (!alert) {
                         alert = true;
@@ -703,8 +707,8 @@ function allowName(nome, tipo) {
 }
 
 function checkUniqueNameColumn() {
-    $.each(dicionarios[entity.name], function (j, k) {
-        $.each(dicionarios[entity.name], function (i, e) {
+    $.each(dicionariosEdit[entity.name], function (j, k) {
+        $.each(dicionariosEdit[entity.name], function (i, e) {
             if (k.column === e.column) {
                 if (!alert) {
                     alert = true;
@@ -723,7 +727,7 @@ function checkUniqueNameColumn() {
 
 function deleteAttr(id) {
     if (confirm("Remover Atributo?")) {
-        delete dicionarios[entity.name][id];
+        delete dicionariosEdit[entity.name][id];
         resetAttr();
         showEntity();
     }
@@ -792,7 +796,7 @@ function addFilter(value) {
         var relation = "null";
 
         //Adiciona as opções de entidade
-        $.each(dicionarios[$("#relation").val()], function (i, e) {
+        $.each(dicionariosEdit[$("#relation").val()], function (i, e) {
             copy("#optionTpl", "#" + id, {
                 0: e.column,
                 1: e.nome,
@@ -820,12 +824,12 @@ function checkFilterToApply() {
 }
 
 function checkAttrRelationToShow() {
-    let dicRelation = dicionarios[$("#relation").val()];
+    let dicRelation = dicionariosEdit[$("#relation").val()];
     $("#relation_fields_show, #relation_fields_default").html("");
 
     //check if fields exist
     if (entity.edit !== null) {
-        let dic = dicionarios[entity.name][entity.edit];
+        let dic = dicionariosEdit[entity.name][entity.edit];
 
         if (dic.form !== !1 && (typeof (dic.form.fields) === "undefined" || typeof (dic.form.defaults) === "undefined")) {
             dic.form.fields = [];
@@ -873,7 +877,7 @@ function checkAttrRelationToShow() {
 function checkEntityMultipleFields(values) {
     $("#requireListExtend").addClass("hide");
     $("#requireListExtendDiv").html("");
-    $.each(dicionarios[$("#relation").val()], function (i, e) {
+    $.each(dicionariosEdit[$("#relation").val()], function (i, e) {
         if (["selecao_mult", "list_mult", "extend_mult", "folder", "extend_folder", "checkbox_mult"].indexOf(e.key) > -1) {
             var checked = typeof (values) !== "undefined" && $.inArray(e.column, values) > -1 ? '" checked="checked' : '';
             copy("#selectOneListOption", "#requireListExtendDiv", {0: e.column, 1: e.nome, 2: checked}, "append");
@@ -886,7 +890,7 @@ function checkEntityMultipleFields(values) {
 function addColumnFilter($this, entity, select) {
     $this.removeClass("m6").addClass("m3");
     var $column = $('<select class="filter_column col s12 m3"></select>').insertAfter($this);
-    $.each(dicionarios[entity], function (id, data) {
+    $.each(dicionariosEdit[entity], function (id, data) {
         if (["extend", "extend_add", "extend_mult", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(data.key) < 0)
             $column.append("<option value='" + data.column + "' " + (select === data.column ? "selected='selected'" : "") + ">" + data.nome + "</option>");
     });
@@ -896,7 +900,7 @@ function getDefaultsInfo() {
     var type = getType();
 
     if (entity.edit !== null)
-        return assignObject(defaults.default, dicionarios[entity.name][entity.edit]);
+        return assignObject(defaults.default, dicionariosEdit[entity.name][entity.edit]);
     else if (type !== "")
         return assignObject(defaults.default, defaults[getType()]);
     else
@@ -1004,8 +1008,8 @@ $(function () {
     }).off("change", "#form").on("change", "#form", function () {
         if ($(this).is(":checked")) {
             $(".form_body").removeClass("hide");
-            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit] !== "undefined" && typeof dicionarios[entity.name][entity.edit].form !== "undefined") {
-                dicionarios[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
+            if (entity.name !== "" && entity.edit !== "" && typeof dicionariosEdit[entity.name][entity.edit] !== "undefined" && typeof dicionariosEdit[entity.name][entity.edit].form !== "undefined") {
+                dicionariosEdit[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
                 $("#cols").val(12);
             }
         } else {
@@ -1015,8 +1019,8 @@ $(function () {
     }).off("change", "#datagrid").on("change", "#datagrid", function () {
         if ($(this).is(":checked")) {
             $(".datagrid_body").removeClass("hide");
-            if (entity.name !== "" && entity.edit !== "" && typeof dicionarios[entity.name][entity.edit] !== "undefined" && typeof dicionarios[entity.name][entity.edit].datagrid !== "undefined")
-                dicionarios[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form);
+            if (entity.name !== "" && entity.edit !== "" && typeof dicionariosEdit[entity.name][entity.edit] !== "undefined" && typeof dicionariosEdit[entity.name][entity.edit].datagrid !== "undefined")
+                dicionariosEdit[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form);
         } else {
             $(".datagrid_body").addClass("hide");
         }
@@ -1067,7 +1071,7 @@ $(function () {
         var entity = $("#relation").val();
 
         $this.removeClass("m3").addClass("m6").siblings(".filter_column").remove();
-        $.each(dicionarios[entity], function (i, e) {
+        $.each(dicionariosEdit[entity], function (i, e) {
             if (e.column === column) {
                 if (["extend", "extend_add", "extend_mult", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(e.key) > -1)
                     addColumnFilter($this, e.relation, "");
