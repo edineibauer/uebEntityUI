@@ -79,7 +79,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         $this->checkChanges();
         $this->removeColumnsFromEntity();
         $this->addColumnsToEntity();
-        $this->createKeys();
+//        $this->createKeys();
     }
 
     private function checkChanges()
@@ -103,8 +103,14 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         $data = null;
         foreach ($this->old as $i => $d) {
             if (isset($this->new[$i])) {
-                if ($d['column'] !== $this->new[$i]['column'] || $d['unique'] !== $this->new[$i]['unique'] || $d['default'] !== $this->new[$i]['default'] || $d['size'] !== $this->new[$i]['size'])
+                if ($d['column'] !== $this->new[$i]['column'] || $d['default'] !== $this->new[$i]['default'] || $d['size'] !== $this->new[$i]['size'])
                     $data[$i] = $d;
+
+               /*
+                * Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
+                *
+                *  if ($d['column'] !== $this->new[$i]['column'] || $d['unique'] !== $this->new[$i]['unique'] || $d['default'] !== $this->new[$i]['default'] || $d['size'] !== $this->new[$i]['size'])
+                    $data[$i] = $d;*/
             }
         }
 
@@ -184,10 +190,10 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             if ($sql->getRowCount() > 0)
                 $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX index_" . $id);
 
-            //UNIQUE
-            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'");
+            //UNIQUE - Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
+            /*$sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'");
             if ($sql->getRowCount() > 0)
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id);
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id);*/
         }
     }
 
@@ -240,6 +246,9 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         return $data;
     }
 
+/*
+ *  - Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
+ *
     private function createKeys()
     {
         $sql = new SqlCommand();
@@ -252,5 +261,5 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                 $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`)");
 
         }
-    }
+    }*/
 }

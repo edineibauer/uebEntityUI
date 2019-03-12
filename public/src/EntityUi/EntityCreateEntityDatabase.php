@@ -83,8 +83,13 @@ class EntityCreateEntityDatabase extends EntityDatabase
         parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
 
         foreach ($metadados as $i => $dados) {
-            if ($dados['unique'])
+
+            /*
+             * Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
+             *
+             * if ($dados['unique'])
                 parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`)");
+            */
 
             if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]))
                 parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
