@@ -4,12 +4,12 @@ $name = trim(strip_tags(filter_input(INPUT_POST, 'name', FILTER_DEFAULT)));
 $icon = trim(strip_tags(filter_input(INPUT_POST, 'icon', FILTER_DEFAULT)));
 $autor = trim(strip_tags(filter_input(INPUT_POST, 'autor', FILTER_VALIDATE_BOOLEAN)));
 $owner = trim(strip_tags(filter_input(INPUT_POST, 'owner', FILTER_VALIDATE_BOOLEAN)));
-$user = trim(strip_tags(filter_input(INPUT_POST, 'user', FILTER_VALIDATE_BOOLEAN)));
+$user = trim(strip_tags(filter_input(INPUT_POST, 'user', FILTER_VALIDATE_INT)));
 $newName = str_replace("-", "_", \Helpers\Check::name(trim(strip_tags(filter_input(INPUT_POST, 'newName', FILTER_DEFAULT)))));
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $dados = filter_input(INPUT_POST, 'dados', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
-$save = new \EntityUi\SaveEntity($name, $icon, ($user ? 1 : 0), ($autor ? 1 : ($owner ? 2 : null)), $dados, $id);
+$save = new \EntityUi\SaveEntity($name, $icon, $user, ($autor ? 1 : ($owner ? 2 : null)), $dados, $id);
 
 if($name !== $newName) {
     $sql = new \Conn\SqlCommand();

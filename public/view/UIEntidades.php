@@ -53,9 +53,12 @@
     <div class="panel" id="space-attr-entity" style="margin-top: 0!important;">
         <div class="row">
             <label class="col s12">
-                <label class="col right relative" style="width: 90px">
-                    <input type="checkbox" class="left" id="user"/>
-                    <span class="left pointer" style="padding:10px 0">Usuário</span>
+                <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
+                    <select id="user" class="col color-text-gray margin-0">
+                        <option value="0">Entidade</option>
+                        <option value="1">Usuário</option>
+                        <option value="2">Grupo</option>
+                    </select>
                 </label>
                 <div class="rest">
                     <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col"
