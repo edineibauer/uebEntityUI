@@ -482,7 +482,7 @@ function setFormat(val) {
     } else {
         $("#size_field, #size_field_container").removeClass("hide")
     }
-    if (['boolean', 'information', 'status', 'passwordRequired', 'extend', 'extend_add', 'extend_mult', "folder", "extend_folder", 'list', 'list_mult', 'selecao', 'selecao_mult', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
+    if (['boolean', 'information', 'status', 'passwordRequired', 'extend', 'extend_add', 'extend_mult', "folder", "extend_folder", 'list_mult', 'selecao', 'selecao_mult', 'checkbox_rel', 'checkbox_mult'].indexOf(val) > -1) {
         $("#unique_field").addClass("hide")
     } else {
         $("#unique_field").removeClass("hide")
