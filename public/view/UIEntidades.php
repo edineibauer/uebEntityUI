@@ -70,7 +70,7 @@
                 <div class="col left padding-tiny" style="width: 26px; height: 26px">
                     <a href="https://material.io/tools/icons/?style=baseline" target="_blank"
                        class="right btn-flat font-small theme-text margin-0" style="width: 27px; height: 26px">
-                        <i class="material-icons padding-tiny padding-4 theme-text-d" id="entityIconDemo"></i>
+                        <i class="material-icons padding-tiny padding-4 theme-text" id="entityIconDemo"></i>
                     </a>
                 </div>
                 <div class="left" style="width: 50px">
