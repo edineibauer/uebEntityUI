@@ -514,7 +514,8 @@
       }]
     },
     "form": {
-      "input": "file"
+      "input": "file",
+      "style": "height: 170px"
     }
   },
   "source_list": {
