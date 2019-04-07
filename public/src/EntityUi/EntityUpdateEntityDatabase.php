@@ -45,10 +45,10 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         if(!empty($infoOld['autor'])) {
             if($infoOld['autor'] === 1) {
                 $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-                $this->old["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => $_SESSION['userlogin']['id']]);
+                $this->old["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => ""]);
             } elseif($infoOld['autor'] === 2) {
                 $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-                $this->old["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => $_SESSION['userlogin']['id']]);
+                $this->old["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => ""]);
             }
         }
 
@@ -58,10 +58,10 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         if(!empty($info['autor'])) {
             if($info['autor'] === 1) {
                 $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-                $this->new["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => $_SESSION['userlogin']['id']]);
+                $this->new["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => ""]);
             } elseif($info['autor'] === 2) {
                 $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-                $this->new["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => $_SESSION['userlogin']['id']]);
+                $this->new["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => ""]);
             }
         }
     }
