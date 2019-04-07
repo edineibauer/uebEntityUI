@@ -66,7 +66,7 @@ abstract class EntityDatabase
         $size = (in_array($dados['type'], ['smallint', 'tinyint', 'mediumint', 'int', 'bigint']) ? "" : $size);
         return "`{$dados['column']}` {$type} "
             . (!empty($size) ? "({$size}) " : ($dados['type'] === "varchar" ? "(254) " : ($dados['type'] === "decimal" ? "(15,2) " : " ")))
-            . ($dados['default'] === false ? "NOT NULL " : "")
+//            . ($dados['default'] === false ? "NOT NULL " : "")
             . ($dados['default'] !== false && !empty($dados['default']) ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
     }
 
