@@ -367,8 +367,8 @@ function checkSaveSource() {
             $("." + $(this).attr("id") + "-format").each(function () {
                 if ($(this).prop("checked")) {
                     dicionariosEdit[entity.name][entity.edit].allow.options.push({
-                        'option': $(this).attr("id"),
-                        'name': $(this).attr("id")
+                        'valor': $(this).attr("id"),
+                        'representacao': $(this).attr("id")
                     })
                 }
             })
@@ -399,8 +399,8 @@ function saveAttrValue($input) {
 function saveAllowValue($input) {
     if ($input.find(".values").val() !== "")
         dicionariosEdit[entity.name][entity.edit].allow.options.push({
-            'option': $input.find(".values").val(),
-            'name': $input.find(".names").val()
+            'valor': $input.find(".values").val(),
+            'representacao': $input.find(".names").val()
         })
 }
 
@@ -448,12 +448,12 @@ function setAllow(value) {
     if (entity.edit !== null && ["source", "source_list"].indexOf(dicionariosEdit[entity.name][entity.edit].format) > -1) {
         $.each(value, function (i, e) {
             $.each(source_types, function (n, dados) {
-                if (dados.indexOf(e.option) > -1 && !$("#" + n).prop("checked")) {
+                if (dados.indexOf(e.valor) > -1 && !$("#" + n).prop("checked")) {
                     $("#" + n).prop("checked", !0);
                     $("#formato-" + n).removeClass("hide")
                 }
             });
-            $("#" + e.option).prop("checked", !0)
+            $("#" + e.valor).prop("checked", !0)
         })
     } else {
         let copia = $("#spaceValueAllow").html() === "";
@@ -461,8 +461,8 @@ function setAllow(value) {
             if (copia)
                 copy('#tplValueAllow', '#spaceValueAllow', '', 'append');
             let $allow = (copia ? $("#spaceValueAllow").find(".allow:last-child") : $("#spaceValueAllow").find(".allow:eq(" + i + ")"));
-            $allow.find(".values").val(e.option);
-            $allow.find(".names").val(e.name)
+            $allow.find(".values").val(e.valor);
+            $allow.find(".names").val(e.representacao)
         })
     }
 }
