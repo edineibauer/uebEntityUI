@@ -138,7 +138,7 @@
                     <label class="row" for="funcaoPrimary">Genérico</label>
                     <select class="selectInput" id="funcaoPrimary">
                         <option value="" disabled selected>Input Genérica</option>
-                        <option value="text">Texto</option>
+                        <option value="text">Texto< /option>
                         <option value="textarea">Área de Texto</option>
                         <!--                            <option value="html">Área de HTML</option>-->
                         <option value="number">Número</option>
@@ -150,7 +150,7 @@
                         <!--                        <option value="range">Range</option>-->
                         <option value="color">Cor</option>
                         <!--<option value="source">Arquivos Caixas</option>-->
-                        <option value="source_list">Arquivos Lista</option>
+                        <option value="source_list">Arquivos em Lista</option>
                         <option value="information">Informação HTML</option>
                     </select>
                 </div>
