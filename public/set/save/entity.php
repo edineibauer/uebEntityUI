@@ -1,5 +1,7 @@
 <?php
 
+use Config\Config;
+
 $name = trim(strip_tags(filter_input(INPUT_POST, 'name', FILTER_DEFAULT)));
 $icon = trim(strip_tags(filter_input(INPUT_POST, 'icon', FILTER_DEFAULT)));
 $autor = trim(strip_tags(filter_input(INPUT_POST, 'autor', FILTER_VALIDATE_BOOLEAN)));
@@ -48,5 +50,18 @@ if($name !== $newName) {
         }
     }
 }
+
+
+/**
+ * Se for uma nova entidade, dê permissão de menu ao ADM
+ */
+$p = json_decode(file_get_contents(PATH_HOME . "_config/permissoes.json"), !0);
+$p['admin'][$newName]['menu'] = "true";
+Config::writeFile(PATH_HOME . "_config/permissoes.json", json_encode($p));
+
+/**
+ * Informa ao sistema que houve atualização
+ */
+Config::updateSite();
 
 $data['data'] = true;
