@@ -142,16 +142,16 @@
                         <option value="textarea">Área de Texto</option>
                         <!--                            <option value="html">Área de HTML</option>-->
                         <option value="number">Número</option>
-                        <option value="float">Float</option>
-                        <option value="boolean">Boleano</option>
-                        <option value="select">Select</option>
-                        <option value="radio">Radio</option>
-                        <option value="checkbox">CheckBox</option>
+                        <option value="float">Número com vírgula</option>
+                        <option value="boolean">Botão Liga/Desliga</option>
+                        <option value="select">Caixa de Seleção</option>
+                        <option value="radio">Botão de Seleção</option>
+                        <option value="checkbox">Caixas de Marcação</option>
                         <!--                        <option value="range">Range</option>-->
                         <option value="color">Cor</option>
-                        <option value="source">Arquivos Caixas</option>
+                        <!--<option value="source">Arquivos Caixas</option>-->
                         <option value="source_list">Arquivos Lista</option>
-                        <option value="information">Informação</option>
+                        <option value="information">Informação HTML</option>
                     </select>
                 </div>
                 <div class="col s12 l4 padding-small">
@@ -186,21 +186,19 @@
                     <label class="row" for="funcaoRelation">Relacionamento</label>
                     <select class="selectInput" id="funcaoRelation">
                         <option value="" disabled selected>Tipo de Relação</option>
-                        <option value="extend">Importar Formulário</option>
-                        <option value="folder"
-                                title="permite criar uma pasta que direciona para um formulário associado">
-                            Pasta
+                        <option value="extend">Importar Formulário [1]</option>
+                        <option value="folder" title="permite criar uma pasta que direciona para um formulário associado">
+                            Abrir Formulário [1]
                         </option>
-                        <option value="extend_folder"
-                                title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
-                            Mult-tenancy Pasta
+                        <option value="extend_folder" title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
+                            Abrir Formulário [n]
                         </option>
                         <option value="extend_mult"
                                 title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
-                            Mult-tenancy Lista
+                            Extender Formulário [n]
                         </option>
                         <option value="list">
-                            Vínculo
+                            Auto completar [1]
                         </option>
                         <!--       <option value="extend_add">Extensão Add</option>-->
                         <!--<option value="list">Lista</option>
