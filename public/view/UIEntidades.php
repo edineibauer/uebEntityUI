@@ -57,7 +57,7 @@
                     <select id="user" class="col color-text-gray margin-0">
                         <option value="0">Entidade</option>
                         <option value="1">Usuário</option>
-                        <option value="2">Grupo</option>
+                        <!--<option value="2">Sistema</option>-->
                     </select>
                 </label>
                 <div class="rest">
