@@ -155,34 +155,6 @@
                     </select>
                 </div>
                 <div class="col s12 l4 padding-small">
-                    <label class="row" for="funcaoIdentifier">Semântico</label>
-                    <select class="selectInput" id="funcaoIdentifier">
-                        <option value="" disabled selected>Input de Identidade</option>
-                        <option value="title">Título</option>
-                        <option value="link">Link</option>
-                        <option value="status">Status</option>
-                        <option value="valor">R$ Valor</option>
-                        <option value="percent">Porcentagem %</option>
-                        <option value="url">Url</option>
-                        <option value="email">Email</option>
-                        <option value="password">Password</option>
-                        <option value="tel">Telefone</option>
-                        <option value="cpf">Cpf</option>
-                        <option value="cnpj">Cnpj</option>
-                        <option value="ie">Inscrição Estadual</option>
-                        <option value="rg">RG</option>
-                        <option value="card_number">Número de Cartão</option>
-                        <option value="cep">Cep</option>
-                        <option value="date">Data</option>
-                        <option value="datetime">Data & Hora</option>
-                        <option value="time">Hora</option>
-                        <option value="week">Semana</option>
-                        <option value="month">Mês</option>
-                        <option value="year">Ano</option>
-                        <option value="passwordRequired">Confirmar Senha</option>
-                    </select>
-                </div>
-                <div class="col s12 l4 padding-small">
                     <label class="row" for="funcaoRelation">Relacionamento</label>
                     <select class="selectInput" id="funcaoRelation">
                         <option value="" disabled selected>Tipo de Relação</option>
@@ -207,6 +179,34 @@
                        <option value="selecao_mult">Seleção Multipla</option>
                        <option value="checkbox_rel">CheckBox</option>
                        <option value="checkbox_mult">CheckBox Multiplo</option>-->
+                    </select>
+                </div>
+                <div class="col s12 l4 padding-small">
+                    <label class="row" for="funcaoIdentifier">Template</label>
+                    <select class="selectInput" id="funcaoIdentifier">
+                        <option value="" disabled selected>Input de Identidade</option>
+                        <option value="title">Título</option>
+                        <option value="link">Link</option>
+                        <option value="status">Status</option>
+                        <option value="valor">R$ Valor</option>
+                        <option value="percent">Porcentagem %</option>
+                        <option value="url">Url</option>
+                        <option value="email">Email</option>
+                        <option value="password">Password</option>
+                        <option value="tel">Telefone</option>
+                        <option value="cpf">Cpf</option>
+                        <option value="cnpj">Cnpj</option>
+                        <option value="ie">Inscrição Estadual</option>
+                        <option value="rg">RG</option>
+                        <option value="card_number">Número de Cartão</option>
+                        <option value="cep">Cep</option>
+                        <option value="date">Data</option>
+                        <option value="datetime">Data & Hora</option>
+                        <option value="time">Hora</option>
+                        <option value="week">Semana</option>
+                        <option value="month">Mês</option>
+                        <option value="year">Ano</option>
+                        <option value="passwordRequired">Confirmar Senha</option>
                     </select>
                 </div>
             </div>
