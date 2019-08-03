@@ -114,8 +114,10 @@ function download(filename, text) {
 
 function downloadEntity() {
     get('downloadEntity/' + entity.name).then(d => {
-        download(entity.name + ".json",d);
-        toast("download efetuado");
+        if (typeof d === "string")
+            download(entity.name + ".json", d);
+        else
+            toast("Error");
     });
 }
 
@@ -645,7 +647,7 @@ function deleteAttr(id) {
 }
 
 function removeEntity(entity) {
-    if (confirm("Excluir esta entidade e todos os seus dados?")) {
+    if (entity !== 'usuarios' && confirm("Excluir esta entidade e todos os seus dados?")) {
         post("entity-ui", "delete/entity", {"name": entity}, function (g) {
             if (g) {
                 updateDicionarioIndex();
@@ -676,9 +678,8 @@ function sendImport() {
                     toast("Erro ao restaurar", 3000, "toast-error");
                 } else {
                     toast("Entidade Restaurada", 1300, "toast-success");
-                    setTimeout(function () {
-                        location.reload(1);
-                    }, 1200);
+                    readDicionarios();
+                    $("#import").val("");
                 }
             }
         })

@@ -12,8 +12,12 @@ if (0 < $_FILES['arquivo']['error']) {
     $extensao = pathinfo($file)['extension'];
     if ("json" === $extensao) {
         if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
-            $name .= '-' . strtotime('now');
+            $name .= '-' . substr(strtotime('now'), 5);
             $file = $name . ".json";
+            if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
+                $name .= "w";
+                $file = $name . ".json";
+            }
         }
 
         move_uploaded_file($_FILES['arquivo']['tmp_name'], PATH_HOME . 'entity/cache/' . $file);
