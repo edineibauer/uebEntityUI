@@ -125,23 +125,16 @@ function showEntity() {
     }
 }
 
-function updateDicionarioIndex(entity) {
-    get("dicionarios").then(dic => {
-        dicionarios = dic;
-        dbLocal.clear('__dicionario').then(() => {
-            dbLocal.exeCreate("__dicionario", dic)
-        })
+function updateDicionarioIndex() {
+    updateCacheUser().then(() => {
+        /**
+         * Atualiza o historic
+         * */
+        let t = {};
+        t[entity] = 0;
+        dbLocal.exeUpdate("__historic", t, 1);
+        dbLocal.clear(entity)
     });
-    get("info").then(info => {
-        dbLocal.clear('__info').then(() => {
-            dbLocal.exeCreate("__info", info)
-        })
-    });
-
-    let t = {};
-    t[entity] = 0;
-    dbLocal.exeUpdate("__historic", t, 1);
-    dbLocal.clear(entity)
 }
 
 function saveEntity(silent) {
@@ -159,7 +152,7 @@ function saveEntity(silent) {
             "newName": newName
         }, function (g) {
             $("#saveEntityBtn").removeClass("disabled");
-            updateDicionarioIndex(entity.name);
+            updateDicionarioIndex();
             if (entity.name !== $("#entityName").val()) {
                 dicionariosEdit[newName] = dicionariosEdit[entity.name];
                 entity.name = newName;
@@ -631,7 +624,7 @@ function removeEntity(entity) {
     if (confirm("Excluir esta entidade e todos os seus dados?")) {
         post("entity-ui", "delete/entity", {"name": entity}, function (g) {
             if (g) {
-                updateDicionarioIndex(entity);
+                updateDicionarioIndex();
                 toast("Entidade Excluída", 3000, "toast-warning");
                 readDicionarios()
             }
