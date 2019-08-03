@@ -147,10 +147,12 @@
                         <option value="select">Caixa de Seleção</option>
                         <option value="radio">Botão de Seleção</option>
                         <option value="checkbox">Caixas de Marcação</option>
+                        <option value="date">Data</option>
+                        <option value="datetime">Data & Hora</option>
                         <!--                        <option value="range">Range</option>-->
                         <option value="color">Cor</option>
                         <!--<option value="source">Arquivos Caixas</option>-->
-                        <option value="source_list">Arquivos em Lista</option>
+                        <option value="source_list">Anexos</option>
                         <option value="information">Informação HTML</option>
                     </select>
                 </div>
@@ -200,8 +202,6 @@
                         <option value="rg">RG</option>
                         <option value="card_number">Número de Cartão</option>
                         <option value="cep">Cep</option>
-                        <option value="date">Data</option>
-                        <option value="datetime">Data & Hora</option>
                         <option value="time">Hora</option>
                         <option value="week">Semana</option>
                         <option value="month">Mês</option>
