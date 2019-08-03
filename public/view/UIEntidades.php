@@ -8,9 +8,9 @@
                 <button class="btn theme btn-floating right" id="newEntityBtn" onclick="entityEdit()">
                     <i class="material-icons">add</i>
                 </button>
-                <!-- <button class="btn theme btn-floating right" onclick="uploadEntity()">
-                     <i class="material-icons">backup</i>
-                 </button>-->
+                <button class="btn theme btn-floating right" onclick="uploadEntity()">
+                    <i class="material-icons">backup</i>
+                </button>
             </div>
         </div>
     </div>
@@ -42,7 +42,8 @@
                     salvar
                     <i class="material-icons right padding-left">check</i>
                 </button>
-                <button class="btn color-white left radius hide downloadEntity" title="fazer backup" onclick="downloadEntity()">
+                <button class="btn color-white left radius hide downloadEntity" title="fazer backup"
+                        onclick="downloadEntity()">
                     <i class="material-icons left color-text-gray">get_app</i>
                 </button>
                 <button class="theme right btn-floating" title="Novo Atributo" id="saveAttrBtn"
@@ -93,15 +94,14 @@
             </div>
         </div>
 
-        <div class="col hide overflow-hidden relative" id="importForm">
-            <hr>
+        <div class="col hide overflow-hidden relative padding-bottom" id="importForm">
             <br>
-            <span class="row">
-                    <label for="import">Importar Entidade</label>
-                    <input type="file" name="import" id="import"/>
-                </span>
-            <button class="col s12 btn-large theme-d1" onclick="sendImport()">
-                <i class="material-icons padding-right left">send</i><span class="left">Enviar</span>
+            <div class="row">
+                <label for="import">Restaurar Entidade</label>
+                <input type="file" name="import" id="import"/>
+            </div>
+            <button class="btn theme-d1 left" onclick="sendImport()">
+                <i class="material-icons padding-right font-large left">send</i><span class="left">Enviar</span>
             </button>
         </div>
 
@@ -164,10 +164,12 @@
                     <select class="selectInput" id="funcaoRelation">
                         <option value="" disabled selected>Tipo de Relação</option>
                         <option value="extend">Importar Formulário [1]</option>
-                        <option value="folder" title="permite criar uma pasta que direciona para um formulário associado">
+                        <option value="folder"
+                                title="permite criar uma pasta que direciona para um formulário associado">
                             Abrir Formulário [1]
                         </option>
-                        <option value="extend_folder" title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
+                        <option value="extend_folder"
+                                title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
                             Abrir Formulário [n]
                         </option>
                         <option value="extend_mult"

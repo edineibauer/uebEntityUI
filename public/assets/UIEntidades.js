@@ -659,9 +659,11 @@ function removeEntity(entity) {
 function sendImport() {
     if ($("#import").val() !== "") {
         var form_data = new FormData();
-        form_data.append('file', $('#import').prop('files')[0]);
+        form_data.append('arquivo', $('#import').prop('files')[0]);
+        form_data.append('lib', 'entity-ui');
+        form_data.append('file', 'save/import');
         $.ajax({
-            url: HOME + 'entidadesImport',
+            url: HOME + 'set',
             dataType: 'text',
             cache: !1,
             contentType: !1,
@@ -669,17 +671,14 @@ function sendImport() {
             data: form_data,
             type: 'post',
             success: function (data) {
-                if (data) {
-                    if (data === "existe") {
-                        toast("Entidade já Existe", 2500, "toast-warning")
-                    } else {
-                        toast("Rejeitado! Chave Estrangeira Ausente", 4000, "toast-warning");
-                        post('entity-ui', 'delete/import', {entity: $('#import').val()}, function (g) {
-                        })
-                    }
-                    $('#import').val("")
+                data = JSON.parse(data);
+                if (!data.data) {
+                    toast("Erro ao restaurar", 3000, "toast-error");
                 } else {
-                    location.reload()
+                    toast("Entidade Restaurada", 1300, "toast-success");
+                    setTimeout(function () {
+                        location.reload(1);
+                    }, 1200);
                 }
             }
         })
