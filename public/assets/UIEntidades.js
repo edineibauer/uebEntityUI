@@ -587,6 +587,7 @@ function checkFieldsOpenOrClose(nome) {
 }
 
 function allowName(nome, tipo) {
+    let allow = !0;
     if (typeof nome !== "undefined") {
         if (["add", "all", "alter", "analyze", "and", "as", "asc", "asensitive", "before", "between", "bigint", "binary", "blob", "both", "by", "call", "cascade", "case", "change", "char", "character", "check", "collate", "column", "condition", "connection", "constraint", "continue", "convert", "create", "cross", "current_date", "current_time", "current_timestamp", "current_user", "cursor", "database", "databases", "day_hour", "day_microsecond", "day_minute", "day_second", "dec", "decimal", "declare", "default", "delayed", "delete", "desc", "describe", "deterministic", "distinct", "distinctrow", "div", "double", "drop", "dual", "each", "else", "elseif", "enclosed", "escaped", "exists", "exit", "explain", "false", "fetch", "float", "for", "force", "foreign", "from", "fulltext", "goto", "grant", "group", "having", "high_priority", "hour_microsecond", "hour_minute", "hour_second", "if", "ignore", "in", "index", "infile", "inner", "inout", "insensitive", "insert", "number", "integer", "interval", "into", "is", "iterate", "join", "key", "keys", "kill", "leading", "leave", "left", "like", "limit", "lines", "load", "localtime", "localtimestamp", "lock", "long", "longblob", "longtext", "loop", "low_priority", "match", "mediumblob", "mediumint", "mediumtext", "middleint", "minute_microsecond", "minute_second", "mod", "modifies", "natural", "not", "no_write_to_binlog", "null", "numeric", "on", "optimize", "option", "optionally", "or", "order", "out", "outer", "outfile", "precision", "primary", "procedure", "purge", "read", "reads", "real", "references", "regexp", "rename", "repeat", "replace", "require", "restrict", "return", "revoke", "right", "rlike", "schema", "schemas", "second_microsecond", "select", "sensitive", "separator", "set", "show", "smallint", "soname", "spatia", "specific", "sql", "sqlexception", "sqlstate", "sqlwarning", "sql_big_result", "sql_calc_found_rows", "sql_small_result", "ssl", "starting", "straight_join", "table", "terminated", "then", "tinyblob", "tinyint", "tinytext", "to", "trailing", "trigger", "true", "undo", "union", "unique", "unlock", "unsigned", "update", "usage", "use", "using", "utc_date", "utc_time", "utc_timestamp", "values", "varbinary", "varchar", "varcharacter", "varying", "when", "where", "while", "with", "write", "xor", "year_month", "zerofill"].indexOf(nome) > 0) {
             toast("Este nome é reservado pelo sistema", 3000, "toast-error");
@@ -602,12 +603,12 @@ function allowName(nome, tipo) {
                 }, 3000)
             }
             $(".requireName").addClass("hide");
-            return !1
+            return !1;
         }
         if (tipo === 2 && nome.length > 2 && (entity.edit < 1 || (entity.edit > 0 && nome !== dicionariosEdit[entity.name][entity.edit].nome))) {
             let tt = slug(nome, "_");
             $.each(dicionariosEdit[entity.name], function (i, e) {
-                if (tt === e.column) {
+                if (tt.trim() === e.column.trim()) {
                     if (!alert) {
                         alert = !0;
                         toast("Nome " + (tipo === 1 ? "da Entidade" : "do Campo") + " já esta em uso", 4500, "toast-warning");
@@ -616,18 +617,19 @@ function allowName(nome, tipo) {
                         }, 3000)
                     }
                     $(".requireName").addClass("hide");
-                    return !1
+                    allow = !1;
+                    return !1;
                 }
             })
         }
     }
-    return !0
+    return allow;
 }
 
 function checkUniqueNameColumn() {
     $.each(dicionariosEdit[entity.name], function (j, k) {
         $.each(dicionariosEdit[entity.name], function (i, e) {
-            if (k.column === e.column) {
+            if (k.column.trim() === e.column.trim()) {
                 if (!alert) {
                     alert = !0;
                     toast("Nome do Campo" + k.column + " precisa ser único", 3000, "toast-warning");
