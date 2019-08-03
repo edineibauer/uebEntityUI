@@ -22,7 +22,7 @@ if (0 < $_FILES['arquivo']['error']) {
 
         move_uploaded_file($_FILES['arquivo']['tmp_name'], PATH_HOME . 'entity/cache/' . $file);
 
-        $entity = new \EntityUi\SaveEntity($name, null, 0);
+        $entity = new \EntityUi\SaveEntity($name, "", 0);
         $entity->importMetadados($name);
 
 

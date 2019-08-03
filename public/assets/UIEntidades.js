@@ -74,27 +74,30 @@ function entityReset() {
 }
 
 function entityEdit(id) {
-    $("#importForm").addClass("hide");
-    if ((typeof (id) === "undefined" && entity.name !== "") || (typeof (id) !== "undefined" && id !== entity.name)) {
-        resetAttr();
-        entityReset();
-        if (typeof (id) !== "undefined") {
-            $(".downloadEntity").removeClass("hide");
-            entity.name = id;
-            entity.icon = info[id].icon;
-            entity.autor = info[id].autor;
-            entity.owner = info[id].owner;
-            entity.user = typeof info[id].user === "number" ? info[id].user : "0";
-            $("#entityIconDemo").text(entity.icon || "");
-            $("#haveAutor").prop("checked", entity.autor === 1);
-            $("#haveOwner").prop("checked", entity.autor === 2);
-            $("#user").val(entity.user)
+    if(id !== "usuarios") {
+        $("#importForm").addClass("hide");
+        $("#entity-name, #entityAttr").removeClass("hide");
+        if ((typeof (id) === "undefined" && entity.name !== "") || (typeof (id) !== "undefined" && id !== entity.name)) {
+            resetAttr();
+            entityReset();
+            if (typeof (id) !== "undefined") {
+                $(".downloadEntity").removeClass("hide");
+                entity.name = id;
+                entity.icon = info[id].icon;
+                entity.autor = info[id].autor;
+                entity.owner = info[id].owner;
+                entity.user = typeof info[id].user === "number" ? info[id].user : "0";
+                $("#entityIconDemo").text(entity.icon || "");
+                $("#haveAutor").prop("checked", entity.autor === 1);
+                $("#haveOwner").prop("checked", entity.autor === 2);
+                $("#user").val(entity.user)
+            } else {
+                $(".downloadEntity").addClass("hide");
+            }
+            showEntity()
         } else {
-            $(".downloadEntity").addClass("hide");
+            $("#entityName").focus()
         }
-        showEntity()
-    } else {
-        $("#entityName").focus()
     }
 }
 
@@ -124,7 +127,8 @@ function downloadEntity() {
 function uploadEntity() {
     entityReset();
     showEntity();
-    $("#importForm").removeClass("hide")
+    $("#importForm").removeClass("hide");
+    $("#entity-name, #entityAttr").addClass("hide");
 }
 
 function showEntity() {

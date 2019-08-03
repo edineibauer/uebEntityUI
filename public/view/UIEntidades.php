@@ -55,7 +55,7 @@
     </header>
     <div class="row"></div>
     <div class="panel" id="space-attr-entity" style="margin-top: 0!important;">
-        <div class="row">
+        <div class="row" id="entity-name">
             <label class="col s12">
                 <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
                     <select id="user" class="col color-text-gray margin-0">
