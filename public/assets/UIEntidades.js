@@ -128,7 +128,7 @@ function uploadEntity() {
     entityReset();
     showEntity();
     $("#importForm").removeClass("hide");
-    $("#entity-name, #entityAttr").addClass("hide");
+    $("#entity-name, #entityAttr, .downloadEntity").addClass("hide");
 }
 
 function showEntity() {
