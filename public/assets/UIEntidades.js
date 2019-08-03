@@ -652,7 +652,9 @@ function removeEntity(entity) {
             if (g) {
                 updateDicionarioIndex();
                 toast("Entidade Excluída", 3000, "toast-warning");
-                readDicionarios()
+                readDicionarios();
+                readInfo();
+                updateDicionarioIndex();
             }
         })
     }
@@ -679,6 +681,8 @@ function sendImport() {
                 } else {
                     toast("Entidade Restaurada", 1300, "toast-success");
                     readDicionarios();
+                    readInfo();
+                    updateDicionarioIndex();
                     $("#import").val("");
                 }
             }
