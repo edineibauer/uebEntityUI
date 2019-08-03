@@ -79,6 +79,7 @@ function entityEdit(id) {
         resetAttr();
         entityReset();
         if (typeof (id) !== "undefined") {
+            $(".downloadEntity").removeClass("hide");
             entity.name = id;
             entity.icon = info[id].icon;
             entity.autor = info[id].autor;
@@ -88,11 +89,34 @@ function entityEdit(id) {
             $("#haveAutor").prop("checked", entity.autor === 1);
             $("#haveOwner").prop("checked", entity.autor === 2);
             $("#user").val(entity.user)
+        } else {
+            $(".downloadEntity").addClass("hide");
         }
         showEntity()
     } else {
         $("#entityName").focus()
     }
+}
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.setAttribute('target', '_blank');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function downloadEntity() {
+    get('downloadEntity/' + entity.name).then(d => {
+        download(entity.name + ".json",d);
+        toast("download efetuado");
+    });
 }
 
 function uploadEntity() {

@@ -42,6 +42,9 @@
                     salvar
                     <i class="material-icons right padding-left">check</i>
                 </button>
+                <button class="btn color-white left radius hide downloadEntity" title="fazer backup" onclick="downloadEntity()">
+                    <i class="material-icons left color-text-gray">get_app</i>
+                </button>
                 <button class="theme right btn-floating" title="Novo Atributo" id="saveAttrBtn"
                         onclick="editAttr()">
                     <i class="material-icons right">add</i>
