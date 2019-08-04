@@ -4,6 +4,7 @@ var info = {};
 var dicionariosNomes = {};
 var identifier = {};
 var defaults = {};
+var nameColumnTest = !0;
 var source_types = {
     "image": ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"],
     "video": ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"],
@@ -291,6 +292,8 @@ function checkSaveAttr() {
                 if (yes)
                     yes = checkUniqueNameColumn()
             }
+
+            yes = nameColumnTest;
             if (yes) {
                 entity.edit = identifier[entity.name];
                 identifier[entity.name]++
@@ -607,8 +610,10 @@ function allowName(nome, tipo) {
         }
         if (tipo === 2 && nome.length > 2 && (entity.edit < 1 || (entity.edit > 0 && nome !== dicionariosEdit[entity.name][entity.edit].nome))) {
             let tt = slug(nome, "_");
+            nameColumnTest = !0;
             $.each(dicionariosEdit[entity.name], function (i, e) {
                 if (tt.trim() === e.column.trim()) {
+                    nameColumnTest = !1;
                     if (!alert) {
                         alert = !0;
                         toast("Nome " + (tipo === 1 ? "da Entidade" : "do Campo") + " já esta em uso", 4500, "toast-warning");
