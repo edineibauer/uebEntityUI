@@ -22,7 +22,7 @@ class SaveEntity
      * @param null $data
      * @param int|null $id
      */
-    public function __construct(string $entity = null, string $icon = null, int $user, int $autor = null, $data = null, int $id = null)
+    public function __construct(string $entity = null, string $icon = "", int $user = 0, int $autor = null, $data = null, int $id = null)
     {
         if ($entity) {
             $this->entity = $entity;
@@ -55,10 +55,10 @@ class SaveEntity
      * @param int|null $autor
      * @param int $user
      */
-    private function start($metadados = null, string $icon = null, int $autor = null, int $user)
+    private function start($metadados = null, string $icon = "", int $autor = null, int $user)
     {
         try {
-            
+
             //obtém dicionario atual (old)
             $infoOld = Metadados::getInfo($this->entity);
             if (!$metadadosOld = Metadados::getDicionario($this->entity)) {
@@ -68,7 +68,7 @@ class SaveEntity
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache");
                 Helper::createFolderIfNoExist(PATH_HOME . "entity/cache/info");
             }
-            
+
             //criar novo dicionario
             $this->createEntityJson($metadados);
             $this->createEntityJson($this->generateInfo($metadados, $icon, $autor, $user), "info");
@@ -95,12 +95,12 @@ class SaveEntity
 
     /**
      * @param array $metadados
-     * @param string|null $icon
+     * @param string $icon
      * @param int|null $autor
-     * @param int|null $user
+     * @param int $user
      * @return array
      */
-    private function generateInfo(array $metadados, string $icon = null, int $autor = null, int $user = null): array
+    private function generateInfo(array $metadados, string $icon = "", int $autor = null, int $user = 0): array
     {
         $data = [
             "icon" => $icon, "autor" => $autor, "user" => $user,
@@ -132,7 +132,11 @@ class SaveEntity
                 $data = $this->checkOwnerList($data, $metadados, $dados['column']);
         }
 
-        $this->createGeneral($data);
+        try {
+            $this->createGeneral($data);
+        } catch (\Exception $e) {
+
+        }
 
         return $data;
     }

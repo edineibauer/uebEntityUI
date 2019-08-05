@@ -22,9 +22,7 @@ if (0 < $_FILES['arquivo']['error']) {
 
         move_uploaded_file($_FILES['arquivo']['tmp_name'], PATH_HOME . 'entity/cache/' . $file);
 
-        $entity = new \EntityUi\SaveEntity($name, "", 0);
-        $entity->importMetadados($name);
-
+        $entity = new \EntityUi\SaveEntity($name, "", 0, null, json_decode(file_get_contents(PATH_HOME . 'entity/cache/' . $file), !0));
 
         /**
          * Se for uma nova entidade, dê permissão de menu ao ADM
