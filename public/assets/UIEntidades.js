@@ -298,7 +298,10 @@ function checkSaveAttr() {
                 entity.edit = identifier[entity.name];
                 identifier[entity.name]++
             }
+        } else {
+            yes = allowName($("#nome").val().trim(), 2);
         }
+
         if (yes) {
             saveAttrInputs();
             resetAttr();
