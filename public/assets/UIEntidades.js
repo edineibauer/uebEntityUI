@@ -530,7 +530,7 @@ function setFormat(val) {
         $("#orientation_field").addClass("hide")
     }
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
-    if (['boolean', 'select', 'radio', 'checkbox', 'source', 'source_list'].indexOf(val) > -1) {
+    if (['select', 'radio', 'checkbox', 'source', 'source_list'].indexOf(val) > -1) {
         $("#definirvalores").removeClass("hide");
         if (val === "source" || val === "source_list") {
             $("#format-source").removeClass("hide");
