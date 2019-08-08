@@ -144,14 +144,19 @@ function showEntity() {
 
 function updateDicionarioIndex() {
     updateCacheUser().then(() => {
-        /**
-         * Atualiza o historic
-         * */
-        let t = {};
-        t[entity] = 0;
-        dbLocal.exeUpdate("__historic", t, 1);
-        dbLocal.clear(entity)
-    });
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", HOME + "set");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let data = JSON.parse(this.responseText);
+                if (data.data !== "no-network" && data.response === 1)
+                    setCookie("update", data.data);
+                resolve(1)
+            }
+        };
+        xhttp.send("lib=config&file=update")
+    })
 }
 
 function saveEntity(silent) {
