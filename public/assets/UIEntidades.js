@@ -143,6 +143,7 @@ function showEntity() {
 }
 
 function updateDicionarioIndex() {
+    clearInterval(checkUpdateInt);
     updateCacheUser().then(() => {
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", HOME + "set");
