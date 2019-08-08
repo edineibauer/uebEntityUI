@@ -1,5 +1,7 @@
 <?php
 
+use Config\Config;
+
 $entity = trim(strip_tags(filter_input(INPUT_POST, 'name', FILTER_DEFAULT)));
 
 $sql = new \Conn\SqlCommand();
@@ -90,5 +92,10 @@ if (file_exists(PATH_HOME . "entity" . DIRECTORY_SEPARATOR . "cache" . DIRECTORY
     unlink(PATH_HOME . "entity" . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "info" . DIRECTORY_SEPARATOR . $entity . ".json");
 
 $sql->exeCommand("DROP TABLE " . PRE . $entity);
+
+/**
+ * Informa ao sistema que houve atualização
+ */
+Config::updateSite();
 
 $data['data'] = true;
