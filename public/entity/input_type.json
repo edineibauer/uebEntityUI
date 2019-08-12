@@ -99,11 +99,11 @@
     "group": "boolean",
     "allow": {
       "options": [{
-        "option": 0,
-        "name": "não"
+        "valor": 0,
+        "representacao": "não"
       },{
-        "option": 1,
-        "name": "sim"
+        "valor": 1,
+        "representacao": "sim"
       }]
     },
     "form": {
@@ -120,11 +120,11 @@
     "default": 0,
     "allow": {
       "options": [{
-        "option": 0,
-        "name": "desativado"
+        "valor": 0,
+        "representacao": "desativado"
       },{
-        "option": 1,
-        "name": "ativado"
+        "valor": 1,
+        "representacao": "ativado"
       }]
     },
     "form": {
@@ -177,26 +177,26 @@
     "nome": "Semana",
     "allow": {
       "options": [{
-        "option": 1,
-        "name": "domingo"
+        "valor": 1,
+        "representacao": "domingo"
       },{
-        "option": 2,
-        "name": "segunda"
+        "valor": 2,
+        "representacao": "segunda"
       },{
-        "option": 3,
-        "name": "terça"
+        "valor": 3,
+        "representacao": "terça"
       },{
-        "option": 4,
-        "name": "quarta"
+        "valor": 4,
+        "representacao": "quarta"
       },{
-        "option": 5,
-        "name": "quinta"
+        "valor": 5,
+        "representacao": "quinta"
       },{
-        "option": 6,
-        "name": "sexta"
+        "valor": 6,
+        "representacao": "sexta"
       },{
-        "option": 7,
-        "name": "sábado"
+        "valor": 7,
+        "representacao": "sábado"
       }]
     },
     "form": {
@@ -210,41 +210,41 @@
     "nome": "Mês",
     "allow": {
       "options": [{
-        "option": 1,
-        "name": "janeiro"
+        "valor": 1,
+        "representacao": "janeiro"
       },{
-        "option": 2,
-        "name": "fevereiro"
+        "valor": 2,
+        "representacao": "fevereiro"
       },{
-        "option": 3,
-        "name": "março"
+        "valor": 3,
+        "representacao": "março"
       },{
-        "option": 4,
-        "name": "abril"
+        "valor": 4,
+        "representacao": "abril"
       },{
-        "option": 5,
-        "name": "maio"
+        "valor": 5,
+        "representacao": "maio"
       },{
-        "option": 6,
-        "name": "junho"
+        "valor": 6,
+        "representacao": "junho"
       },{
-        "option": 7,
-        "name": "julho"
+        "valor": 7,
+        "representacao": "julho"
       },{
-        "option": 8,
-        "name": "agosto"
+        "valor": 8,
+        "representacao": "agosto"
       },{
-        "option": 9,
-        "name": "setembro"
+        "valor": 9,
+        "representacao": "setembro"
       },{
-        "option": 10,
-        "name": "outubro"
+        "valor": 10,
+        "representacao": "outubro"
       },{
-        "option": 11,
-        "name": "novembro"
+        "valor": 11,
+        "representacao": "novembro"
       },{
-        "option": 12,
-        "name": "dezembro"
+        "valor": 12,
+        "representacao": "dezembro"
       }]
     },
     "form": {
@@ -288,8 +288,8 @@
     "group": "select",
     "allow": {
       "options": [{
-        "option": 1,
-        "name": "opção 1"
+        "valor": 1,
+        "representacao": "opção 1"
       }]
     },
     "form": {
@@ -301,8 +301,8 @@
     "group": "select",
     "allow": {
       "options": [{
-        "option": 1,
-        "name": "opção 1"
+        "valor": 1,
+        "representacao": "opção 1"
       }]
     },
     "form": {
@@ -315,8 +315,8 @@
     "group": "select",
     "allow": {
       "options": [{
-        "option": 1,
-        "name": "opção 1"
+        "valor": 1,
+        "representacao": "opção 1"
       }]
     },
     "form": {
@@ -485,32 +485,32 @@
     "size": 1,
     "allow": {
       "options": [{
-        "option": "png",
-        "name": "png"
+        "valor": "png",
+        "representacao": "png"
       },{
-        "option": "jpg",
-        "name": "jpg"
+        "valor": "jpg",
+        "representacao": "jpg"
       },{
-        "option": "jpeg",
-        "name": "jpeg"
+        "valor": "jpeg",
+        "representacao": "jpeg"
       },{
-        "option": "gif",
-        "name": "gif"
+        "valor": "gif",
+        "representacao": "gif"
       },{
-        "option": "bmp",
-        "name": "bmp"
+        "valor": "bmp",
+        "representacao": "bmp"
       },{
-        "option": "tif",
-        "name": "tif"
+        "valor": "tif",
+        "representacao": "tif"
       },{
-        "option": "tiff",
-        "name": "tiff"
+        "valor": "tiff",
+        "representacao": "tiff"
       },{
-        "option": "psd",
-        "name": "psd"
+        "valor": "psd",
+        "representacao": "psd"
       },{
-        "option": "svg",
-        "name": "svg"
+        "valor": "svg",
+        "representacao": "svg"
       }]
     },
     "form": {
@@ -526,32 +526,32 @@
     "size": 1,
     "allow": {
       "options": [{
-        "option": "png",
-        "name": "png"
+        "valor": "png",
+        "representacao": "png"
       },{
-        "option": "jpg",
-        "name": "jpg"
+        "valor": "jpg",
+        "representacao": "jpg"
       },{
-        "option": "jpeg",
-        "name": "jpeg"
+        "valor": "jpeg",
+        "representacao": "jpeg"
       },{
-        "option": "gif",
-        "name": "gif"
+        "valor": "gif",
+        "representacao": "gif"
       },{
-        "option": "bmp",
-        "name": "bmp"
+        "valor": "bmp",
+        "representacao": "bmp"
       },{
-        "option": "tif",
-        "name": "tif"
+        "valor": "tif",
+        "representacao": "tif"
       },{
-        "option": "tiff",
-        "name": "tiff"
+        "valor": "tiff",
+        "representacao": "tiff"
       },{
-        "option": "psd",
-        "name": "psd"
+        "valor": "psd",
+        "representacao": "psd"
       },{
-        "option": "svg",
-        "name": "svg"
+        "valor": "svg",
+        "representacao": "svg"
       }]
     },
     "form": {

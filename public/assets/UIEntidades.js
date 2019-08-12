@@ -536,7 +536,7 @@ function setFormat(val) {
         $("#orientation_field").addClass("hide")
     }
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
-    if (['select', 'radio', 'checkbox', 'source', 'source_list'].indexOf(val) > -1) {
+    if (['select', 'radio', 'checkbox', 'source', 'source_list', 'week', 'month'].indexOf(val) > -1) {
         $("#definirvalores").removeClass("hide");
         if (val === "source" || val === "source_list") {
             $("#format-source").removeClass("hide");
@@ -563,7 +563,7 @@ function setFormat(val) {
 }
 
 function getSelectInput(val) {
-    if (["text", "textarea", "html", "number", "float", "boolean", "select", "radio", "checkbox", "range", "color", "source", "source_list", "information"].indexOf(val) > -1)
+    if (["text", "textarea", "html", "number", "float", "boolean", "select", "radio", "checkbox", "range", "color", "source", "source_list", "information", "date", "datetime"].indexOf(val) > -1)
         return $("#funcaoPrimary"); else if (["extend", "extend_add", "extend_mult", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult", "publisher", "owner"].indexOf(val) > -1)
         return $("#funcaoRelation"); else return $("#funcaoIdentifier")
 }
