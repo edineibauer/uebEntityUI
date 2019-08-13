@@ -143,21 +143,8 @@ function showEntity() {
 }
 
 function updateDicionarioIndex() {
-    clearInterval(checkUpdateInt);
-    updateCacheUser().then(() => {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", HOME + "set");
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let data = JSON.parse(this.responseText);
-                if (data.data !== "no-network" && data.response === 1)
-                    setCookie("update", data.data);
-                resolve(1)
-            }
-        };
-        xhttp.send("lib=config&file=update")
-    })
+    updateVersionNumber();
+    updateCacheUser();
 }
 
 function saveEntity(silent) {
