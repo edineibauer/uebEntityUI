@@ -154,7 +154,20 @@ function updateDicionarioIndex() {
 
 function saveEntity(silent) {
     $("#saveEntityBtn").addClass("disabled");
-    if (checkSaveAttr() && entity.name.length > 2 && typeof (dicionariosEdit[entity.name]) !== "undefined" && !$.isEmptyObject(dicionariosEdit[entity.name])) {
+
+    let userRequisite = {'title': !1, 'password': !1, 'validate': !0};
+    if (entity.user === "1") {
+        $.each(dicionariosEdit[entity.name], function (col, meta) {
+            if (meta.format === "title" || meta.format === "password")
+                userRequisite[meta.format] = !0
+        });
+        if (!userRequisite.title || !userRequisite.password) {
+            toast("um campo " + (!userRequisite.title ? "Título" : "Senha") + " é necessário para criar um USUÁRIO!", 4000, "toast-warning");
+            userRequisite.validate = !1;
+        }
+    }
+
+    if (userRequisite.validate && checkSaveAttr() && entity.name.length > 2 && typeof (dicionariosEdit[entity.name]) !== "undefined" && !$.isEmptyObject(dicionariosEdit[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
         clearInterval(checkUpdateInt);
         post("entity-ui", "save/entity", {
@@ -244,17 +257,6 @@ function checkSaveAttr() {
     entity.icon = $("#entityIcon").val();
     entity.autor = $("#haveAutor").prop("checked") ? 1 : ($("#haveOwner").prop("checked") ? 2 : null);
     entity.user = $("#user").val();
-    let userRequisite = {'title': !1, 'password': !1};
-    if (entity.user === "1") {
-        $.each(dicionariosEdit[entity.name], function (col, meta) {
-            if (meta.format === "title" || meta.format === "password")
-                userRequisite[meta.format] = !0
-        });
-        if (!userRequisite.title || !userRequisite.password) {
-            toast("Entidades do tipo USUÁRIO precisam de um campo " + (!userRequisite.title ? "Título" : "Senha") + "!", 4000);
-            return !1
-        }
-    }
     if (checkRequiresFields()) {
         if (entity.edit === null) {
             if (entity.name === "") {
@@ -581,7 +583,7 @@ function allowName(nome, tipo) {
     let allow = !0;
     if (typeof nome !== "undefined") {
         if (["add", "all", "alter", "analyze", "and", "as", "asc", "asensitive", "before", "between", "bigint", "binary", "blob", "both", "by", "call", "cascade", "case", "change", "char", "character", "check", "collate", "column", "condition", "connection", "constraint", "continue", "convert", "create", "cross", "current_date", "current_time", "current_timestamp", "current_user", "cursor", "database", "databases", "day_hour", "day_microsecond", "day_minute", "day_second", "dec", "decimal", "declare", "default", "delayed", "delete", "desc", "describe", "deterministic", "distinct", "distinctrow", "div", "double", "drop", "dual", "each", "else", "elseif", "enclosed", "escaped", "exists", "exit", "explain", "false", "fetch", "float", "for", "force", "foreign", "from", "fulltext", "goto", "grant", "group", "having", "high_priority", "hour_microsecond", "hour_minute", "hour_second", "if", "ignore", "in", "index", "infile", "inner", "inout", "insensitive", "insert", "number", "integer", "interval", "into", "is", "iterate", "join", "key", "keys", "kill", "leading", "leave", "left", "like", "limit", "lines", "load", "localtime", "localtimestamp", "lock", "long", "longblob", "longtext", "loop", "low_priority", "match", "mediumblob", "mediumint", "mediumtext", "middleint", "minute_microsecond", "minute_second", "mod", "modifies", "natural", "not", "no_write_to_binlog", "null", "numeric", "on", "optimize", "option", "optionally", "or", "order", "out", "outer", "outfile", "precision", "primary", "procedure", "purge", "read", "reads", "real", "references", "regexp", "rename", "repeat", "replace", "require", "restrict", "return", "revoke", "right", "rlike", "schema", "schemas", "second_microsecond", "select", "sensitive", "separator", "set", "show", "smallint", "soname", "spatia", "specific", "sql", "sqlexception", "sqlstate", "sqlwarning", "sql_big_result", "sql_calc_found_rows", "sql_small_result", "ssl", "starting", "straight_join", "table", "terminated", "then", "tinyblob", "tinyint", "tinytext", "to", "trailing", "trigger", "true", "undo", "union", "unique", "unlock", "unsigned", "update", "usage", "use", "using", "utc_date", "utc_time", "utc_timestamp", "values", "varbinary", "varchar", "varcharacter", "varying", "when", "where", "while", "with", "write", "xor", "year_month", "zerofill"].indexOf(nome) > 0) {
-            toast("Este nome é reservado pelo sistema", 3000, "toast-error");
+            toast("Este nome é reservado pelo sistema", 3000, "toast-warning");
             $(".requireName").addClass("hide");
             return !1
         }
@@ -650,7 +652,7 @@ function removeEntity(entity) {
         post("entity-ui", "delete/entity", {"name": entity}, function (g) {
             if (g) {
                 updateDicionarioIndex();
-                toast("Entidade Excluída", 3000, "toast-warning");
+                toast("Entidade Excluída", 3000, "toast-success");
                 readDicionarios();
                 readInfo();
                 updateDicionarioIndex();
