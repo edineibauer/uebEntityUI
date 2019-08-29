@@ -842,7 +842,7 @@ $(function () {
     readDefaults();
     readDicionarios();
     entityReset();
-    $("#core-content").off("keyup change focus", "#entityName").on("keyup change focus", "#entityName", function () {
+    $("#app").off("keyup change focus", "#entityName").on("keyup change focus", "#entityName", function () {
         if ($(this).val().length > 2)
             $(".requireNameEntity").removeClass("hide"); else $(".requireNameEntity").addClass("hide")
     }).off("change", "#relation").on("change", "#relation", function () {
