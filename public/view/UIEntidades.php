@@ -163,21 +163,19 @@
                     <label class="row" for="funcaoRelation">Relacionamento</label>
                     <select class="selectInput" id="funcaoRelation">
                         <option value="" disabled selected>Tipo de Relação</option>
-                        <option value="extend">Importar Formulário [1]</option>
-                        <option value="folder"
-                                title="permite criar uma pasta que direciona para um formulário associado">
-                            Abrir Formulário [1]
+                        <option value="extend">Mescla Formulário</option>
+                        <option value="folder" title="permite criar uma pasta que direciona para um formulário associado">
+                            Cria 1 Registro
                         </option>
-                        <option value="extend_folder"
-                                title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
-                            Abrir Formulário [n]
+                        <option value="extend_folder" title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
+                            Cria Lista de Registros
                         </option>
-                        <option value="extend_mult"
+                        <!--<option value="extend_mult"
                                 title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
                             Extender Formulário [n]
-                        </option>
+                        </option>-->
                         <option value="list">
-                            Auto completar [1]
+                            Associar Registro (busca)
                         </option>
                         <!--       <option value="extend_add">Extensão Add</option>-->
                         <!--<option value="list">Lista</option>
