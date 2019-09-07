@@ -10,6 +10,7 @@
   "card_number",
   "percent",
   "text",
+  "number",
   "textarea",
   "url",
   "ie",
