@@ -1,4 +1,4 @@
-<ul id="nav-entity" class="theme-text-aux z-depth-4 space-header theme-l1">
+<ul id="nav-entity" class="theme-text-aux z-depth-4 space-header animate-left theme-l1">
     <div class="row">
         <div class="padding-12 col">
             <div class="left upper padding-medium">
