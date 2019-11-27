@@ -12,7 +12,7 @@ if (0 < $_FILES['arquivo']['error']) {
     $extensao = pathinfo($file)['extension'];
     if ("json" === $extensao) {
         if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
-            $name .= '-' . substr(strtotime('now'), 5);
+            $name .= '_' . substr(strtotime('now'), 5);
             $file = $name . ".json";
             if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
                 $name .= "w";
