@@ -17,15 +17,13 @@ if (0 < $_FILES['arquivo']['error']) {
 
         $metadados = json_decode(file_get_contents(PATH_HOME . 'entity/cache/' . $file), !0);
         if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
+            $metadadosInfo = \Entity\Metadados::getInfo($name);
             $name .= '_' . substr(strtotime('now'), 5);
             $file = $name . ".json";
-            $metadadosInfo = \Entity\Metadados::getInfo($name);
             $tipoUser = (int) $metadadosInfo['user'];
             $tipoAutor = $metadadosInfo['autor'];
-            $tipoIcon = $metadadosInfo['icon'];
+            $tipoIcon = $metadadosInfo['icon'] ?? "";
         }
-
-        move_uploaded_file($_FILES['arquivo']['tmp_name'], PATH_HOME . 'entity/cache/' . $file);
 
         $entity = new \EntityUi\SaveEntity($name, $tipoIcon, $tipoUser, $tipoAutor, $metadados);
 
