@@ -15,11 +15,27 @@ if (0 < $_FILES['arquivo']['error']) {
 
     if ("json" === pathinfo($file)['extension']) {
 
+        /**
+         * @param string $name
+         * @param int $i
+         * @return string
+         */
+        function nextName(string $name, int $i) {
+            $nameTeste = $name . ($i === 0 ? "" : "_" . $i);
+            if (file_exists(PATH_HOME . "entity/cache/{$nameTeste}.json"))
+                return nextName($name, $i+1);
+
+            return $nameTeste;
+        }
+
         $metadados = json_decode(file_get_contents(PATH_HOME . 'entity/cache/' . $file), !0);
-        if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
-            $metadadosInfo = \Entity\Metadados::getInfo($name);
-            $name .= '_' . substr(strtotime('now'), 5);
-            $file = $name . ".json";
+        $nameOld = $name;
+
+        $name = nextName($name, 0);
+        $file = $name . ".json";
+
+        if($name !== $nameOld) {
+            $metadadosInfo = \Entity\Metadados::getInfo($nameOld);
             $tipoUser = (int) $metadadosInfo['user'];
             $tipoAutor = $metadadosInfo['autor'];
             $tipoIcon = $metadadosInfo['icon'] ?? "";
