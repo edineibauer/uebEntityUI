@@ -9,20 +9,25 @@ if (0 < $_FILES['arquivo']['error']) {
 } else {
     $file = $_FILES['arquivo']['name'];
     $name = pathinfo($file)['filename'];
-    $extensao = pathinfo($file)['extension'];
-    if ("json" === $extensao) {
+    $tipoUser = 0;
+    $tipoAutor = null;
+    $tipoIcon = "";
+
+    if ("json" === pathinfo($file)['extension']) {
+
+        $metadados = json_decode(file_get_contents(PATH_HOME . 'entity/cache/' . $file), !0);
         if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
             $name .= '_' . substr(strtotime('now'), 5);
             $file = $name . ".json";
-            if (file_exists(PATH_HOME . "entity/cache/{$name}.json")) {
-                $name .= "w";
-                $file = $name . ".json";
-            }
+            $metadadosInfo = \Entity\Metadados::getInfo($name);
+            $tipoUser = (int) $metadadosInfo['user'];
+            $tipoAutor = $metadadosInfo['autor'];
+            $tipoIcon = $metadadosInfo['icon'];
         }
 
         move_uploaded_file($_FILES['arquivo']['tmp_name'], PATH_HOME . 'entity/cache/' . $file);
 
-        $entity = new \EntityUi\SaveEntity($name, "", 0, null, json_decode(file_get_contents(PATH_HOME . 'entity/cache/' . $file), !0));
+        $entity = new \EntityUi\SaveEntity($name, $tipoIcon, $tipoUser, $tipoAutor, $metadados);
 
         /**
          * Se for uma nova entidade, dê permissão de menu ao ADM
