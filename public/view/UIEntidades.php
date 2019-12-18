@@ -34,7 +34,7 @@
     </ul>
 </ul>
 
-<div class="col s12 m4 z-depth-2 space-header theme-l4 color-text-grey-dark-medium" id="nav-menu">
+<div class="col s12 m4 z-depth-2 space-header theme-l4" id="nav-menu">
     <header class="row">
         <div class="panel">
             <div class="col s12 padding-tiny">
