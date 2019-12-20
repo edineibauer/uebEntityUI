@@ -20,14 +20,14 @@
         <div class="col s12 hide" id="tpl-entity">
             <div class="col s7 padding-small">__$__</div>
             <div class="padding-small col s5 align-right">
-                <button class="theme-text-aux opacity radius pointer right padding-tiny btn-flat"
+                <button class="theme theme-text-aux opacity radius pointer right padding-tiny btn-flat"
                         style="height: 26px;" onclick="removeEntity('__$__')">
-                    <i class="material-icons white-text font-medium" style="margin-top: 4px;">delete</i>
+                    <i class="material-icons font-medium" style="margin-top: 4px;">delete</i>
                 </button>
-                <button class="theme-text-aux radius pointer right padding-tiny btn-flat"
+                <button class="theme theme-text-aux radius pointer right padding-tiny btn-flat"
                         style="margin-right: 5px;height: 26px;"
                         onclick="entityEdit('__$__')">
-                    <i class="material-icons white-text font-medium" style="margin-top: 4px;">edit</i>
+                    <i class="material-icons font-medium" style="margin-top: 4px;">edit</i>
                 </button>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div class="row" id="entity-name">
             <label class="col s12">
                 <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
-                    <select id="user" class="col color-text-gray margin-0">
+                    <select id="user" class="col theme-text-aux margin-0">
                         <option value="0">Entidade</option>
                         <option value="1">Usuário</option>
                         <!--<option value="2">Sistema</option>-->
@@ -78,7 +78,7 @@
                     </a>
                 </div>
                 <div class="left" style="width: 50px">
-                    <input id="entityIcon" placeholder="ícone" type="text">
+                    <input id="entityIcon" class="theme-text-aux" placeholder="ícone" type="text">
                 </div>
                 <label class="col relative" style="width: 70px">
                     <input type="checkbox" class="left" id="haveAutor"/>
@@ -121,11 +121,11 @@
                 </button>
             </div>
             <span class="left overflow-hidden padding-4" style="width: 150px">__$1__</span>
-            <button class="btn-flat pointer right opacity theme-text-aux radius" style="padding: 9px 5px"
+            <button class="btn-flat pointer right opacity theme theme-text-aux radius" style="padding: 9px 5px"
                     onclick="deleteAttr(__$0__)">
                 <i class="material-icons right font-large">delete</i>
             </button>
-            <button class="btn-flat pointer right theme-text-aux radius" style="margin-right: 5px;padding: 9px"
+            <button class="btn-flat pointer right theme theme-text-aux radius" style="margin-right: 5px;padding: 9px"
                     onclick="editAttr(__$0__)">
                 <i class="material-icons right font-large">edit</i>
             </button>
