@@ -113,11 +113,12 @@
   "status": {
     "format": "status",
     "type": "tinyint",
-    "nome": "Status",
+    "nome": "Ativo",
+    "column": "ativo",
     "key": "status",
     "group": "boolean",
     "size": 1,
-    "default": 0,
+    "default": 1,
     "allow": {
       "options": [{
         "valor": 0,
