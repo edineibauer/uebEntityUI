@@ -58,7 +58,7 @@
         <div class="row" id="entity-name">
             <label class="col s12">
                 <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
-                    <select id="user" class="col theme-text-aux margin-0">
+                    <select id="user" class="col margin-0">
                         <option value="0">Entidade</option>
                         <option value="1">Usuário</option>
                         <!--<option value="2">Sistema</option>-->
@@ -78,7 +78,7 @@
                     </a>
                 </div>
                 <div class="left" style="width: 50px">
-                    <input id="entityIcon" class="theme-text-aux" placeholder="ícone" type="text">
+                    <input id="entityIcon" placeholder="ícone" type="text">
                 </div>
                 <label class="col relative" style="width: 70px">
                     <input type="checkbox" class="left" id="haveAutor"/>
