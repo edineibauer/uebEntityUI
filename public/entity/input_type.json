@@ -129,7 +129,11 @@
       }]
     },
     "form": {
-      "input": "switch"
+      "input": "switch",
+      "style": "padding: 20px 0 0 10px",
+      "cols": "12",
+      "colm": "2",
+      "coll": "1"
     }
   },
   "date": {
