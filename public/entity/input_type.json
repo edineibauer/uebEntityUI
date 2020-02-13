@@ -740,6 +740,18 @@
       "class": "valor_decimal_minus"
     }
   },
+  "valor_decimal_none": {
+    "format": "valor_decimal_none",
+    "key": "valor",
+    "type": "decimal",
+    "nome": "Valor",
+    "allow": {
+      "regexp": "^\\d{1,15}$"
+    },
+    "form": {
+      "class": "valor_decimavalor_decimal_nonel_minus"
+    }
+  },
   "percent": {
     "format": "percent",
     "key": "percent",
