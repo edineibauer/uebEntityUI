@@ -749,7 +749,7 @@
       "regexp": "^\\d{1,15}$"
     },
     "form": {
-      "class": "valor_decimavalor_decimal_nonel_minus"
+      "class": "valor_decimal_none"
     }
   },
   "percent": {
