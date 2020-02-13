@@ -193,7 +193,9 @@
                         <option value="title">Título</option>
                         <option value="link">Link</option>
                         <option value="status">Status</option>
-                        <option value="valor">R$ Valor</option>
+                        <option value="valor">R$ Valor 2 casas</option>
+                        <option value="valor_decimal">R$ Valor 3 casas</option>
+                        <option value="valor_decimal_plus">R$ Valor 4 casas</option>
                         <option value="percent">Porcentagem %</option>
                         <option value="url">Url</option>
                         <option value="email">Email</option>

@@ -704,6 +704,30 @@
       "class": "valor"
     }
   },
+  "valor_decimal": {
+    "format": "valor_decimal",
+    "key": "valor",
+    "type": "decimal",
+    "nome": "Valor",
+    "allow": {
+      "regexp": "^(\\d{1,15})?(\\.)?\\d{1,3}$"
+    },
+    "form": {
+      "class": "valor_decimal"
+    }
+  },
+  "valor_decimal_plus": {
+    "format": "valor_decimal_plus",
+    "key": "valor",
+    "type": "decimal",
+    "nome": "Valor",
+    "allow": {
+      "regexp": "^(\\d{1,15})?(\\.)?\\d{1,4}$"
+    },
+    "form": {
+      "class": "valor_decimal_plus"
+    }
+  },
   "percent": {
     "format": "percent",
     "key": "percent",
