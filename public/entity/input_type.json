@@ -728,6 +728,18 @@
       "class": "valor_decimal_plus"
     }
   },
+  "valor_decimal_minus": {
+    "format": "valor_decimal_minus",
+    "key": "valor",
+    "type": "decimal",
+    "nome": "Valor",
+    "allow": {
+      "regexp": "^(\\d{1,15})?(\\.)?\\d$"
+    },
+    "form": {
+      "class": "valor_decimal_minus"
+    }
+  },
   "percent": {
     "format": "percent",
     "key": "percent",

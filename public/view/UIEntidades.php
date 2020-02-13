@@ -193,6 +193,7 @@
                         <option value="title">Título</option>
                         <option value="link">Link</option>
                         <option value="status">Status</option>
+                        <option value="valor_decimal_minus">R$ Valor 1 casa</option>
                         <option value="valor">R$ Valor 2 casas</option>
                         <option value="valor_decimal">R$ Valor 3 casas</option>
                         <option value="valor_decimal_plus">R$ Valor 4 casas</option>
