@@ -94,13 +94,17 @@ class EntityCreateEntityDatabase extends EntityDatabase
             if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]))
                 parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
 
-            if (in_array($dados['key'], array("extend", "extend_mult", "extend_add", "list", "list_mult", "selecao", "checkbox_rel", "selecao_mult", "checkbox_mult", "selecaoUnique"))) {
-                if (in_array($dados['key'], ["extend", "extend_add", "list", "selecao", "checkbox_rel", "selecaoUnique"]))
-                    parent::createIndexFk($entity, $dados['column'], $dados['relation'], "", $dados['key']);
-                else
-                    parent::createRelationalTable($dados);
-            } elseif ($dados['key'] === "publisher") {
-                parent::createIndexFk($entity, $dados['column'], "usuarios", "", "publisher");
+
+            if ($dados['key'] === "relation") {
+                if ($dados['type'] === "int")
+                    parent::createIndexFk($entity, $dados['column'], $dados['relation']);
+
+                //este criaria uma tabela intermediária com o id de relacionamento entre as duas tabelas
+//                else
+//                    parent::createRelationalTable($dados);
+
+//            } elseif ($dados['key'] === "publisher") {
+//                parent::createIndexFk($entity, $dados['column'], "usuarios", "", "publisher");
             }
         }
     }
