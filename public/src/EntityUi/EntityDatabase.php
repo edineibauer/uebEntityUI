@@ -49,12 +49,10 @@ abstract class EntityDatabase
 
     protected function prepareSqlColumn($dados)
     {
-        /*if ($dados['type'] === "json") {
-            $dados['type'] = "varchar";
-            $dados['size'] = !empty($dados['size']) ? $dados['size'] : 8192;
-        }*/
-        if ($dados['type'] === "json")
+        if ($dados['type'] === "json") {
+            $dados['type'] = "longtext";
             $dados['size'] = "";
+        }
         elseif($dados['type'] === "datetime-local")
             $dados['type'] = "datetime";
 
