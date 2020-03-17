@@ -95,7 +95,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
                 parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
 
 
-            if ($dados['key'] === "relation") {
+            if ($dados['key'] === "relation" || $dados['key'] === "publisher") {
                 if ($dados['type'] === "int")
                     parent::createIndexFk($entity, $dados['column'], $dados['relation']);
 

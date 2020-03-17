@@ -468,6 +468,7 @@
     "nome": "autorpub",
     "column": "autorpub",
     "relation": "usuarios",
+    "group": "one",
     "key": "publisher",
     "form": {
       "input": "hidden"
@@ -479,6 +480,7 @@
     "nome": "ownerpub",
     "column": "ownerpub",
     "relation": "usuarios",
+    "group": "one",
     "key": "publisher",
     "form": false
   },
