@@ -31,17 +31,18 @@ abstract class EntityDatabase
 
         $this->exeSql($string);
 
-        $this->createIndexFk($table, $this->entity . "_id", $this->entity, $dados['column']);
-        $this->createIndexFk($table, $dados['relation'] . "_id", $dados['relation'], $dados['column']);
+        $this->createIndexFk($table, $this->entity . "_id", $this->entity, $dados['column'], !0);
+        $this->createIndexFk($table, $dados['relation'] . "_id", $dados['relation'], $dados['column'], !0);
     }
 
-    protected function createIndexFk($table, $column, $tableTarget, $col = null)
+    protected function createIndexFk($table, $column, $tableTarget, $col = null, $cascade = false)
     {
         $col = $col ?? $column;
         $constraint = substr("c_{$this->entity}_{$col}_{$tableTarget}", 0, 64);
+        $cascade = $cascade ? "CASCADE" : "SET NULL";
 
         $this->exeSql("ALTER TABLE `" . PRE . $table . "` ADD KEY `fk_" . $column . "` (`{$column}`)");
-        $this->exeSql("ALTER TABLE `" . PRE . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . PRE . $tableTarget . "` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION");
+        $this->exeSql("ALTER TABLE `" . PRE . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . PRE . $tableTarget . "`(id) ON DELETE {$cascade} ON UPDATE NO ACTION");
     }
 
     protected function prepareSqlColumn($dados)
@@ -49,45 +50,24 @@ abstract class EntityDatabase
         if ($dados['type'] === "json") {
             $dados['type'] = "longtext";
             $dados['size'] = "";
-        }
-        elseif($dados['type'] === "datetime-local")
+        } elseif ($dados['type'] === "datetime-local")
             $dados['type'] = "datetime";
 
-        if($dados['type'] === "text" && !empty($dados['size']) && $dados['size'] < 14000)
+        if ($dados['type'] === "text" && !empty($dados['size']) && $dados['size'] < 14000)
             $dados['type'] = "varchar";
 
-        if($dados['key'] === "percent") {
+        if ($dados['key'] === "percent") {
             $type = "varchar";
             $size = 5;
         } else {
             $type = (in_array($dados['type'], ["float", "real", "double"]) ? "double" : ($dados['type'] === "number" ? "int" : $dados['type']));
-            $size = (in_array($dados['type'], ['smallint', 'tinyint', 'mediumint', 'int', 'bigint', 'float', 'real', 'double']) ? "" : ($dados['type'] === "decimal" ?  "11," . ($dados['format'] === "valor" ? 2 : ($dados['format'] === "valor_decimal" ? 3 : ($dados['format'] === "valor_decimal_plus" ? 4 : ($dados['format'] === "valor_decimal_minus" ? 1 : 0)))) : $dados['size']));
+            $size = (in_array($dados['type'], ['smallint', 'tinyint', 'mediumint', 'int', 'bigint', 'float', 'real', 'double']) ? "" : ($dados['type'] === "decimal" ? "11," . ($dados['format'] === "valor" ? 2 : ($dados['format'] === "valor_decimal" ? 3 : ($dados['format'] === "valor_decimal_plus" ? 4 : ($dados['format'] === "valor_decimal_minus" ? 1 : 0)))) : $dados['size']));
         }
 
         return "`{$dados['column']}` {$type} "
             . (!empty($size) ? "({$size}) " : ($dados['type'] === "varchar" ? "(254) " : ($dados['type'] === "decimal" ? "(15,2) " : " ")))
 //            . ($dados['default'] === false ? "NOT NULL " : "")
             . ($dados['default'] !== false && !empty($dados['default']) ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
-    }
-
-    protected function getSelecaoUnique(array $data, string $select)
-    {
-        $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-        $dic = Metadados::getDicionario($data['relation']);
-        foreach ($dic as $item) {
-            if ($item['column'] === $select) {
-                $dicionario = array_replace_recursive($inputType['default'], $inputType['selecao']);
-                $dicionario["nome"] = $select;
-                $dicionario["column"] = Check::name($select) . '__' . Check::name($data['column']);
-                $dicionario["relation"] = $item['relation'];
-                $dicionario["key"] = "selecaoUnique";
-                $this->indice++;
-
-                return [$this->indice, $dicionario];
-            }
-        }
-
-        return null;
     }
 
     protected function exeSql($sql)

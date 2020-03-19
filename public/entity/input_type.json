@@ -399,49 +399,14 @@
       "input": "list"
     }
   },
-  "selecao": {
-    "format": "selecao",
-    "type": "int",
-    "key": "relation",
-    "group": "one",
-    "form": {
-      "input": "selecao"
-    }
-  },
   "list_mult": {
     "format": "list_mult",
     "type": "json",
     "key": "relation",
-    "group": "many",
+    "group": "list",
+    "default": "",
     "form": {
       "input": "list_mult"
-    }
-  },
-  "selecao_mult": {
-    "format": "selecao_mult",
-    "type": "json",
-    "key": "relation",
-    "group": "many",
-    "form": {
-      "input": "selecao_mult"
-    }
-  },
-  "checkbox_rel": {
-    "format": "checkbox_rel",
-    "type": "int",
-    "key": "relation",
-    "group": "one",
-    "form": {
-      "input": "checkbox_rel"
-    }
-  },
-  "checkbox_mult": {
-    "format": "checkbox_mult",
-    "type": "json",
-    "key": "relation",
-    "group": "many",
-    "form": {
-      "input": "checkbox_mult"
     }
   },
   "publisher": {

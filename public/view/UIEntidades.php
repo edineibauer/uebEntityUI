@@ -165,19 +165,17 @@
                         <option value="" disabled selected>Tipo de Relação</option>
                         <option value="extend">Mescla Formulário</option>
                         <option value="folder" title="permite criar uma pasta que direciona para um formulário associado">
-                            Cria 1 Registro
+                            Importa Registros 1
                         </option>
                         <option value="extend_folder" title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
-                            Cria Lista de Registros
+                            Importa Registros +
                         </option>
                         <option value="list">
-                            Associar Registro (busca)
+                            Associar por Autocomplete 1
                         </option>
-                       <option value="list_mult">Lista Multipla</option>
-                       <option value="selecao">Seleção</option>
-                       <option value="selecao_mult">Seleção Multipla</option>
-                       <option value="checkbox_rel">CheckBox</option>
-                       <option value="checkbox_mult">CheckBox Multiplo</option>-->
+                        <option value="list_mult">
+                            Associar por Autocomplete +
+                        </option>
                     </select>
                 </div>
                 <div class="col s12 l4 padding-small">

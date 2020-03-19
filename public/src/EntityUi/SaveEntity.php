@@ -106,14 +106,14 @@ class SaveEntity
             "icon" => $icon, "autor" => $autor, "user" => $user,
             "required" => null, "unique" => null, "update" => null,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
-            "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
+            "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
         ];
 
         foreach ($metadados as $i => $dados) {
             if($dados['unique'] === "true" || $dados['unique'] === true || $dados['unique'] == 1)
                 $data['unique'][] = $i;
 
-            if (in_array($dados['key'], ["extend", "list", "list_mult", "folder", "extend_folder"]))
+            if ($dados['key'] === "relation")
                 $data[$dados['key']][] = $i;
 
             if (in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
