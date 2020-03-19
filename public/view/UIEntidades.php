@@ -173,8 +173,6 @@
                         <option value="list">
                             Associar Registro (busca)
                         </option>
-                        <!--       <option value="extend_add">Extensão Add</option>-->
-                        <!--<option value="list">Lista</option>
                        <option value="list_mult">Lista Multipla</option>
                        <option value="selecao">Seleção</option>
                        <option value="selecao_mult">Seleção Multipla</option>

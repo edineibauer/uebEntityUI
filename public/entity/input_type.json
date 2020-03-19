@@ -389,15 +389,6 @@
       "input": "extend_folder"
     }
   },
-  "extend_add": {
-    "format": "extend_add",
-    "type": "json",
-    "key": "relation",
-    "group": "one",
-    "form": {
-      "input": "extend_add"
-    }
-  },
   "list": {
     "format": "list",
     "type": "int",

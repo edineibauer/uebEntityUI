@@ -45,7 +45,7 @@ foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {
                     if (($key = array_search($i, $infoCC[$c['format']])) !== false)
                         unset($infoCC[$c['format']][$key]);
 
-                } elseif(in_array($c['format'], ['extend', 'list', 'selecao', 'checkbox_rel', 'extend_add', 'selecaoUnique'])) {
+                } elseif(in_array($c['format'], ['extend', 'list', 'selecao', 'checkbox_rel', 'selecaoUnique'])) {
 
                     //DROP FK AND INDEX
                     $constraint = substr("c_{$fEntity}_{$c['column']}_{$c['relation']}", 0, 64);
