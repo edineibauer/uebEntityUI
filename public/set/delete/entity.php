@@ -12,16 +12,8 @@ $dic = new \Entity\Dicionario($entity);
 
 //Remove dados extendidos multiplos e tablas de relação multiplas
 if (!empty($dic->getAssociationMult())) {
-    foreach ($dic->getAssociationMult() as $item) {
-        if ($item->getFormat() === "extend_mult") {
-            $read->exeRead($entity . "_" . $item->getColumn());
-            if ($read->getResult()) {
-                foreach ($read->getResult() as $ddd)
-                    $del->exeDelete(PRE . $item->getRelation(), "WHERE id = :id", "id={$ddd[$item->getRelation() . "_id"]}");
-            }
-        }
+    foreach ($dic->getAssociationMult() as $item)
         $sql->exeCommand("DROP TABLE " . PRE . "{$entity}_{$item->getColumn()}");
-    }
 }
 
 //Remove dados extendidos simples
@@ -46,7 +38,7 @@ foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {
         foreach ($cc as $i => $c) {
             if ($c['relation'] === $entity) {
 
-                if (in_array($c['format'], ['extend_mult', 'list_mult', 'selecao_mult', 'checkbox_mult'])) {
+                if (in_array($c['format'], ['list_mult', 'selecao_mult', 'checkbox_mult'])) {
                     //DROP RELATION TABLE
                     $sql->exeCommand("DROP TABLE " . PRE . "{$fEntity}_{$c['column']}");
 

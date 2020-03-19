@@ -371,15 +371,6 @@
       "input": "extend"
     }
   },
-  "extend_mult": {
-    "format": "extend_mult",
-    "type": "json",
-    "key": "relation",
-    "group": "many",
-    "form": {
-      "input": "extend_mult"
-    }
-  },
   "folder": {
     "format": "folder",
     "type": "json",

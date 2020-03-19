@@ -205,7 +205,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             $sql = new SqlCommand();
             foreach ($add as $id => $dados) {
 
-                if($dados['group'] !== "many" || $dados['key'] !== "relation" || $dados['format'] === "extend_mult" || $dados['format'] === "extend_folder")
+                if($dados['group'] !== "many" || $dados['key'] !== "relation" || $dados['format'] === "extend_folder")
                     $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
 
                 if ($dados['key'] === "relation") {

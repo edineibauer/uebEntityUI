@@ -170,10 +170,6 @@
                         <option value="extend_folder" title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
                             Cria Lista de Registros
                         </option>
-                        <!--<option value="extend_mult"
-                                title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
-                            Extender Formulário [n]
-                        </option>-->
                         <option value="list">
                             Associar Registro (busca)
                         </option>
