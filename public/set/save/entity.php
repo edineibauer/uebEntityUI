@@ -59,9 +59,4 @@ $p = json_decode(file_get_contents(PATH_HOME . "_config/permissoes.json"), !0);
 $p['admin'][$newName]['menu'] = "true";
 Config::writeFile(PATH_HOME . "_config/permissoes.json", json_encode($p));
 
-/**
- * Informa ao sistema que houve atualização
- */
-Config::updateSite();
-
 $data['data'] = true;
