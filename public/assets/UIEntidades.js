@@ -148,7 +148,6 @@ function showEntity() {
 }
 
 function updateDicionarioIndex() {
-    updateVersionNumber();
     updateCacheUser();
 }
 
@@ -169,7 +168,6 @@ function saveEntity(silent) {
 
     if (userRequisite.validate && checkSaveAttr() && entity.name.length > 2 && typeof (dicionariosEdit[entity.name]) !== "undefined" && !$.isEmptyObject(dicionariosEdit[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
-        clearInterval(checkUpdateInt);
         post("entity-ui", "save/entity", {
             "name": entity.name,
             "icon": $("#entityIcon").val(),
