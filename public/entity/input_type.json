@@ -403,7 +403,7 @@
     "format": "list_mult",
     "type": "json",
     "key": "relation",
-    "group": "list",
+    "group": "many",
     "default": "",
     "form": {
       "input": "list_mult"
