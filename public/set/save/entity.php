@@ -11,7 +11,7 @@ $newName = str_replace("-", "_", \Helpers\Check::name(trim(strip_tags(filter_inp
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $dados = filter_input(INPUT_POST, 'dados', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
-$save = new \EntityUi\SaveEntity($name, $icon, $user, ($autor ? 1 : ($owner ? 2 : null)), $dados, $id);
+$save = new \EntityUi\SaveEntity($name, $icon, (!empty($user) && is_numeric($user) ? $user : 0), ($autor ? 1 : ($owner ? 2 : null)), $dados, $id);
 
 if($name !== $newName) {
     $sql = new \Conn\SqlCommand();
