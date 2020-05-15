@@ -42,7 +42,7 @@ foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {
                     //DROP RELATION TABLE
                     $sql->exeCommand("DROP TABLE " . PRE . "{$fEntity}_{$c['column']}");
 
-                    if (($key = array_search($i, $infoCC[$c['format']])) !== false)
+                    if (($key = array_search($i, (is_array($infoCC[$c['format']]) && !empty($infoCC[$c['format']]) ? $infoCC[$c['format']] : []))) !== false)
                         unset($infoCC[$c['format']][$key]);
 
                 } elseif(in_array($c['format'], ['extend', 'list', 'selecao', 'checkbox_rel', 'selecaoUnique'])) {
@@ -59,7 +59,7 @@ foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {
                     //DROP COLUMN
                     $sql->exeCommand("ALTER TABLE " . PRE . $fEntity . " DROP COLUMN " . $c['column']);
 
-                    if (($key = array_search($i, $infoCC[$c['format']])) !== false)
+                    if (($key = array_search($i, (is_array($infoCC[$c['format']]) && !empty($infoCC[$c['format']]) ? $infoCC[$c['format']] : []))) !== false)
                         unset($infoCC[$c['format']][$key]);
                 }
 
