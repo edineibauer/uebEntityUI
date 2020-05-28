@@ -4,7 +4,11 @@ namespace EntityUi;
 
 class InputType
 {
-    public static function getInputTypes()
+    /**
+     * Obtém os tipos de metadados de inputs
+     * @return array
+     */
+    public static function getInputTypes(): array
     {
         $inputs = \Config\Config::getRoutesTo("input_type");
         $default = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/default.json"), !0)['default'];
@@ -30,8 +34,45 @@ class InputType
         return $result;
     }
 
-    public static function getInputDefault()
+    /**
+     * Obtém metadados padrão para qualquer input
+     * @return array
+     */
+    public static function getInputDefault(): array
     {
         return json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/default.json"), !0)['default'];
+    }
+
+    /**
+     * Obtém lista dos tipos de input mais relevantes em ordem
+     * @return string[]
+     */
+    public static function getInputRelevant(): array
+    {
+        return [
+            "title",
+            "source",
+            "email",
+            "cep",
+            "tel",
+            "cpf",
+            "cnpj",
+            "valor",
+            "card_number",
+            "percent",
+            "text",
+            "number",
+            "textarea",
+            "url",
+            "ie",
+            "rg",
+            "time",
+            "week",
+            "month",
+            "year",
+            "date",
+            "datetime",
+            "none"
+        ];
     }
 }
