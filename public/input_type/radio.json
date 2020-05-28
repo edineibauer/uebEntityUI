@@ -1,0 +1,55 @@
+{
+  "radio": {
+    "format": "radio",
+    "type": "varchar",
+    "nome": "",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "",
+    "inputName": "Marcação Única",
+    "group": "select",
+    "inputType": "generico",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [
+        {
+          "valor": 1,
+          "representacao": "op\u00e7\u00e3o 1"
+        }
+      ],
+      "validate": ""
+    },
+    "form": {
+      "input": "radio",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

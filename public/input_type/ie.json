@@ -1,0 +1,50 @@
+{
+  "ie": {
+    "format": "ie",
+    "type": "varchar",
+    "nome": "Inscri\u00e7\u00e3o Estadual",
+    "column": "",
+    "minimo": 12,
+    "size": 12,
+    "key": "ie",
+    "group": "",
+    "inputName": "IE, Inscrição Estadual",
+    "inputType": "template",
+    "unique": true,
+    "default": false,
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^\\d{12}$",
+      "options": [],
+      "validate": "ie"
+    },
+    "form": {
+      "input": "input",
+      "type": "text",
+      "class": "ie",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

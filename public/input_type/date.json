@@ -1,0 +1,50 @@
+{
+  "date": {
+    "format": "date",
+    "type": "date",
+    "nome": "Data",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "date",
+    "group": "date",
+    "inputName": "Data",
+    "inputType": "generico",
+    "unique": false,
+    "default": "date",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^\\d{4}-\\d{2}-\\d{2}$",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "date",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "status": {
+    "format": "status",
+    "type": "tinyint",
+    "nome": "Ativo",
+    "column": "ativo",
+    "minimo": false,
+    "size": 1,
+    "key": "status",
+    "group": "boolean",
+    "inputName": "Ativo",
+    "inputType": "template",
+    "unique": false,
+    "default": 1,
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [
+        {
+          "valor": 0,
+          "representacao": "desativado"
+        },
+        {
+          "valor": 1,
+          "representacao": "ativado"
+        }
+      ],
+      "validate": ""
+    },
+    "form": {
+      "input": "switch",
+      "type": "text",
+      "class": "",
+      "style": "padding: 20px 0 0 10px",
+      "cols": "12",
+      "colm": "2",
+      "coll": "1",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

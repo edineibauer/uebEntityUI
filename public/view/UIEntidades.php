@@ -34,21 +34,17 @@
     </ul>
 </ul>
 
-<div class="col s12 m4 z-depth-2 space-header theme-l4" id="nav-menu">
+<div class="col s12 m4 z-depth-2 space-header theme-l3" id="nav-menu">
     <header class="row">
         <div class="panel">
             <div class="col s12 padding-tiny">
-                <button class="btn theme left" id="saveEntityBtn" onclick="saveEntity()">
-                    salvar
+                <button class="btn theme right radius" id="saveEntityBtn" onclick="saveEntity()">
+                    Salvar Entidade
                     <i class="material-icons right padding-left">check</i>
                 </button>
-                <button class="btn color-white left radius hide downloadEntity" title="fazer backup"
+                <button class="btn theme left radius hide downloadEntity" title="baixar backup da entidade"
                         onclick="downloadEntity()">
-                    <i class="material-icons left color-text-gray">get_app</i>
-                </button>
-                <button class="theme right btn-floating" title="Novo Atributo" id="saveAttrBtn"
-                        onclick="editAttr()">
-                    <i class="material-icons right">add</i>
+                    <i class="material-icons left theme-text-aux">get_app</i>
                 </button>
             </div>
         </div>
@@ -58,27 +54,37 @@
         <div class="row" id="entity-name">
             <label class="col s12">
                 <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
-                    <select id="user" class="col margin-0">
-                        <option value="0">Entidade</option>
-                        <option value="1">Usuário</option>
-                        <!--<option value="2">Sistema</option>-->
+                    <select id="user" class="col margin-0 theme-text-aux">
+                        <option value="0" class="theme-l2 theme-text-aux">Entidade</option>
+                        <option value="2" class="theme-l2 theme-text-aux">Sistema</option>
+                        <option value="1" class="theme-l2 theme-text-aux">Usuário</option>
                     </select>
                 </label>
                 <div class="rest">
-                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col"
+                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col theme-text-aux"
                            style="margin:0">
                 </div>
+            </label>
+            <label class="col s12 hide" id="col-system">
+                <div class="col left relative" style="width: 70px;padding-top: 14px">
+                    Sistema:
+                </div>
+                <label class="col left" style="padding: 3.5px 0 0 0;width: 187px">
+                    <select id="system" class="col margin-0 theme-text-aux">
+                        <option value="" class="theme-l2 theme-text-aux"><?=SITENAME?></option>
+                    </select>
+                </label>
             </label>
 
             <div class="row font-small hide requireNameEntity">
                 <div class="col left padding-tiny" style="width: 26px; height: 26px">
                     <a href="https://material.io/tools/icons/?style=baseline" target="_blank"
-                       class="right btn-flat font-small theme-text margin-0" style="width: 27px; height: 26px">
-                        <i class="material-icons padding-tiny padding-4 theme-text" id="entityIconDemo"></i>
+                       class="right btn-flat font-small theme-text-aux margin-0" style="width: 27px; height: 26px">
+                        <i class="material-icons padding-tiny padding-4 theme-text-aux" id="entityIconDemo"></i>
                     </a>
                 </div>
                 <div class="left" style="width: 50px">
-                    <input id="entityIcon" placeholder="ícone" type="text">
+                    <input id="entityIcon" placeholder="ícone" type="text" class="theme-text-aux">
                 </div>
                 <label class="col relative" style="width: 70px">
                     <input type="checkbox" class="left" id="haveAutor"/>
@@ -86,12 +92,10 @@
                 </label>
                 <label class="col relative" style="width: 110px">
                     <input type="checkbox" class="left" id="haveOwner"/>
-                    <span class="left pointer" style="padding:10px 0">Multi-tenancy</span>
+                    <span class="left pointer" style="padding:10px 0">Proprietário</span>
                 </label>
             </div>
-
-            <div class="row">
-            </div>
+            <div class="row"></div>
         </div>
 
         <div class="col hide overflow-hidden relative padding-bottom" id="importForm">
@@ -135,84 +139,37 @@
 
 <div id="main" class="row color-gray-light space-header">
     <div class="col s12 hide requireNameEntity">
+        <div class="col no-select margin-bottom padding-bottom">
+            <button class="theme left radius padding-left" title="Salvar Campo" onclick="editAttr()">
+                Salvar Campo
+                <i class="material-icons right" style="padding-left: 8px">check</i>
+            </button>
+        </div>
         <div class="card padding-medium">
             <div class="row">
                 <div class="col s12 l4 padding-small pad">
-                    <label class="row" for="funcaoPrimary">Genérico</label>
+                    <label class="row" for="funcaoPrimary">Básico</label>
                     <select class="selectInput" id="funcaoPrimary">
-                        <option value="" disabled selected>Input Genérica</option>
-                        <option value="text">Texto</option>
-                        <option value="textarea">Área de Texto</option>
-                        <!--                            <option value="html">Área de HTML</option>-->
-                        <option value="number">Número</option>
-                        <option value="float">Número com vírgula</option>
-                        <option value="boolean">Botão Liga/Desliga</option>
-                        <option value="select">Caixa de Seleção</option>
-                        <option value="radio">Botão de Seleção</option>
-                        <option value="checkbox">Caixas de Marcação</option>
-                        <option value="date">Data</option>
-                        <option value="datetime">Data & Hora</option>
-                        <!--                        <option value="range">Range</option>-->
-                        <option value="color">Cor</option>
-                        <!--<option value="source">Arquivos Caixas</option>-->
-                        <option value="source_list">Anexos</option>
-                        <option value="information">Informação HTML</option>
+                        <option value="" disabled selected>Inputs Básicas</option>
                     </select>
                 </div>
                 <div class="col s12 l4 padding-small">
-                    <label class="row" for="funcaoRelation">Relacionamento</label>
+                    <label class="row" for="funcaoRelation">Relação</label>
                     <select class="selectInput" id="funcaoRelation">
-                        <option value="" disabled selected>Tipo de Relação</option>
-                        <option value="extend">Mescla Formulário</option>
-                        <option value="folder" title="permite criar uma pasta que direciona para um formulário associado">
-                            Importa Registros 1
-                        </option>
-                        <option value="extend_folder" title="Multi-tenancy permite criar registros de outra entidade e associar a este registro">
-                            Importa Registros +
-                        </option>
-                        <option value="list">
-                            Associar por Autocomplete 1
-                        </option>
-                        <option value="list_mult">
-                            Associar por Autocomplete +
-                        </option>
+                        <option value="" disabled selected>Inputs Relacionados</option>
                     </select>
                 </div>
                 <div class="col s12 l4 padding-small">
                     <label class="row" for="funcaoIdentifier">Template</label>
                     <select class="selectInput" id="funcaoIdentifier">
-                        <option value="" disabled selected>Input de Identidade</option>
-                        <option value="title">Título</option>
-                        <option value="link">Link</option>
-                        <option value="status">Status</option>
-                        <option value="valor_decimal_none">R$ Valor inteiro</option>
-                        <option value="valor_decimal_minus">R$ Valor 1 casa</option>
-                        <option value="valor">R$ Valor 2 casas</option>
-                        <option value="valor_decimal">R$ Valor 3 casas</option>
-                        <option value="valor_decimal_plus">R$ Valor 4 casas</option>
-                        <option value="percent">Porcentagem %</option>
-                        <option value="url">Url</option>
-                        <option value="email">Email</option>
-                        <option value="password">Password</option>
-                        <option value="tel">Telefone</option>
-                        <option value="cpf">Cpf</option>
-                        <option value="cnpj">Cnpj</option>
-                        <option value="ie">Inscrição Estadual</option>
-                        <option value="rg">RG</option>
-                        <option value="card_number">Número de Cartão</option>
-                        <option value="cep">Cep</option>
-                        <option value="time">Hora</option>
-                        <option value="week">Semana</option>
-                        <option value="month">Mês</option>
-                        <option value="year">Ano</option>
-                        <option value="passwordRequired">Confirmar Senha</option>
+                        <option value="" disabled selected>Inputs Pré-formatadas</option>
                     </select>
                 </div>
             </div>
 
             <div class="col s12">
                 <div class="col s12 m8 l8 padding-small hide" id="nomeAttr">
-                    <label for="nome" class="color-text-gray">Nome do Atributo</label>
+                    <label for="nome" class="color-text-gray">Nome do Campo</label>
                     <input id="nome" autocomplete="off" type="text" class="input">
                 </div>
 

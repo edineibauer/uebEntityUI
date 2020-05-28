@@ -34,7 +34,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         $metadados = $this->adicionaCamposUsuario($entity);
 
         if(!empty($metadados)) {
-            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL";
+            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system` VARCHAR(64) DEFAULT NULL";
             foreach ($metadados as $dados)
                 $string .= ", " . parent::prepareSqlColumn($dados);
 
@@ -63,11 +63,11 @@ class EntityCreateEntityDatabase extends EntityDatabase
 
         if(!empty($info['autor'])) {
             if($info['autor'] === 1) {
-                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-                $metadados["999998"] = array_replace_recursive($inputType['default'], $inputType['publisher'], ["indice" => 999998, "default" => ""]);
+                $publisher = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/publisher.json"), !0)['publisher'];
+                $metadados["999998"] = array_replace_recursive($publisher, ["indice" => 999998, "default" => ""]);
             } elseif($info['autor'] === 2) {
-                $inputType = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/entity/input_type.json"), true);
-                $metadados["999999"] = array_replace_recursive($inputType['default'], $inputType['owner'], ["indice" => 999999, "default" => ""]);
+                $owner = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/owner.json"), !0)['owner'];
+                $metadados["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
             }
         }
 
@@ -81,6 +81,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
     private function createKeys(string $entity, array $metadados)
     {
         parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
+        parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `system_key` (`system`)");
 
         foreach ($metadados as $i => $dados) {
 

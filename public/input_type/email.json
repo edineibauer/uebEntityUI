@@ -1,0 +1,50 @@
+{
+  "email": {
+    "format": "email",
+    "type": "varchar",
+    "nome": "Email",
+    "column": "",
+    "minimo": false,
+    "size": 127,
+    "key": "email",
+    "group": "",
+    "inputName": "Email",
+    "inputType": "template",
+    "unique": true,
+    "default": false,
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": "email"
+    },
+    "form": {
+      "input": "input",
+      "type": "email",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

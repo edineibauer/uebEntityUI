@@ -1,0 +1,50 @@
+{
+  "cnpj": {
+    "format": "cnpj",
+    "type": "varchar",
+    "nome": "CNPJ",
+    "column": "",
+    "minimo": 14,
+    "size": 14,
+    "key": "cnpj",
+    "group": "",
+    "inputName": "CNPJ",
+    "inputType": "template",
+    "unique": true,
+    "default": false,
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": "cnpj"
+    },
+    "form": {
+      "input": "input",
+      "type": "text",
+      "class": "cnpj",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

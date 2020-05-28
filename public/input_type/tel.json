@@ -1,0 +1,50 @@
+{
+  "tel": {
+    "format": "tel",
+    "type": "varchar",
+    "nome": "Telefone",
+    "column": "",
+    "minimo": 10,
+    "size": 14,
+    "key": "tel",
+    "group": "",
+    "inputName": "Telefone",
+    "inputType": "template",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "tel",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

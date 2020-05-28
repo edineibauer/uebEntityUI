@@ -1,0 +1,87 @@
+{
+  "source_list": {
+    "format": "source_list",
+    "type": "json",
+    "nome": "Imagem",
+    "column": "",
+    "minimo": false,
+    "size": 1,
+    "key": "source",
+    "group": "",
+    "inputName": "Arquivo",
+    "inputType": "generico",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [
+        {
+          "valor": "png",
+          "representacao": "png"
+        },
+        {
+          "valor": "jpg",
+          "representacao": "jpg"
+        },
+        {
+          "valor": "jpeg",
+          "representacao": "jpeg"
+        },
+        {
+          "valor": "gif",
+          "representacao": "gif"
+        },
+        {
+          "valor": "bmp",
+          "representacao": "bmp"
+        },
+        {
+          "valor": "tif",
+          "representacao": "tif"
+        },
+        {
+          "valor": "tiff",
+          "representacao": "tiff"
+        },
+        {
+          "valor": "psd",
+          "representacao": "psd"
+        },
+        {
+          "valor": "svg",
+          "representacao": "svg"
+        }
+      ],
+      "validate": ""
+    },
+    "form": {
+      "input": "file_list",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

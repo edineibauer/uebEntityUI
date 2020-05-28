@@ -76,11 +76,11 @@ function readDicionarios() {
 }
 
 function entityReset() {
-    entity = {"name": "", "icon": "", "autor": "", "owner": "", "user": "0", "edit": null}
+    entity = {"name": "", "icon": "", "autor": "", "owner": "", "user": "0", "system": "", "edit": null}
 }
 
 function entityEdit(id) {
-    if(id !== "usuarios") {
+    if (id !== "usuarios") {
         $("#importForm").addClass("hide");
         $("#entity-name, #entityAttr").removeClass("hide");
         if ((typeof (id) === "undefined" && entity.name !== "") || (typeof (id) !== "undefined" && id !== entity.name)) {
@@ -92,6 +92,7 @@ function entityEdit(id) {
                 entity.icon = info[id].icon;
                 entity.autor = info[id].autor;
                 entity.owner = info[id].owner;
+                entity.system = info[id].system;
                 entity.user = typeof info[id].user === "number" ? info[id].user : "0";
                 $("#entityIconDemo").text(entity.icon || "");
                 $("#haveAutor").prop("checked", entity.autor === 1);
@@ -129,7 +130,8 @@ function showEntity() {
     $("#entityIconDemo").text(entity.icon);
     $("#haveAutor").prop("checked", entity.autor === 1);
     $("#haveOwner").prop("checked", entity.autor === 2);
-    $("#user").val(entity.user);
+    $("#user").val(entity.user).trigger("change");
+    $("#system").val(entity.system || "");
     $("#entityAttr").html("");
     let maxIndice = 1;
     $.each(dicionariosEdit[entity.name], function (i, e) {
@@ -174,6 +176,7 @@ function saveEntity(silent) {
             "autor": $("#haveAutor").prop("checked"),
             "owner": $("#haveOwner").prop("checked"),
             "user": $("#user").val(),
+            "system": $("#system").val(),
             "dados": dicionariosEdit[entity.name],
             "id": identifier[entity.name],
             "newName": newName
@@ -580,7 +583,7 @@ function checkFieldsOpenOrClose(nome) {
 function allowName(nome, tipo) {
     let allow = !0;
     if (typeof nome !== "undefined") {
-        if (["add", "all", "alter", "analyze", "and", "as", "asc", "asensitive", "before", "between", "bigint", "binary", "blob", "both", "by", "call", "cascade", "case", "change", "char", "character", "check", "collate", "column", "condition", "connection", "constraint", "continue", "convert", "create", "cross", "current_date", "current_time", "current_timestamp", "current_user", "cursor", "database", "databases", "day_hour", "day_microsecond", "day_minute", "day_second", "dec", "decimal", "declare", "default", "delayed", "delete", "desc", "describe", "deterministic", "distinct", "distinctrow", "div", "double", "drop", "dual", "each", "else", "elseif", "enclosed", "escaped", "exists", "exit", "explain", "false", "fetch", "float", "for", "force", "foreign", "from", "fulltext", "goto", "grant", "group", "having", "high_priority", "hour_microsecond", "hour_minute", "hour_second", "if", "ignore", "in", "index", "infile", "inner", "inout", "insensitive", "insert", "number", "integer", "interval", "into", "is", "iterate", "join", "key", "keys", "kill", "leading", "leave", "left", "like", "limit", "lines", "load", "localtime", "localtimestamp", "lock", "long", "longblob", "longtext", "loop", "low_priority", "match", "mediumblob", "mediumint", "mediumtext", "middleint", "minute_microsecond", "minute_second", "mod", "modifies", "natural", "not", "no_write_to_binlog", "null", "numeric", "on", "optimize", "option", "optionally", "or", "order", "out", "outer", "outfile", "precision", "primary", "procedure", "purge", "read", "reads", "real", "references", "regexp", "rename", "repeat", "replace", "require", "restrict", "return", "revoke", "right", "rlike", "schema", "schemas", "second_microsecond", "select", "sensitive", "separator", "set", "show", "smallint", "soname", "spatia", "specific", "sql", "sqlexception", "sqlstate", "sqlwarning", "sql_big_result", "sql_calc_found_rows", "sql_small_result", "ssl", "starting", "straight_join", "table", "terminated", "then", "tinyblob", "tinyint", "tinytext", "to", "trailing", "trigger", "true", "undo", "union", "unique", "unlock", "unsigned", "update", "usage", "use", "using", "utc_date", "utc_time", "utc_timestamp", "values", "varbinary", "varchar", "varcharacter", "varying", "when", "where", "while", "with", "write", "xor", "year_month", "zerofill"].indexOf(nome) > 0) {
+        if (["add", "system", "all", "alter", "analyze", "and", "as", "asc", "asensitive", "before", "between", "bigint", "binary", "blob", "both", "by", "call", "cascade", "case", "change", "char", "character", "check", "collate", "column", "condition", "connection", "constraint", "continue", "convert", "create", "cross", "current_date", "current_time", "current_timestamp", "current_user", "cursor", "database", "databases", "day_hour", "day_microsecond", "day_minute", "day_second", "dec", "decimal", "declare", "default", "delayed", "delete", "desc", "describe", "deterministic", "distinct", "distinctrow", "div", "double", "drop", "dual", "each", "else", "elseif", "enclosed", "escaped", "exists", "exit", "explain", "false", "fetch", "float", "for", "force", "foreign", "from", "fulltext", "goto", "grant", "group", "having", "high_priority", "hour_microsecond", "hour_minute", "hour_second", "if", "ignore", "in", "index", "infile", "inner", "inout", "insensitive", "insert", "number", "integer", "interval", "into", "is", "iterate", "join", "key", "keys", "kill", "leading", "leave", "left", "like", "limit", "lines", "load", "localtime", "localtimestamp", "lock", "long", "longblob", "longtext", "loop", "low_priority", "match", "mediumblob", "mediumint", "mediumtext", "middleint", "minute_microsecond", "minute_second", "mod", "modifies", "natural", "not", "no_write_to_binlog", "null", "numeric", "on", "optimize", "option", "optionally", "or", "order", "out", "outer", "outfile", "precision", "primary", "procedure", "purge", "read", "reads", "real", "references", "regexp", "rename", "repeat", "replace", "require", "restrict", "return", "revoke", "right", "rlike", "schema", "schemas", "second_microsecond", "select", "sensitive", "separator", "set", "show", "smallint", "soname", "spatia", "specific", "sql", "sqlexception", "sqlstate", "sqlwarning", "sql_big_result", "sql_calc_found_rows", "sql_small_result", "ssl", "starting", "straight_join", "table", "terminated", "then", "tinyblob", "tinyint", "tinytext", "to", "trailing", "trigger", "true", "undo", "union", "unique", "unlock", "unsigned", "update", "usage", "use", "using", "utc_date", "utc_time", "utc_timestamp", "values", "varbinary", "varchar", "varcharacter", "varying", "when", "where", "while", "with", "write", "xor", "year_month", "zerofill"].indexOf(nome) > 0) {
             toast("Este nome é reservado pelo sistema", 3000, "toast-warning");
             $(".requireName").addClass("hide");
             return !1
@@ -832,11 +835,57 @@ function showhideListSup() {
     $("#list-sup").toggleClass("hide")
 }
 
+async function readInputTypes() {
+    let inputs = await get("inputTypes");
+    let genericos = [];
+    let relacionamentos = [];
+    let templates = [];
+
+    for (let f in inputs) {
+        let type = inputs[f];
+        if (["owner", "publisher", "identifier"].indexOf(type.format) > -1)
+            continue;
+
+        switch (type.inputType) {
+            case "generico":
+                genericos.push(type);
+                break;
+            case "relation":
+                relacionamentos.push(type);
+                break;
+            default:
+                templates.push(type);
+
+        }
+    }
+
+    genericos = orderBy(genericos, "inputName").reverse();
+    relacionamentos = orderBy(relacionamentos, "inputName").reverse();
+    templates = orderBy(templates, "inputName").reverse();
+
+    for (let type of genericos)
+        $("#funcaoPrimary").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
+    for (let type of relacionamentos)
+        $("#funcaoRelation").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
+    for (let type of templates)
+        $("#funcaoIdentifier").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
+}
+
+function readSystem() {
+    $("#system").html('<option value="" class="theme-l2 theme-text-aux">' + SITENAME + '</option>');
+    for(let i in info) {
+        if(info[i].user === 2)
+            $("#system").append('<option value="' + i + '" class="theme-l2 theme-text-aux">' + ucFirst(i).replace("_", " ").replace("_", " ") + '</option>');
+    }
+}
+
 $(function () {
     let headerHeight = $("#core-header").height() + parseInt($("#core-header").css("padding-top")) + parseInt($("#core-header").css("padding-bottom"));
     $("#entity-space").css("height", $(document).height() - headerHeight - 64);
     $("#space-attr-entity").css("height", $(document).height() - headerHeight - 16 - 76.28);
     $("#main").css("height", $(document).height() - headerHeight);
+    readInputTypes();
+    readSystem();
     readDefaults();
     readDicionarios();
     entityReset();
@@ -944,6 +993,13 @@ $(function () {
                 return !1
             }
         })
+    }).off("change", "#user").on("change", "#user", function () {
+        readSystem();
+        if ($(this).val() === "1")
+            $("#col-system").removeClass("hide");
+        else
+            $("#col-system").addClass("hide");
+
     }).off("change keyup", "#entityIcon").on("change keyup", "#entityIcon", function () {
         $("#entityIconDemo").text($(this).val())
     })

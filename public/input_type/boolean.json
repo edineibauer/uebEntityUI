@@ -1,0 +1,59 @@
+{
+  "boolean": {
+    "format": "boolean",
+    "type": "tinyint",
+    "nome": "",
+    "column": "",
+    "minimo": false,
+    "size": 1,
+    "key": "",
+    "group": "boolean",
+    "inputName": "Botão Liga/Desliga",
+    "inputType": "generico",
+    "unique": false,
+    "default": 0,
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [
+        {
+          "valor": 0,
+          "representacao": "n\u00e3o"
+        },
+        {
+          "valor": 1,
+          "representacao": "sim"
+        }
+      ],
+      "validate": ""
+    },
+    "form": {
+      "input": "switch",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

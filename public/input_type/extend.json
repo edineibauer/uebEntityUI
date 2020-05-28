@@ -1,0 +1,50 @@
+{
+  "extend": {
+    "format": "extend",
+    "type": "json",
+    "nome": "",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "relation",
+    "group": "one",
+    "inputName": "Mesclar Formulário",
+    "inputType": "relation",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "extend",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

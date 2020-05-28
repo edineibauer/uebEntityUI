@@ -1,0 +1,50 @@
+{
+  "float": {
+    "format": "float",
+    "type": "float",
+    "nome": "",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "",
+    "group": "",
+    "inputName": "Número com Vírgula",
+    "inputType": "generico",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "number",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "step='0.01'",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

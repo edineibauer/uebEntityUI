@@ -1,0 +1,17 @@
+{
+  "setor": {
+    "format": "setor",
+    "group": "select",
+    "inputName": "Escolher Setor",
+    "inputType": "template",
+    "allow": {
+      "options": [{
+        "valor": 1,
+        "representacao": "opção 1"
+      }]
+    },
+    "form": {
+      "input": "select"
+    }
+  }
+}

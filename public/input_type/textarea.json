@@ -1,0 +1,50 @@
+{
+  "textarea": {
+    "format": "textarea",
+    "type": "varchar",
+    "nome": "Descri\u00e7\u00e3o",
+    "column": "",
+    "minimo": false,
+    "size": 1023,
+    "key": "description",
+    "group": "",
+    "inputName": "Area de Texto",
+    "inputType": "generico",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "textarea",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "owner": {
+    "format": "owner",
+    "type": "int",
+    "nome": "ownerpub",
+    "column": "ownerpub",
+    "minimo": false,
+    "size": false,
+    "key": "publisher",
+    "group": "one",
+    "inputName": "Dono do Registro",
+    "inputType": "relation",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "usuarios",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": false,
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "month": {
+    "format": "month",
+    "type": "tinyint",
+    "nome": "M\u00eas",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "",
+    "group": "select",
+    "inputName": "Mês",
+    "inputType": "template",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [
+        {
+          "valor": 1,
+          "representacao": "janeiro"
+        },
+        {
+          "valor": 2,
+          "representacao": "fevereiro"
+        },
+        {
+          "valor": 3,
+          "representacao": "mar\u00e7o"
+        },
+        {
+          "valor": 4,
+          "representacao": "abril"
+        },
+        {
+          "valor": 5,
+          "representacao": "maio"
+        },
+        {
+          "valor": 6,
+          "representacao": "junho"
+        },
+        {
+          "valor": 7,
+          "representacao": "julho"
+        },
+        {
+          "valor": 8,
+          "representacao": "agosto"
+        },
+        {
+          "valor": 9,
+          "representacao": "setembro"
+        },
+        {
+          "valor": 10,
+          "representacao": "outubro"
+        },
+        {
+          "valor": 11,
+          "representacao": "novembro"
+        },
+        {
+          "valor": 12,
+          "representacao": "dezembro"
+        }
+      ],
+      "validate": ""
+    },
+    "form": {
+      "input": "select",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

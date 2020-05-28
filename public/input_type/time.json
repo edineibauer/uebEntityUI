@@ -1,0 +1,50 @@
+{
+  "time": {
+    "format": "time",
+    "type": "time",
+    "nome": "Hora",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "",
+    "group": "",
+    "inputName": "Hora",
+    "inputType": "generico",
+    "unique": false,
+    "default": "time",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^\\d{2}:\\d{2}(:\\d{2})*$",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "time",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

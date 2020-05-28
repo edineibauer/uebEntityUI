@@ -1,0 +1,50 @@
+{
+  "card_number": {
+    "format": "card_number",
+    "type": "varchar",
+    "nome": "N\u00famero do Cart\u00e3o",
+    "column": "",
+    "minimo": 14,
+    "size": 20,
+    "key": "card_number",
+    "group": "",
+    "inputName": "Número de Cartão",
+    "inputType": "template",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^\\d{14,20}$",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "text",
+      "class": "card_number",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "valor_decimal_minus": {
+    "format": "valor_decimal_minus",
+    "type": "decimal",
+    "nome": "Valor",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "valor",
+    "group": "",
+    "inputName": "Valor 1 Casas",
+    "inputType": "template",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^(\\d{1,11})?(\\.)?\\d$",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "text",
+      "class": "valor_decimal_minus",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

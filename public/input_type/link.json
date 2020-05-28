@@ -1,0 +1,37 @@
+{
+  "link": {
+    "format": "link",
+    "type": "varchar",
+    "nome": "name",
+    "column": "",
+    "minimo": false,
+    "size": 127,
+    "key": "link",
+    "group": "",
+    "inputName": "Link para Título",
+    "inputType": "template",
+    "unique": true,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": false,
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

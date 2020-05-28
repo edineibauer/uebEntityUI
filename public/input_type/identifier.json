@@ -1,0 +1,50 @@
+{
+  "identifier": {
+    "format": "identifier",
+    "type": "int",
+    "nome": "id",
+    "column": "",
+    "minimo": false,
+    "size": false,
+    "key": "identifier",
+    "group": "",
+    "inputName": "ID",
+    "inputType": "generico",
+    "unique": true,
+    "default": false,
+    "update": false,
+    "relation": "",
+    "allow": {
+      "regexp": "",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "hidden",
+      "type": "text",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "color": {
+    "format": "color",
+    "type": "varchar",
+    "nome": "Cor",
+    "column": "",
+    "minimo": false,
+    "size": 7,
+    "key": "color",
+    "group": "",
+    "inputName": "Escolher Cor",
+    "inputType": "generico",
+    "unique": false,
+    "default": "",
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^(#[0-9abcdefABCDEF]{3}|#[0-9abcdefABCDEF]{6}|\\s*rgb\\s*\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)\\s*|\\s*rgba\\s*\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*(0\\.\\d{1,2}|1)\\s*\\)\\s*)$",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "color",
+      "class": "",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}

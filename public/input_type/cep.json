@@ -1,0 +1,50 @@
+{
+  "cep": {
+    "format": "cep",
+    "type": "varchar",
+    "nome": "CEP",
+    "column": "",
+    "minimo": 8,
+    "size": 8,
+    "key": "cep",
+    "group": "",
+    "inputName": "Cep",
+    "inputType": "template",
+    "unique": true,
+    "default": false,
+    "update": true,
+    "relation": "",
+    "allow": {
+      "regexp": "^\\d{8}$",
+      "options": [],
+      "validate": ""
+    },
+    "form": {
+      "input": "input",
+      "type": "text",
+      "class": "cep",
+      "style": "",
+      "cols": 12,
+      "colm": "",
+      "coll": "",
+      "atributos": "",
+      "template": "",
+      "fields": "",
+      "defaults": "",
+      "orientation": 0
+    },
+    "datagrid": {
+      "grid_relevant": "",
+      "grid_class": "",
+      "grid_style": "",
+      "grid_template": "",
+      "grid_relevant_relational": "",
+      "grid_class_relational": "",
+      "grid_style_relational": "",
+      "grid_template_relational": ""
+    },
+    "select": [],
+    "filter": [],
+    "value": ""
+  }
+}
