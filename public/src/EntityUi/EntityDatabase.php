@@ -22,7 +22,7 @@ abstract class EntityDatabase
 
     protected function createRelationalTable($dados)
     {
-        $table = $this->entity . "_" . $dados['column'];
+        $table = $this->entity . "_" . substr($dados['column'], 5);
 
         $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $table . "` ("
             . "`{$this->entity}_id` INT(11) NOT NULL,"
@@ -38,7 +38,7 @@ abstract class EntityDatabase
     protected function createIndexFk($table, $column, $tableTarget, $col = null, $cascade = false)
     {
         $col = $col ?? $column;
-        $constraint = substr("c_{$this->entity}_{$col}_{$tableTarget}", 0, 64);
+        $constraint = substr("c_{$this->entity}_" . substr($col, 5) . "_" . substr($tableTarget, 5), 0, 64);
         $cascade = $cascade ? "CASCADE" : "SET NULL";
 
         $this->exeSql("ALTER TABLE `" . PRE . $table . "` ADD KEY `fk_" . $column . "` (`{$column}`)");
