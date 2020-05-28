@@ -96,7 +96,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
 
             foreach ($changes as $id => $dados) {
                 if ($dados['group'] === "list")
-                    $sql->exeCommand("RENAME TABLE `" . PRE . $this->entity . "_" . substr($dados['column'], 5) . "` TO `" . PRE . $this->entity . "_" . substr($this->new[$id]['column'], 5) . "`");
+                    $sql->exeCommand("RENAME TABLE `" . PRE . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . PRE . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`");
                 else
                     $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id]));
 
@@ -159,11 +159,11 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         if ($dados['key'] === "relation") {
 
             if ($dados['type'] === "int") {
-                $constraint = substr("c_{$this->entity}_" . substr($dados['column'], 5) . "_" . substr($dados['relation'], 5), 0, 64);
+                $constraint = substr("c_{$this->entity}_" . substr($dados['column'], 0, 5) . "_" . substr($dados['relation'], 0, 5), 0, 64);
                 $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP FOREIGN KEY {$constraint}, DROP INDEX fk_" . $dados['column']);
 
             } elseif ($dados['group'] === "list") {
-                $sql->exeCommand("DROP TABLE " . PRE . $this->entity . "_" . substr($dados['column'], 5));
+                $sql->exeCommand("DROP TABLE " . PRE . $this->entity . "_" . substr($dados['column'], 0, 5));
             }
         }
 
