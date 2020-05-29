@@ -65,7 +65,7 @@
                            style="margin:0">
                 </div>
             </label>
-            <label class="col s12 hide" id="col-system">
+            <label class="col s12" id="col-system">
                 <div class="col left relative" style="width: 70px;padding-top: 14px">
                     Sistema:
                 </div>

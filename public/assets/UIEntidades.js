@@ -1000,7 +1000,7 @@ $(function () {
         })
     }).off("change", "#user").on("change", "#user", function () {
         readSystem();
-        if ($(this).val() === "1")
+        if ($(this).val() !== "2")
             $("#col-system").removeClass("hide");
         else
             $("#col-system").addClass("hide");
