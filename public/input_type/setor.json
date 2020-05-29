@@ -13,7 +13,8 @@
       }]
     },
     "form": {
-      "input": "select"
+      "input": "select",
+      "class": "inputSetor"
     }
   }
 }
