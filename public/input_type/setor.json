@@ -4,6 +4,8 @@
     "group": "select",
     "inputName": "Escolher Setor",
     "inputType": "template",
+    "lib": "entity-ui",
+    "js": "inputSetor",
     "allow": {
       "options": [{
         "valor": 1,
