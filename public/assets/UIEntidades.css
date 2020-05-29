@@ -35,7 +35,7 @@
 #entity-space {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 661px;
+    max-height: calc(100vh - 134px);
 }
 
 #space-attr-entity {
