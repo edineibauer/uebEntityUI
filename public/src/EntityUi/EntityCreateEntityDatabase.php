@@ -34,7 +34,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         list($metadados, $info) = $this->adicionaCamposUsuario($entity);
 
         if(!empty($metadados)) {
-            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL" . (!empty($info['system']) ? ", `system_id` INT(11) DEFAULT NULL" : "");
+            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL";
             foreach ($metadados as $dados)
                 $string .= ", " . parent::prepareSqlColumn($dados);
 
