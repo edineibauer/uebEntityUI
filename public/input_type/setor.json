@@ -2,6 +2,7 @@
   "setor": {
     "format": "setor",
     "group": "select",
+    "nome": "Setor de Acesso",
     "inputName": "Setor de Acesso",
     "inputType": "template",
     "lib": "entity-ui",
