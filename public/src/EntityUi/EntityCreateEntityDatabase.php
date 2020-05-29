@@ -31,10 +31,10 @@ class EntityCreateEntityDatabase extends EntityDatabase
      */
     private function createTableFromEntityJson(string $entity)
     {
-        $metadados = $this->adicionaCamposUsuario($entity);
+        list($metadados, $info) = $this->adicionaCamposUsuario($entity);
 
         if(!empty($metadados)) {
-            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system` VARCHAR(64) DEFAULT NULL";
+            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL" . (!empty($info['system']) ? ", `system_id` INT(11) DEFAULT NULL" : "");
             foreach ($metadados as $dados)
                 $string .= ", " . parent::prepareSqlColumn($dados);
 
@@ -42,7 +42,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
 
             parent::exeSql($string);
 
-            $this->createKeys($entity, $metadados);
+            $this->createKeys($entity, $metadados, $info);
         }
     }
 
@@ -71,17 +71,20 @@ class EntityCreateEntityDatabase extends EntityDatabase
             }
         }
 
-        return $metadados;
+        return [$metadados, $info];
     }
 
     /**
      * @param string $entity
      * @param array $metadados
+     * @param array $info
      */
-    private function createKeys(string $entity, array $metadados)
+    private function createKeys(string $entity, array $metadados, array $info)
     {
         parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
-        parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `system_key` (`system`)");
+
+        if(!empty($info['system']))
+            parent::createIndexFk($entity, 'system_id', $info['system']);
 
         foreach ($metadados as $i => $dados) {
 

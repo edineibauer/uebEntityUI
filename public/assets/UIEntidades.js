@@ -131,7 +131,12 @@ function showEntity() {
     $("#haveAutor").prop("checked", entity.autor === 1);
     $("#haveOwner").prop("checked", entity.autor === 2);
     $("#user").val(entity.user).trigger("change");
-    $("#system").val(entity.system || "");
+
+    if(entity.system !== "")
+        $("#system").attr("disabled", "disabled").addClass("disabled").val(entity.system);
+    else
+        $("#system").removeAttr("disabled").removeClass("disabled").val("");
+
     $("#entityAttr").html("");
     let maxIndice = 1;
     $.each(dicionariosEdit[entity.name], function (i, e) {
@@ -176,7 +181,7 @@ function saveEntity(silent) {
             "autor": $("#haveAutor").prop("checked"),
             "owner": $("#haveOwner").prop("checked"),
             "user": $("#user").val(),
-            "system": $("#system").val(),
+            "system": entity.system,
             "dados": dicionariosEdit[entity.name],
             "id": identifier[entity.name],
             "newName": newName
@@ -999,6 +1004,9 @@ $(function () {
             $("#col-system").removeClass("hide");
         else
             $("#col-system").addClass("hide");
+
+    }).off("change", "#system").on("change", "#system", function () {
+        entity.system = $("#system").val();
 
     }).off("change keyup", "#entityIcon").on("change keyup", "#entityIcon", function () {
         $("#entityIconDemo").text($(this).val())
