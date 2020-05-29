@@ -126,7 +126,7 @@ class SaveEntity
                 $data["publisher"] = $i;
 
             if ($dados['format'] === "setor")
-                $data["setor"] = $i;
+                $data["setor"] = $dados['column'];
 
             if ($dados['default'] === false || $dados['default'] === "false")
                 $data['required'][] = $i;
