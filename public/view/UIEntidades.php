@@ -88,11 +88,11 @@
                 </div>
                 <label class="col relative" style="width: 70px">
                     <input type="checkbox" class="left" id="haveAutor"/>
-                    <span class="left pointer" style="padding:10px 0">Autor</span>
+                    <span class="left pointer theme-text-aux" style="padding:10px 0">Autor</span>
                 </label>
                 <label class="col relative" style="width: 110px">
                     <input type="checkbox" class="left" id="haveOwner"/>
-                    <span class="left pointer" style="padding:10px 0">Proprietário</span>
+                    <span class="left pointer theme-text-aux" style="padding:10px 0">Proprietário</span>
                 </label>
             </div>
             <div class="row"></div>
