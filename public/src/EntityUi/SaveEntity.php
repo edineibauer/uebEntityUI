@@ -106,7 +106,7 @@ class SaveEntity
     private function generateInfo(string $system, array $metadados, string $icon = "", int $autor = null, int $user = 0): array
     {
         $data = [
-            "icon" => $icon, "autor" => $autor, "user" => $user, "system" => $system, "setor" => "",
+            "icon" => $icon, "autor" => $autor, "user" => $user, "system" => $system, "setor" => "", "columns_readable" => [],
             "required" => null, "unique" => null, "update" => null,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
             "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
@@ -118,6 +118,9 @@ class SaveEntity
 
             if ($dados['key'] === "relation")
                 $data[$dados['key']][] = $i;
+
+            if($dados['format'] !== "password" && $dados['key'] !== "information")
+                $data['columns_readable'][] = $dados['column'];
 
             if (in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
                 $data[$dados['format']] = $i;
