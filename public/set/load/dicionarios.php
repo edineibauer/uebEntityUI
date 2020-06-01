@@ -3,6 +3,7 @@ $data['data'] = [];
 
 $listNot = [
     "api_chave.json",
+    "coordenadas.json",
     "enviar_mensagem.json",
     "notifications.json",
     "notifications_report.json",
