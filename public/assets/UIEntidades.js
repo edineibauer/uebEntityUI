@@ -669,6 +669,7 @@ function removeEntity(entity) {
                 readDicionarios();
                 readInfo();
                 updateDicionarioIndex();
+                entityEdit();
             }
         })
     }
