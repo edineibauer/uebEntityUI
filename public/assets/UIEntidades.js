@@ -5,6 +5,9 @@ var dicionariosNomes = {};
 var identifier = {};
 var defaults = {};
 var nameColumnTest = !0;
+var typeGenericos;
+var typeRelacionamentos;
+var typeTemplates;
 var source_types = {
     "image": ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"],
     "video": ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"],
@@ -345,7 +348,7 @@ function checkSaveFilter() {
 }
 
 function checkSaveAssociacaoShowAttr() {
-    if ($.inArray(dicionariosEdit[entity.name][entity.edit].key, ["extend", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"]) > -1) {
+    if ($.inArray(dicionariosEdit[entity.name][entity.edit].key, typeRelacionamentos) > -1) {
         if (dicionariosEdit[entity.name][entity.edit].form !== !1) {
             if (typeof (dicionariosEdit[entity.name][entity.edit].form.fields) === "undefined" || typeof (dicionariosEdit[entity.name][entity.edit].form.defaults) === "undefined") {
                 dicionariosEdit[entity.name][entity.edit].form.fields = [];
@@ -556,7 +559,7 @@ function setFormat(val) {
     }
     if (val !== "source" && val !== "source_list") {
         $("#format-source, .relation_creation_container, #requireListFilter, .relation_container").addClass("hide");
-        if (["extend", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(val) > -1)
+        if (typeRelacionamentos.indexOf(val) > -1)
             $(".relation_container, .relation_creation_container").removeClass("hide")
     }
     $(".requireName, #nomeAttr").removeClass("hide");
@@ -564,14 +567,17 @@ function setFormat(val) {
 }
 
 function getSelectInput(val) {
-    if (["text", "textarea", "html", "number", "float", "boolean", "select", "radio", "checkbox", "range", "color", "source", "source_list", "information", "date", "datetime"].indexOf(val) > -1)
-        return $("#funcaoPrimary"); else if (["extend", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult", "publisher", "owner"].indexOf(val) > -1)
-        return $("#funcaoRelation"); else return $("#funcaoIdentifier")
+    if (typeGenericos.indexOf(val) > -1)
+        return $("#funcaoPrimary");
+    else if (typeRelacionamentos.indexOf(val) > -1)
+        return $("#funcaoRelation");
+    else
+        return $("#funcaoIdentifier")
 }
 
 function checkRequiresFields() {
     var type = getType();
-    return (type !== "" && $("#nome").val().length > 1 && $("#nome").val() !== "id" && (["extend", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(type) < 0 || $("#relation").val() !== null))
+    return (type !== "" && $("#nome").val().length > 1 && $("#nome").val() !== "id" && (typeRelacionamentos.indexOf(type) < 0 || $("#relation").val() !== null))
 }
 
 function checkFieldsOpenOrClose(nome) {
@@ -720,7 +726,7 @@ function addFilter(value) {
                 1: e.nome,
                 2: (field === e.column ? "\" selected=\"selected" : "")
             }, "append");
-            if (field === e.column && ["list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult", "extend", "folder", "extend_folder"].indexOf(e.key) > -1)
+            if (field === e.column && typeRelacionamentos.indexOf(e.key) > -1)
                 relation = e.relation
         });
         if (column !== "null" && relation !== "null")
@@ -802,7 +808,7 @@ function addColumnFilter($this, entity, select) {
     $this.removeClass("m6").addClass("m3");
     var $column = $('<select class="filter_column col s12 m3"></select>').insertAfter($this);
     $.each(dicionariosEdit[entity], function (id, data) {
-        if (["extend", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(data.key) < 0)
+        if (typeRelacionamentos.indexOf(data.key) < 0)
             $column.append("<option value='" + data.column + "' " + (select === data.column ? "selected='selected'" : "") + ">" + data.nome + "</option>")
     })
 }
@@ -842,9 +848,6 @@ function showhideListSup() {
 
 async function readInputTypes() {
     let inputs = await get("inputTypes");
-    let genericos = [];
-    let relacionamentos = [];
-    let templates = [];
 
     for (let f in inputs) {
         let type = inputs[f];
@@ -853,26 +856,26 @@ async function readInputTypes() {
 
         switch (type.inputType) {
             case "generico":
-                genericos.push(type);
+                typeGenericos.push(type);
                 break;
             case "relation":
-                relacionamentos.push(type);
+                typeRelacionamentos.push(type);
                 break;
             default:
-                templates.push(type);
+                typeTemplates.push(type);
 
         }
     }
 
-    genericos = orderBy(genericos, "inputName").reverse();
-    relacionamentos = orderBy(relacionamentos, "inputName").reverse();
-    templates = orderBy(templates, "inputName").reverse();
+    typeGenericos = orderBy(typeGenericos, "inputName").reverse();
+    typeRelacionamentos = orderBy(typeRelacionamentos, "inputName").reverse();
+    typeTemplates = orderBy(typeTemplates, "inputName").reverse();
 
-    for (let type of genericos)
+    for (let type of typeGenericos)
         $("#funcaoPrimary").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
-    for (let type of relacionamentos)
+    for (let type of typeRelacionamentos)
         $("#funcaoRelation").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
-    for (let type of templates)
+    for (let type of typeTemplates)
         $("#funcaoIdentifier").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
 }
 
@@ -993,7 +996,7 @@ $(function () {
         $this.removeClass("m3").addClass("m6").siblings(".filter_column").remove();
         $.each(dicionariosEdit[entity], function (i, e) {
             if (e.column === column) {
-                if (["extend", "folder", "extend_folder", "list", "list_mult", "selecao", "selecao_mult", "checkbox_rel", "checkbox_mult"].indexOf(e.key) > -1)
+                if (typeRelacionamentos.indexOf(e.key) > -1)
                     addColumnFilter($this, e.relation, "");
                 return !1
             }
