@@ -54,7 +54,8 @@ function readDefaults() {
 
 function readInfo() {
     post("entity-ui", "load/info", function (data) {
-        info = data
+        info = data;
+        readSystem();
     })
 }
 
@@ -901,7 +902,6 @@ $(function () {
     $("#space-attr-entity").css("height", $(document).height() - headerHeight - 16 - 76.28);
     $("#main").css("height", $(document).height() - headerHeight);
     readInputTypes();
-    readSystem();
     readDefaults();
     readDicionarios();
     entityReset();
