@@ -56,6 +56,8 @@ function readInfo() {
     post("entity-ui", "load/info", function (data) {
         info = data;
         readSystem();
+        if(!isEmpty(entity.system))
+            $("#system").val(entity.system);
     })
 }
 
