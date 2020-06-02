@@ -5,9 +5,9 @@ var dicionariosNomes = {};
 var identifier = {};
 var defaults = {};
 var nameColumnTest = !0;
-var typeGenericos;
-var typeRelacionamentos;
-var typeTemplates;
+var typeGenericos = [];
+var typeRelacionamentos = [];
+var typeTemplates = [];
 var source_types = {
     "image": ["png", "jpg", "jpeg", "gif", "bmp", "tif", "tiff", "psd", "svg"],
     "video": ["mp4", "avi", "mkv", "mpeg", "flv", "wmv", "mov", "rmvb", "vob", "3gp", "mpg"],
@@ -848,6 +848,7 @@ function showhideListSup() {
 
 async function readInputTypes() {
     let inputs = await get("inputTypes");
+    let tg = [], tr = [], tt = [];
 
     for (let f in inputs) {
         let type = inputs[f];
@@ -856,27 +857,34 @@ async function readInputTypes() {
 
         switch (type.inputType) {
             case "generico":
-                typeGenericos.push(type);
+                tg.push(type);
                 break;
             case "relation":
-                typeRelacionamentos.push(type);
+                tr.push(type);
                 break;
             default:
-                typeTemplates.push(type);
+                tt.push(type);
 
         }
     }
 
-    typeGenericos = orderBy(typeGenericos, "inputName").reverse();
-    typeRelacionamentos = orderBy(typeRelacionamentos, "inputName").reverse();
-    typeTemplates = orderBy(typeTemplates, "inputName").reverse();
+    tg = orderBy(tg, "inputName").reverse();
+    tr = orderBy(tr, "inputName").reverse();
+    tt = orderBy(tt, "inputName").reverse();
 
-    for (let type of typeGenericos)
+    for (let type of tg)
         $("#funcaoPrimary").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
-    for (let type of typeRelacionamentos)
+    for (let type of tr)
         $("#funcaoRelation").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
-    for (let type of typeTemplates)
+    for (let type of tt)
         $("#funcaoIdentifier").append("<option value='" + type.format + "'>" + type.inputName + "</option>");
+
+    for(let t of tg)
+        typeGenericos.push(t.format);
+    for(let t of tr)
+        typeRelacionamentos.push(t.format);
+    for(let t of tt)
+        typeTemplates.push(t.format);
 }
 
 function readSystem() {
