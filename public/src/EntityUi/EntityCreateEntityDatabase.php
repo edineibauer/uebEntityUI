@@ -25,6 +25,58 @@ class EntityCreateEntityDatabase extends EntityDatabase
             $this->createTableFromEntityJson($entity);
     }
 
+    private function createEntityFromJson(string $lib, string $entity) {
+
+        if (file_exists(PATH_HOME . VENDOR . $lib . "/public/entity/cache/{$entity}.json")) {
+
+            copy(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/{$entity}.json", PATH_HOME . "entity/cache/{$entity}.json");
+
+            /* INFO */
+            if (file_exists(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/info/{$entity}.json")) {
+
+                //copia info
+                if (file_exists(PATH_HOME . "entity/cache/info/{$entity}.json"))
+                    unlink(PATH_HOME . "entity/cache/info/{$entity}.json");
+
+                copy(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/info/{$entity}.json", PATH_HOME . "entity/cache/info/{$entity}.json");
+
+            } elseif (!file_exists(PATH_HOME . "entity/cache/info/{$entity}.json")) {
+
+                //cria info
+                $data = $this->generateInfo(\Entity\Metadados::getDicionario(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/{$entity}.json"));
+                $fp = fopen(PATH_HOME . "entity/cache/info/" . $entity . ".json", "w");
+                fwrite($fp, json_encode($data));
+                fclose($fp);
+            }
+
+            new EntityCreateEntityDatabase($entity);
+        }
+    }
+
+    /**
+     * Vare dicionário de metadados atrás de relações para
+     * verificar se essas entidades relacionais existem no
+     * sistema, caso não, adiciona elas
+     * @param array $metadados
+     */
+    private function createRelationalEntitys(array $metadados) {
+        foreach ($metadados as $metadado) {
+            if($metadado['key'] === "relation" && $metadado['type'] === "int") {
+                $entity = $metadado['relation'];
+
+                if (!file_exists(PATH_HOME . "entity/cache/{$entity}.json")) {
+                    foreach (Helper::listFolder(PATH_HOME . VENDOR) as $lib) {
+                        if (file_exists(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/{$entity}.json")) {
+                            $this->createEntityFromJson($lib, $entity);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     /**
      * @param string $entity
      * @param array $data
@@ -34,14 +86,19 @@ class EntityCreateEntityDatabase extends EntityDatabase
         list($metadados, $info) = $this->adicionaCamposUsuario($entity);
 
         if(!empty($metadados)) {
+
+            //Verifica se as entidades relacionais existem, se não, cria elas antes
+            $this->createRelationalEntitys($metadados);
+
             $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL";
             foreach ($metadados as $dados)
                 $string .= ", " . parent::prepareSqlColumn($dados);
-
             $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
+            //executa comando para criar a tabela
             parent::exeSql($string);
 
+            //cria as chaves de relacionamento
             $this->createKeys($entity, $metadados, $info);
         }
     }
