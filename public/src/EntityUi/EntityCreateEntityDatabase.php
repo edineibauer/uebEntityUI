@@ -3,6 +3,8 @@
 namespace EntityUi;
 
 use Entity\Metadados;
+use Helpers\Helper;
+use Config\Config;
 
 class EntityCreateEntityDatabase extends EntityDatabase
 {
@@ -25,7 +27,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
             $this->createTableFromEntityJson($entity);
     }
 
-    private function createEntityFromJson(string $lib, string $entity) {
+    private  function createEntityFromJson(string $lib, string $entity) {
 
         if (file_exists(PATH_HOME . VENDOR . $lib . "/public/entity/cache/{$entity}.json")) {
 
@@ -43,7 +45,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
             } elseif (!file_exists(PATH_HOME . "entity/cache/info/{$entity}.json")) {
 
                 //cria info
-                $data = $this->generateInfo(\Entity\Metadados::getDicionario(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/{$entity}.json"));
+                $data = Config::createInfoFromMetadados(Metadados::getDicionario(PATH_HOME . VENDOR . "{$lib}/public/entity/cache/{$entity}.json"));
                 $fp = fopen(PATH_HOME . "entity/cache/info/" . $entity . ".json", "w");
                 fwrite($fp, json_encode($data));
                 fclose($fp);
