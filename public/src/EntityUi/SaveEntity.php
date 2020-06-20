@@ -116,32 +116,34 @@ class SaveEntity
         ];
 
         foreach ($metadados as $i => $dados) {
-            if($dados['unique'] === "true" || $dados['unique'] === true || $dados['unique'] == 1)
-                $data['unique'][] = $i;
+            if(is_array($dados)) {
+                if (!empty($dados['unique']) && ($dados['unique'] === "true" || $dados['unique'] === true || $dados['unique'] == 1))
+                    $data['unique'][] = $i;
 
-            if ($dados['key'] === "relation")
-                $data[$dados['key']][] = $i;
+                if (!empty($dados['key']) && $dados['key'] === "relation")
+                    $data[$dados['key']][] = $i;
 
-            if($dados['format'] !== "password" && $dados['key'] !== "information")
-                $data['columns_readable'][] = $dados['column'];
+                if (!empty($dados['format']) && !empty($dados['key']) && $dados['format'] !== "password" && $dados['key'] !== "information")
+                    $data['columns_readable'][] = $dados['column'];
 
-            if (in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
-                $data[$dados['format']] = $i;
+                if (!empty($dados['format']) && in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
+                    $data[$dados['format']] = $i;
 
-            if ($dados['key'] === "publisher")
-                $data["publisher"] = $i;
+                if (!empty($dados['key']) && $dados['key'] === "publisher")
+                    $data["publisher"] = $i;
 
-            if ($dados['format'] === "setor")
-                $data["setor"] = $dados['column'];
+                if (!empty($dados['format']) && $dados['format'] === "setor")
+                    $data["setor"] = $dados['column'];
 
-            if ($dados['default'] === false || $dados['default'] === "false")
-                $data['required'][] = $i;
+                if (!empty($dados['default']) && ($dados['default'] === false || $dados['default'] === "false"))
+                    $data['required'][] = $i;
 
-            if ($dados['update'] === "true" || $dados['update'] === true || $dados['update'] == 1)
-                $data["update"][] = $i;
+                if (!empty($dados['update']) && ($dados['update'] === "true" || $dados['update'] === true || $dados['update'] == 1))
+                    $data["update"][] = $i;
 
-            if ($dados['relation'] === "usuarios" && $dados['format'] === "extend")
-                $data = $this->checkOwnerList($data, $metadados, $dados['column']);
+                if (!empty($dados['relation']) && !empty($dados['format']) && $dados['relation'] === "usuarios" && $dados['format'] === "extend")
+                    $data = $this->checkOwnerList($data, $metadados, $dados['column']);
+            }
         }
 
         try {
