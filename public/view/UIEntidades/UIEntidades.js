@@ -117,7 +117,7 @@ function entityEdit(id) {
 function downloadEntity() {
     get('downloadEntity/' + entity.name).then(d => {
         if (typeof d === "string")
-            download(entity.name + ".json", d);
+            download("backup_" + entity.name + ".json", d);
         else
             toast("Error");
     });
