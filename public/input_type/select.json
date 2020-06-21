@@ -8,7 +8,7 @@
     "size": false,
     "key": "",
     "group": "select",
-    "inputName": "Caixa de Seleção",
+    "inputName": "Select Box",
     "inputType": "generico",
     "unique": false,
     "default": "",

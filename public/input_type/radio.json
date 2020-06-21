@@ -7,7 +7,7 @@
     "minimo": false,
     "size": false,
     "key": "",
-    "inputName": "Marcação Única",
+    "inputName": "Radio Button",
     "group": "select",
     "inputType": "generico",
     "unique": false,

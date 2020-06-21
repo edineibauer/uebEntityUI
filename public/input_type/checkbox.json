@@ -8,7 +8,7 @@
     "size": false,
     "key": "",
     "group": "select",
-    "inputName": "Marcação Multipla",
+    "inputName": "Checkbox",
     "inputType": "generico",
     "unique": false,
     "default": "",
