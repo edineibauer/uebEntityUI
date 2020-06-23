@@ -47,13 +47,13 @@ function copy($elem, $destino, variable, position) {
 }
 
 function readDefaults() {
-    post("entity-ui", "load/defaults", function (data) {
+    AJAX.post("load/defaults").then(data => {
         defaults = data
     })
 }
 
 function readInfo() {
-    post("entity-ui", "load/info", function (data) {
+    AJAX.post("load/info").then(data => {
         info = data;
         readSystem();
         if(!isEmpty(entity.system))
@@ -62,15 +62,15 @@ function readInfo() {
 }
 
 function readIdentifier() {
-    post("entity-ui", "load/identifier", function (data) {
+    AJAX.post("load/identifier").then(data => {
         identifier = data
-    })
+    });
 }
 
 function readDicionarios() {
     readInfo();
     readIdentifier();
-    post("entity-ui", "load/dicionarios", function (data) {
+    AJAX.post("load/dicionarios").then(data => {
         dicionariosEdit = data;
         $("#entity-space, #relation").html("");
         $.each(dicionariosEdit, function (i, e) {
@@ -160,10 +160,6 @@ function showEntity() {
     }
 }
 
-function updateDicionarioIndex() {
-    updateCacheUser();
-}
-
 function saveEntity(silent) {
     $("#saveEntityBtn").addClass("disabled");
 
@@ -181,7 +177,7 @@ function saveEntity(silent) {
 
     if (userRequisite.validate && checkSaveAttr() && entity.name.length > 2 && typeof (dicionariosEdit[entity.name]) !== "undefined" && !$.isEmptyObject(dicionariosEdit[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
-        post("entity-ui", "save/entity", {
+        AJAX.post("save/entity", {
             "name": entity.name,
             "icon": $("#entityIcon").val(),
             "autor": $("#haveAutor").prop("checked"),
@@ -191,9 +187,9 @@ function saveEntity(silent) {
             "dados": dicionariosEdit[entity.name],
             "id": identifier[entity.name],
             "newName": newName
-        }, function (g) {
+        }).then(g => {
             $("#saveEntityBtn").removeClass("disabled");
-            updateDicionarioIndex();
+            updateCacheUser();
             if (entity.name !== $("#entityName").val()) {
                 dicionariosEdit[newName] = dicionariosEdit[entity.name];
                 entity.name = newName;
@@ -664,13 +660,11 @@ function deleteAttr(id) {
 
 function removeEntity(entity) {
     if (entity !== 'usuarios' && confirm("Excluir esta entidade e todos os seus dados?")) {
-        post("entity-ui", "delete/entity", {"name": entity}, function (g) {
+        AJAX.post("delete/entity", {"name": entity}).then(g => {
             if (g) {
-                updateDicionarioIndex();
+                updateCacheUser();
                 toast("Entidade Excluída", 3000, "toast-success");
                 readDicionarios();
-                readInfo();
-                updateDicionarioIndex();
                 entityEdit();
             }
         })
@@ -698,8 +692,7 @@ function sendImport() {
                 } else {
                     toast("Entidade Restaurada", 1300, "toast-success");
                     readDicionarios();
-                    readInfo();
-                    updateDicionarioIndex();
+                    updateCacheUser();
                     $("#import").val("");
                 }
             }
