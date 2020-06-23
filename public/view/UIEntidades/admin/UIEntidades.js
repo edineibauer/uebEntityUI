@@ -681,8 +681,8 @@ function sendImport() {
     if ($("#import").val() !== "") {
         var form_data = new FormData();
         form_data.append('arquivo', $('#import').prop('files')[0]);
-        form_data.append('lib', 'entity-ui');
-        form_data.append('file', 'save/import');
+        form_data.append('maestruToken', localStorage.token);
+        form_data.append('fileInSetFolder', 'save/import');
         $.ajax({
             url: HOME + 'set',
             dataType: 'text',
