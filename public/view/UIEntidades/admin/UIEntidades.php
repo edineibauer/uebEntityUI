@@ -669,7 +669,7 @@
                         <input class="values" type="text"/>
                     </label>
 
-                    <label class="input-field col s12 padding-small">
+                    <label class="input-field col s12 m8 padding-small">
                         <span class="color-text-gray">Opção de Seleção (Label)</span>
                         <input class="names" type="text">
                     </label>
