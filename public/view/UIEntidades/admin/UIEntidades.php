@@ -664,8 +664,13 @@
                 <div class="col s12" id="spaceValueAllow"></div>
 
                 <div class="col s12 font-medium hide allow" id="tplValueAllow">
+                    <label class="input-field col s12 m4 padding-small">
+                        <span class="color-text-gray">Opção de Seleção (Valor armazenado)</span>
+                        <input class="values" type="text"/>
+                    </label>
+
                     <label class="input-field col s12 padding-small">
-                        <span class="color-text-gray">Opção de Seleção</span>
+                        <span class="color-text-gray">Opção de Seleção (Label)</span>
                         <input class="names" type="text">
                     </label>
                 </div>

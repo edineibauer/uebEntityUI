@@ -389,8 +389,12 @@ function checkSaveSource() {
     $(".file-format").each(function () {
         if ($(this).prop("checked")) {
             $("." + $(this).attr("id") + "-format").each(function () {
-                if ($(this).prop("checked"))
-                    dicionariosEdit[entity.name][entity.edit].allow.options.push($(this).attr("id"));
+                if ($(this).prop("checked")) {
+                    dicionariosEdit[entity.name][entity.edit].allow.options.push({
+                        'valor': $(this).attr("id"),
+                        'representacao': $(this).attr("id")
+                    })
+                }
             })
         }
     })
@@ -417,8 +421,11 @@ function saveAttrValue($input) {
 }
 
 function saveAllowValue($input) {
-    if ($input.find(".names").val() !== "")
-        dicionariosEdit[entity.name][entity.edit].allow.options.push($input.find(".names").val())
+    if ($input.find(".values").val() !== "")
+        dicionariosEdit[entity.name][entity.edit].allow.options.push({
+            'valor': $input.find(".values").val(),
+            'representacao': $input.find(".names").val()
+        })
 }
 
 function applyAttr(data) {
@@ -474,12 +481,13 @@ function setAllow(value) {
         })
     } else {
         let copia = $("#spaceValueAllow").html() === "";
-        for(let e of value) {
+        $.each(value, function (i, e) {
             if (copia)
                 copy('#tplValueAllow', '#spaceValueAllow', '', 'append');
             let $allow = (copia ? $("#spaceValueAllow").find(".allow:last-child") : $("#spaceValueAllow").find(".allow:eq(" + i + ")"));
-            $allow.find(".names").val(e);
-        }
+            $allow.find(".values").val(e.valor);
+            $allow.find(".names").val(e.representacao)
+        })
     }
 }
 
