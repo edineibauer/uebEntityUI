@@ -389,12 +389,8 @@ function checkSaveSource() {
     $(".file-format").each(function () {
         if ($(this).prop("checked")) {
             $("." + $(this).attr("id") + "-format").each(function () {
-                if ($(this).prop("checked")) {
-                    dicionariosEdit[entity.name][entity.edit].allow.options.push({
-                        'valor': $(this).attr("id"),
-                        'representacao': $(this).attr("id")
-                    })
-                }
+                if ($(this).prop("checked"))
+                    dicionariosEdit[entity.name][entity.edit].allow.options.push($(this).attr("id"));
             })
         }
     })
