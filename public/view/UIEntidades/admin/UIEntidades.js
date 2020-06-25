@@ -421,11 +421,8 @@ function saveAttrValue($input) {
 }
 
 function saveAllowValue($input) {
-    if ($input.find(".values").val() !== "")
-        dicionariosEdit[entity.name][entity.edit].allow.options.push({
-            'valor': $input.find(".values").val(),
-            'representacao': $input.find(".names").val()
-        })
+    if ($input.find(".names").val() !== "")
+        dicionariosEdit[entity.name][entity.edit].allow.options.push($input.find(".names").val())
 }
 
 function applyAttr(data) {
@@ -481,13 +478,12 @@ function setAllow(value) {
         })
     } else {
         let copia = $("#spaceValueAllow").html() === "";
-        $.each(value, function (i, e) {
+        for(let e of value) {
             if (copia)
                 copy('#tplValueAllow', '#spaceValueAllow', '', 'append');
             let $allow = (copia ? $("#spaceValueAllow").find(".allow:last-child") : $("#spaceValueAllow").find(".allow:eq(" + i + ")"));
-            $allow.find(".values").val(e.valor);
-            $allow.find(".names").val(e.representacao)
-        })
+            $allow.find(".names").val(e);
+        }
     }
 }
 
@@ -927,11 +923,8 @@ $(function () {
         checkFieldsOpenOrClose($(this).val())
     }).off("change", "#default_custom").on("change", "#default_custom", function () {
         if ($(this).is(":checked") && ['extend', "folder", 'extend_folder'].indexOf(getType()) === -1) {
-            $("#default_container").removeClass("hide");
             if ($("#unique").is(":checked"))
                 $("#unique").trigger("click")
-        } else {
-            $("#default_container").addClass("hide")
         }
     }).off("change", "#size_custom").on("change", "#size_custom", function () {
         if ($(this).is(":checked")) {

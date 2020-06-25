@@ -228,7 +228,7 @@
                     </div>
 
                     <div class="col s12 m8 l5 padding-tiny hide" id="default_container">
-                        <label for="default" class="color-text-gray">Valor Padrão</label>
+                        <label for="default" class="color-text-gray">Valor Inicial (Padrão)</label>
                         <input type="text" id="default" class="input">
                     </div>
                 </div>
@@ -349,7 +349,7 @@
 
         <div class="requireName hide card padding-medium">
             <header class="row padding-8">
-                <span class="left padding-12 padding-right upper font-bold">Formulário</span>
+                <span class="left padding-12 padding-right upper font-bold">Mostrar este campo no formulário?</span>
                 <label class="switch">
                     <input type="checkbox" class="input" id="form">
                     <div class="slider"></div>
@@ -460,20 +460,20 @@
 
         <div class="requireName hide card padding-medium">
             <header class="row padding-8">
-                <span class="left padding-12 padding-right upper font-bold">Listagem de Dados</span>
+                <span class="left padding-12 padding-right upper font-bold">Mostrar este campo na tabela? </span>
                 <label class="switch" style="margin: 0 !important">
                     <input type="checkbox" class="input" id="datagrid">
                     <div class="slider"></div>
                 </label>
                 <select class="input left datagrid_body" id="grid_relevant"
                         style="width: auto;margin:2px 0 0 25px;padding: 8px 0 5px;">
-                    <option value="" selected>Posicionamento automático</option>
-                    <option value="1">1° Primeiro</option>
-                    <option value="2">2° Segundo</option>
-                    <option value="3">3° Terceiro</option>
-                    <option value="4">4° Quarto</option>
-                    <option value="5">5° Quinto</option>
-                    <option value="6">6° Sexto</option>
+                    <option value="" selected>Ordem automática</option>
+                    <option value="1">1° Primeiro item</option>
+                    <option value="2">2° Segundo item</option>
+                    <option value="3">3° Terceiro item</option>
+                    <option value="4">4° Quarto item</option>
+                    <option value="5">5° Quinto item</option>
+                    <option value="6">6° Sexto item</option>
                 </select>
 
                 <button class="btn theme padding-small datagrid_body margin-small opacity hover-opacity-off hover-shadow right"
@@ -528,9 +528,9 @@
                 <header class="row padding-8 margin-bottom">
                         <span class="left padding-8 padding-right">
                             <i class="material-icons left">assignment</i>
-                            <span class="left padding-left upper font-bold">Definir Valores&nbsp;&nbsp;</span>
+                            <span class="left padding-left upper font-bold">Definir opções de seleção deste campo &nbsp;&nbsp;</span>
                         </span>
-                    <span class="btn-floating left theme" id="allowBtnAdd"
+                    <span class="btn-floating left theme" id="allowBtnAdd" title="adicionar nova opção de seleção para este campo"
                           onclick="copy('#tplValueAllow', '#spaceValueAllow');$('#spaceValueAllow').find('.allow:first-child').find('.values').focus()">
                             <i class="material-icons">add</i>
                         </span>
@@ -664,13 +664,8 @@
                 <div class="col s12" id="spaceValueAllow"></div>
 
                 <div class="col s12 font-medium hide allow" id="tplValueAllow">
-                    <label class="input-field col s12 m4 padding-small">
-                        <span class="color-text-gray">Valor Interno <small> (armazenamento)</small></span>
-                        <input class="values" type="text"/>
-                    </label>
-
-                    <label class="input-field col s12 m8 padding-small">
-                        <span class="color-text-gray">Valor Representativo <small> (exibido para o usuário)</small></span>
+                    <label class="input-field col s12 padding-small">
+                        <span class="color-text-gray">Opção de Seleção</span>
                         <input class="names" type="text">
                     </label>
                 </div>
