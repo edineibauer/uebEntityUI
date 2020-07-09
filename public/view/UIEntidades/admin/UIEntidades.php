@@ -58,6 +58,7 @@
                         <option value="0" class="theme-l2 theme-text-aux">Entidade</option>
                         <option value="2" class="theme-l2 theme-text-aux">Sistema</option>
                         <option value="1" class="theme-l2 theme-text-aux">Usuário</option>
+                        <option value="3" class="theme-l2 theme-text-aux">Configuração</option>
                     </select>
                 </label>
                 <div class="rest">
