@@ -11,6 +11,10 @@
     z-index: 3;
 }
 
+#user {
+    padding-top: 10px;
+}
+
 #nav-menu {
     position: fixed;
     top: inherit;
