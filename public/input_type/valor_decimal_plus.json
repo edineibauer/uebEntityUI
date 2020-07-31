@@ -15,7 +15,7 @@
     "update": true,
     "relation": "",
     "allow": {
-      "regexp": "^(\\d{1,11})?(\\.)?\\d{1,4}$",
+      "regexp": "",
       "options": [],
       "validate": ""
     },
