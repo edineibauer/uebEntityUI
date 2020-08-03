@@ -123,7 +123,7 @@ class SaveEntity
                 if (!empty($dados['key']) && $dados['key'] === "relation")
                     $data[$dados['key']][] = $i;
 
-                if (empty($dados['format']) || empty($dados['key']) || $dados['format'] !== "password" || $dados['key'] !== "information")
+                if (empty($dados['format']) || empty($dados['key']) || ($dados['format'] !== "password" && $dados['key'] !== "information"))
                     $data['columns_readable'][] = $dados['column'];
 
                 if (!empty($dados['format']) && in_array($dados['format'], ["title", "link", "status", "date", "datetime", "valor", "email", "password", "tel", "cpf", "cnpj", "cep", "time", "week", "month", "year"]))
