@@ -942,7 +942,7 @@ $(function () {
         if ($(this).is(":checked")) {
             $(".form_body").removeClass("hide");
             if (entity.name !== "" && entity.edit !== "" && typeof dicionariosEdit[entity.name][entity.edit] !== "undefined" && typeof dicionariosEdit[entity.name][entity.edit].form !== "undefined") {
-                dicionariosEdit[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, defaults[getType()].form);
+                dicionariosEdit[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, (typeof defaults[getType()] !== "undefined" ? defaults[getType()].form : {}));
                 $("#cols").val(12)
             }
         } else {
@@ -952,7 +952,7 @@ $(function () {
         if ($(this).is(":checked")) {
             $(".datagrid_body").removeClass("hide");
             if (entity.name !== "" && entity.edit !== "" && typeof dicionariosEdit[entity.name][entity.edit] !== "undefined" && typeof dicionariosEdit[entity.name][entity.edit].datagrid !== "undefined")
-                dicionariosEdit[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, defaults[getType()].form)
+                dicionariosEdit[entity.name][entity.edit].datagrid = Object.assign({}, defaults.default.form, (typeof defaults[getType()] !== "undefined" ? defaults[getType()].form : {}))
         } else {
             $(".datagrid_body").addClass("hide")
         }
