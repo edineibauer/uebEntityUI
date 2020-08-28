@@ -115,6 +115,14 @@ class SaveEntity
             "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
         ];
 
+        if($user === 1)
+            $data['columns_readable'][] = "usuarios_id";
+
+        if($autor === 1)
+            $data['columns_readable'][] = "autorpub";
+        elseif($autor === 2)
+            $data['columns_readable'][] = "ownerpub";
+
         foreach ($metadados as $i => $dados) {
             if(is_array($dados)) {
                 if (!empty($dados['unique']) && ($dados['unique'] === "true" || $dados['unique'] === true || $dados['unique'] == 1))
