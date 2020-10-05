@@ -98,6 +98,28 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                     $sql->exeCommand("RENAME TABLE `" . PRE . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . PRE . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`");
                 else
                     $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id]));
+
+                /**
+                 * change general_info column name
+                 */
+                if(file_exists(PATH_HOME . "entity/general/general_info.json")) {
+                    $oldName = $dados['column'];
+                    $newName = $this->new[$id]['column'];
+                    $general = json_decode(file_get_contents(PATH_HOME . "entity/general/general_info.json"), !0);
+
+                    foreach ($general as $entity => $gen) {
+                        foreach ($gen['belongsTo'] as $i => $gene) {
+                            foreach ($gene as $key => $value) {
+                                if($value['column'] === $oldName)
+                                    $general[$entity]['belongsTo'][$i][$key]['column'] = $newName;
+                            }
+                        }
+                    }
+
+                    $f = fopen(PATH_HOME . "entity/general/general_info.json", "w");
+                    fwrite($f, json_encode($general));
+                    fclose($f);
+                }
             }
         }
     }

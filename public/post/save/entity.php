@@ -67,7 +67,7 @@ if($name !== $newName) {
 
         foreach ($general as $entity => $gen) {
             foreach ($gen['belongsTo'] as $i => $gene) {
-                if(array_keys($gene) === $name) {
+                if(array_keys($gene)[0] === $name) {
                     $general[$entity]['belongsTo'][$i][$newName] = $gen['belongsTo'][$i][$name];
                     unset($general[$entity]['belongsTo'][$i][$name]);
                 }
