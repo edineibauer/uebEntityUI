@@ -20,6 +20,9 @@ if($name !== $newName) {
     //Table Rename
     $sql->exeCommand("RENAME TABLE  `" . PRE . "{$name}` TO  `" . PRE . "{$newName}`");
 
+    //Table Rename Cache
+    $sql->exeCommand("RENAME TABLE  `" . PRE . "wcache_{$name}` TO  `" . PRE . "wcache_{$newName}`");
+
     //Entity Rename
     rename(PATH_HOME . "entity/cache/{$name}.json",PATH_HOME . "entity/cache/{$newName}.json");
     rename(PATH_HOME . "entity/cache/info/{$name}.json",PATH_HOME . "entity/cache/info/{$newName}.json");
@@ -49,6 +52,28 @@ if($name !== $newName) {
             fwrite($file, json_encode($cc));
             fclose($file);
         }
+    }
+
+    /**
+     * Rename in general info
+     */
+    if(file_exists(PATH_HOME . "entity/general/general_info.json")) {
+        $general = json_decode(file_get_contents(PATH_HOME . "entity/general/general_info.json"), !0);
+
+        if(!empty($general[$name])) {
+            $general[$newName] = $general[$name];
+            unset($general[$name]);
+        }
+
+        foreach ($general as $entity => $gen) {
+            foreach ($gen['belongsTo'] as $i => $gene) {
+                if(array_keys($gene) === $name) {
+                    $gen['belongsTo'][$i][$newName] = $gen['belongsTo'][$i][$name];
+                    unset($gen['belongsTo'][$i][$name]);
+                }
+            }
+        }
+
     }
 }
 
