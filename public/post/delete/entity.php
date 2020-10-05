@@ -61,6 +61,18 @@ foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {
 
                     if (($key = array_search($i, (is_array($infoCC[$c['format']]) && !empty($infoCC[$c['format']]) ? $infoCC[$c['format']] : []))) !== false)
                         unset($infoCC[$c['format']][$key]);
+
+                    //remove column readable
+                    $key = array_search($c['column'], $infoCC['columns_readable']);
+                    if ($key !== false)
+                        unset($infoCC['columns_readable'][$key]);
+
+                    //remove informação de relação
+                    $key = array_search($i, $infoCC['relation']);
+                    if ($key !== false)
+                        unset($infoCC['relation'][$key]);
+
+                    $idr = 0;
                 }
 
                 //Remove from entity file
