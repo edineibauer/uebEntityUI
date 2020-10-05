@@ -68,12 +68,15 @@ if($name !== $newName) {
         foreach ($general as $entity => $gen) {
             foreach ($gen['belongsTo'] as $i => $gene) {
                 if(array_keys($gene) === $name) {
-                    $gen['belongsTo'][$i][$newName] = $gen['belongsTo'][$i][$name];
-                    unset($gen['belongsTo'][$i][$name]);
+                    $general[$entity]['belongsTo'][$i][$newName] = $gen['belongsTo'][$i][$name];
+                    unset($general[$entity]['belongsTo'][$i][$name]);
                 }
             }
         }
 
+        $f = fopen(PATH_HOME . "entity/general/general_info.json", "w");
+        fwrite($f, json_encode($general));
+        fclose($f);
     }
 }
 
