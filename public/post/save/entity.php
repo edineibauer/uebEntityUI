@@ -55,6 +55,29 @@ if($name !== $newName) {
     }
 
     /**
+     * Rename permissões
+     */
+    if(file_exists(PATH_HOME . "_config/permissoes.json")) {
+        $permissoes = json_decode(file_get_contents(PATH_HOME . "_config/permissoes.json"), !0);
+
+        if(!empty($permissoes)) {
+            foreach ($permissoes as $setor => $entitys) {
+                foreach ($entitys as $entity => $permissao) {
+                    if($entity === $name) {
+                        $permissoes[$setor][$newName] = $permissao;
+                        unset($permissoes[$setor][$name]);
+                    }
+                }
+            }
+        }
+
+        $f = fopen(PATH_HOME . "_config/permissoes.json", "w");
+        fwrite($f, json_encode($permissoes));
+        fclose($f);
+    }
+
+
+    /**
      * Rename in general info
      */
     if(file_exists(PATH_HOME . "entity/general/general_info.json")) {
