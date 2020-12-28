@@ -74,9 +74,11 @@ function readDicionarios() {
         dicionariosEdit = data;
         $("#entity-space, #relation").html("");
         $.each(dicionariosEdit, function (i, e) {
-            dicionariosNomes[i] = i;
-            copy("#tpl-entity", "#entity-space", i, !0);
-            $("#relation").append("<option value='" + i + "'>" + i + "</option>")
+            if(i !== 'usuarios') {
+                dicionariosNomes[i] = i;
+                copy("#tpl-entity", "#entity-space", i, !0);
+                $("#relation").append("<option value='" + i + "'>" + i + "</option>");
+            }
         })
     })
 }
@@ -893,10 +895,9 @@ function readSystem() {
 }
 
 $(function () {
-    let headerHeight = $("#core-header").height() + parseInt($("#core-header").css("padding-top")) + parseInt($("#core-header").css("padding-bottom"));
-    $("#entity-space").css("height", $(document).height() - headerHeight - 64);
-    $("#space-attr-entity").css("height", $(document).height() - headerHeight - 16 - 76.28);
-    $("#main").css("height", $(document).height() - headerHeight);
+    $("#entity-space").css("height", $(document).height() - 64);
+    $("#space-attr-entity").css("height", $(document).height() - 16 - 76.28);
+    $("#main").css("height", $(document).height());
     readInputTypes();
     readDefaults();
     readDicionarios();

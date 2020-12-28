@@ -1,4 +1,4 @@
-<ul id="nav-entity" class="theme-text-aux z-depth-4 space-header theme-l1">
+<ul id="nav-entity" class="z-depth-4 space-header mode-background-colorBackground mode-text-colorText">
     <div class="row">
         <div class="padding-12 col">
             <div class="left upper padding-medium">
@@ -8,7 +8,7 @@
                 <button class="btn theme btn-floating right" id="newEntityBtn" onclick="entityEdit()">
                     <i class="material-icons">add</i>
                 </button>
-                <button class="btn theme btn-floating right" onclick="uploadEntity()">
+                <button class="btn mode-background-colorBox mode-text-colorText btn-floating right" onclick="uploadEntity()">
                     <i class="material-icons">backup</i>
                 </button>
             </div>
@@ -20,11 +20,11 @@
         <div class="col s12 hide" id="tpl-entity">
             <div class="col s7 padding-small">__$__</div>
             <div class="padding-small col s5 align-right">
-                <button class="theme theme-text-aux opacity radius pointer right padding-tiny btn-flat"
+                <button class="theme opacity radius pointer right padding-tiny btn-flat"
                         style="height: 26px;" onclick="removeEntity('__$__')">
                     <i class="material-icons font-medium" style="margin-top: 4px;">delete</i>
                 </button>
-                <button class="theme theme-text-aux radius pointer right padding-tiny btn-flat"
+                <button class="theme radius pointer right padding-tiny btn-flat"
                         style="margin-right: 5px;height: 26px;"
                         onclick="entityEdit('__$__')">
                     <i class="material-icons font-medium" style="margin-top: 4px;">edit</i>
@@ -34,7 +34,7 @@
     </ul>
 </ul>
 
-<div class="col s12 m4 z-depth-2 space-header theme-l3" id="nav-menu">
+<div class="col s12 m4 z-depth-2 space-header mode-background-colorBox mode-text-colorText" id="nav-menu">
     <header class="row">
         <div class="panel">
             <div class="col s12 padding-tiny">
@@ -42,9 +42,9 @@
                     Salvar Entidade
                     <i class="material-icons right padding-left">check</i>
                 </button>
-                <button class="btn theme left radius hide downloadEntity" title="baixar backup da entidade"
+                <button class="btn mode-background-colorLine mode-text-colorText left radius hide downloadEntity" title="baixar backup da entidade"
                         onclick="downloadEntity()">
-                    <i class="material-icons left theme-text-aux">get_app</i>
+                    <i class="material-icons left">get_app</i>
                 </button>
             </div>
         </div>
@@ -54,25 +54,25 @@
         <div class="row" id="entity-name">
             <label class="col s12">
                 <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
-                    <select id="user" class="col margin-0 theme-text-aux">
-                        <option value="0" class="theme-l2 theme-text-aux">Entidade</option>
-                        <option value="2" class="theme-l2 theme-text-aux">Sistema</option>
-                        <option value="1" class="theme-l2 theme-text-aux">Usuário</option>
-                        <option value="3" class="theme-l2 theme-text-aux">Configuração</option>
+                    <select id="user" class="col margin-0 mode-text-colorText">
+                        <option value="0" class="mode-background-colorBox mode-text-colorText">Entidade</option>
+                        <option value="2" class="mode-background-colorBox mode-text-colorText">Sistema</option>
+                        <option value="1" class="mode-background-colorBox mode-text-colorText">Usuário</option>
+                        <option value="3" class="mode-background-colorBox mode-text-colorText">Configuração</option>
                     </select>
                 </label>
                 <div class="rest">
-                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col theme-text-aux"
+                    <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col"
                            style="margin:0">
                 </div>
             </label>
             <label class="col s12" id="col-system">
-                <div class="col left relative theme-text-aux" style="width: 70px;padding-top: 14px">
+                <div class="col left relative" style="width: 70px;padding-top: 14px">
                     Sistema:
                 </div>
                 <label class="col left" style="padding: 3.5px 0 0 0;width: 187px">
-                    <select id="system" class="col margin-0 theme-text-aux">
-                        <option value="" class="theme-l2 theme-text-aux"><?=SITENAME?></option>
+                    <select id="system" class="col margin-0 mode-text-colorText">
+                        <option value="" class="mode-background-colorBox mode-text-colorText"><?=SITENAME?></option>
                     </select>
                 </label>
             </label>
@@ -80,20 +80,20 @@
             <div class="row font-small hide requireNameEntity">
                 <div class="col left padding-tiny" style="width: 26px; height: 26px">
                     <a href="https://material.io/tools/icons/?style=baseline" target="_blank"
-                       class="right btn-flat font-small theme-text-aux margin-0" style="width: 27px; height: 26px">
-                        <i class="material-icons padding-tiny padding-4 theme-text-aux" id="entityIconDemo"></i>
+                       class="right btn-flat font-small margin-0" style="width: 27px; height: 26px">
+                        <i class="material-icons padding-tiny padding-4" id="entityIconDemo"></i>
                     </a>
                 </div>
                 <div class="left" style="width: 50px">
-                    <input id="entityIcon" placeholder="ícone" type="text" class="theme-text-aux">
+                    <input id="entityIcon" placeholder="ícone" type="text">
                 </div>
                 <label class="col relative" style="width: 70px">
                     <input type="checkbox" class="left" id="haveAutor"/>
-                    <span class="left pointer theme-text-aux" style="padding:10px 0">Autor</span>
+                    <span class="left pointer" style="padding:10px 0">Autor</span>
                 </label>
                 <label class="col relative" style="width: 110px">
                     <input type="checkbox" class="left" id="haveOwner"/>
-                    <span class="left pointer theme-text-aux" style="padding:10px 0">Proprietário</span>
+                    <span class="left pointer" style="padding:10px 0">Proprietário</span>
                 </label>
             </div>
             <div class="row"></div>
@@ -115,22 +115,22 @@
         <li class="col s12 list-att-__$0__ hide" id="tpl-attrEntity"
             style="border-bottom: solid 1px #EEE;padding-left:0">
             <div class="left" style="width: 27px">
-                <button class="btn-flat z-depth-0 pointer left theme theme-text-aux radius padding-0"
+                <button class="btn-flat z-depth-0 pointer left mode-background-colorBox mode-text-colorText radius padding-0"
                         style="margin-bottom: 1px"
                         onclick="indiceChange(__$0__,-1)">
                     <i class="material-icons right font-large">keyboard_arrow_up</i>
                 </button>
-                <button class="btn-flat z-depth-0 pointer left theme theme-text-aux radius padding-0"
+                <button class="btn-flat z-depth-0 pointer left mode-background-colorBox mode-text-colorText radius padding-0"
                         onclick="indiceChange(__$0__,1)">
                     <i class="material-icons right font-large">keyboard_arrow_down</i>
                 </button>
             </div>
             <span class="left overflow-hidden padding-4" style="width: 150px">__$1__</span>
-            <button class="btn-flat pointer right opacity theme theme-text-aux radius" style="padding: 9px 5px"
+            <button class="btn-flat pointer right opacity theme radius" style="padding: 9px 5px"
                     onclick="deleteAttr(__$0__)">
                 <i class="material-icons right font-large">delete</i>
             </button>
-            <button class="btn-flat pointer right theme theme-text-aux radius" style="margin-right: 5px;padding: 9px"
+            <button class="btn-flat pointer right theme radius" style="margin-right: 5px;padding: 9px"
                     onclick="editAttr(__$0__)">
                 <i class="material-icons right font-large">edit</i>
             </button>
@@ -138,7 +138,7 @@
     </div>
 </div>
 
-<div id="main" class="row color-gray-light space-header">
+<div id="main" class="row mode-background-colorBox mode-text-colorText space-header">
     <div class="col s12 hide requireNameEntity">
         <div class="col no-select margin-bottom padding-bottom">
             <button class="theme left radius padding-left" title="Salvar Campo" onclick="editAttr()">

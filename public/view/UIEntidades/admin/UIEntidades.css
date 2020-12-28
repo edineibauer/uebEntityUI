@@ -1,5 +1,5 @@
-{
-    background: #eeeeee;
+::-webkit-scrollbar {
+    width: 0;
 }
 
 #nav-entity {
@@ -34,6 +34,7 @@
     width: 100%;
     height: 100%;
     z-index: 1;
+    background-color: var(--colorBackground)!important;
 }
 
 #entity-space {
@@ -45,4 +46,24 @@
 #space-attr-entity {
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.card {
+    background-color: var(--colorBox)!important;
+    border-radius: 7px!important;
+    overflow: hidden;
+}
+
+input, select, textarea {
+    background-color: var(--colorBox)!important;
+    border-color: var(--colorLine)!important;
+    color: var(--colorText)!important;
+}
+
+.switch .slider {
+    background-color: var(--colorLine);
+}
+
+.switch .slider:after {
+    background-color: var(--colorBackground);
 }
