@@ -29,10 +29,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         /**
          * Cache DB
          */
-        $sql->exeCommand(
-            "DROP TABLE IF EXISTS " . PRE . "wcache_" . $entity . ";"
-            . "CREATE TABLE IF NOT EXISTS `" . PRE . "wcache_" . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL, `data` longtext DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
-            . "ALTER TABLE `" . PRE . "wcache_" . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT", !0);
+        Config::createCacheDB($entity);
     }
 
     private  function createEntityFromJson(string $lib, string $entity) {
