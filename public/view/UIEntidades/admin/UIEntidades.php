@@ -570,7 +570,7 @@
                     <div class="panel">
                         <div class="col s12 formato-div hide" id="formato-image">
                             <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
+                            <div class="padding-medium row round">
                                 <label class="col s6 m2 relative">
                                     <input type="checkbox" class="allformat" rel="image" id="all-image"/>
                                     <span>Todas</span>
@@ -585,7 +585,7 @@
                         </div>
                         <div class="col s12 formato-div hide" id="formato-video">
                             <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
+                            <div class="padding-medium row round">
                                 <label class="col s6 m2 relative">
                                     <input type="checkbox" class="allformat" rel="video" id="all-video"/>
                                     <span>Todos</span>
@@ -600,7 +600,7 @@
                         </div>
                         <div class="col s12 formato-div hide" id="formato-audio">
                             <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
+                            <div class="padding-medium row round">
                                 <label class="col s6 m2 relative">
                                     <input type="checkbox" class="allformat" rel="audio" id="all-audio"/>
                                     <span>Todos</span>
@@ -615,7 +615,7 @@
                         </div>
                         <div class="col s12 formato-div hide" id="formato-document">
                             <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
+                            <div class="padding-medium row round">
                                 <label class="col s6 m2 relative">
                                     <input type="checkbox" class="allformat" rel="document" id="all-document"/>
                                     <span>Todas</span>
@@ -631,7 +631,7 @@
                         </div>
                         <div class="col s12 formato-div hide" id="formato-compact">
                             <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
+                            <div class="padding-medium row round">
                                 <label class="col s6 m2 relative">
                                     <input type="checkbox" class="allformat" rel="compact" id="all-compact"/>
                                     <span>Todas</span>
@@ -646,7 +646,7 @@
                         </div>
                         <div class="col s12 formato-div hide" id="formato-denveloper">
                             <div class="row padding-small"></div>
-                            <div class="padding-medium row color-grey-light round">
+                            <div class="padding-medium row round">
                                 <label class="col s6 m2 relative">
                                     <input type="checkbox" class="allformat" rel="denveloper" id="all-denveloper"/>
                                     <span>Todas</span>
