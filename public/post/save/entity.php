@@ -61,6 +61,10 @@ if($name !== $newName) {
         $permissoes = json_decode(file_get_contents(PATH_HOME . "_config/permissoes.json"), !0);
 
         if(!empty($permissoes)) {
+            if(!empty($permissoes[$name])) {
+                $permissoes[$newName] = $permissoes[$name];
+                unset($permissoes[$name]);
+            }
             foreach ($permissoes as $setor => $entitys) {
                 foreach ($entitys as $entity => $permissao) {
                     if($entity === $name) {
