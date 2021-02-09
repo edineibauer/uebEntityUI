@@ -104,6 +104,32 @@ if (file_exists(PATH_HOME . "public/entity" . DIRECTORY_SEPARATOR . "cache" . DI
 $sql->exeCommand("DROP TABLE " . PRE . $entity);
 
 /**
+ * Remove permissões para a entidade excluída
+ */
+$p = json_decode(file_get_contents(PATH_HOME . "_config/permissoes.json"), !0);
+if(isset($p[$entity]))
+    unset($p[$entity]);
+
+foreach ($p as $user => $entidades) {
+    if(isset($p[$user][$entity]))
+        unset($p[$user][$entity]);
+}
+Config::createFile(PATH_HOME . "_config/permissoes.json", json_encode($p));
+
+/**
+ * Remove entidade do general
+ */
+$p = json_decode(file_get_contents(PATH_HOME . "entity/general/general_info.json"), !0);
+if(isset($p[$entity]))
+    unset($p[$entity]);
+
+foreach ($p as $entidade => $dados) {
+    if(isset($dados['belongsTo'][$entity]))
+        unset($dados['belongsTo'][$entity]);
+}
+Config::createFile(PATH_HOME . "entity/general/general_info.json", json_encode($p));
+
+/**
  * Informa ao sistema que houve atualização
  */
 Config::updateSite();
