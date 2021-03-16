@@ -2,6 +2,7 @@
 $data['data'] = [];
 
 $listNot = [
+    "admin.json",
     "api_chave.json",
     "coordenadas.json",
     "enviar_mensagem.json",
