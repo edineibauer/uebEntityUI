@@ -95,9 +95,9 @@ class EntityUpdateEntityDatabase extends EntityDatabase
 
             foreach ($changes as $id => $dados) {
                 if ($dados['group'] === "list")
-                    $sql->exeCommand("RENAME TABLE `" . PRE . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . PRE . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`");
+                    $sql->exeCommand("RENAME TABLE `" . PRE . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . PRE . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`", !0, !0);
                 else
-                    $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id]));
+                    $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id]), !0, !0);
 
                 /**
                  * change general_info column name
@@ -155,7 +155,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                 $this->dropKeysFromColumnRemoved($id, $meta);
 
                 $sql = new SqlCommand();
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP COLUMN " . $meta['column']);
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP COLUMN " . $meta['column'], !0, !0);
             }
         }
     }
@@ -180,24 +180,24 @@ class EntityUpdateEntityDatabase extends EntityDatabase
 
             if ($dados['type'] === "int") {
                 $constraint = substr("c_{$this->entity}_" . substr($dados['column'], 0, 5) . "_" . substr($dados['relation'], 0, 5), 0, 64);
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP FOREIGN KEY {$constraint}, DROP INDEX fk_" . $dados['column']);
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP FOREIGN KEY {$constraint}, DROP INDEX fk_" . $dados['column'], !0, !0);
 
             } elseif ($dados['group'] === "list") {
-                $sql->exeCommand("DROP TABLE " . PRE . $this->entity . "_" . substr($dados['column'], 0, 5));
+                $sql->exeCommand("DROP TABLE " . PRE . $this->entity . "_" . substr($dados['column'], 0, 5), !0, !0);
             }
         }
 
         if ($id < 999900) {
 
             //INDEX
-            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='index_{$id}'");
+            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='index_{$id}'", !0, !0);
             if ($sql->getRowCount() > 0)
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX index_" . $id);
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX index_" . $id, !0, !0);
 
             //UNIQUE - Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
-            /*$sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'");
+            /*$sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'", !0, !0);
             if ($sql->getRowCount() > 0)
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id);*/
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id, !0, !0);*/
         }
     }
 
@@ -210,10 +210,10 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             foreach ($add as $id => $dados) {
 
                 if ($dados['key'] !== "information")
-                    $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
+                    $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " ADD " . parent::prepareSqlColumn($dados), !0, !0);
 
                 if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]))
-                    parent::exeSql("ALTER TABLE `" . PRE . $this->entity . "` ADD KEY `index_{$id}` (`{$dados['column']}`)");
+                    parent::exeSql("ALTER TABLE `" . PRE . $this->entity . "` ADD KEY `index_{$id}` (`{$dados['column']}`)", !0, !0);
 
                 if ($dados['key'] === "relation") {
 
@@ -246,11 +246,11 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         $sql = new SqlCommand();
         foreach ($this->new as $i => $dados) {
 
-            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME = 'unique_{$i}'");
+            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME = 'unique_{$i}'", !0, !0);
             if ($sql->getRowCount() > 0 && !$dados['unique'])
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $i);
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $i, !0, !0);
             else if ($sql->getRowCount() === 0 && $dados['unique'])
-                $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`)");
+                $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`)", !0, !0);
         }
     }*/
 }

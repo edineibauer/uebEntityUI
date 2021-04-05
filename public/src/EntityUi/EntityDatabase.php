@@ -73,7 +73,7 @@ abstract class EntityDatabase
     protected function exeSql($sql)
     {
         $exe = new SqlCommand();
-        $exe->exeCommand($sql);
+        $exe->exeCommand($sql, !0, !0);
         if ($exe->getErro()) {
             var_dump($sql);
             var_dump($exe->getErro());
