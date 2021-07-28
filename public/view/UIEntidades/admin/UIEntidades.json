@@ -3,6 +3,6 @@
   "setor": "admin",
   "header": false,
   "navbar": false,
-  "css": ["w3"],
+  "css": ["w3", "boostrap"],
   "icon": "psychology"
 }
