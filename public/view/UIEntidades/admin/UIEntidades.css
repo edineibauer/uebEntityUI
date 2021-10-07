@@ -41,7 +41,7 @@
 #entity-space, #space-attr-entity {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: calc(100vh - 64px);
+    max-height: calc(100vh - 134px);
 }
 
 .card {
