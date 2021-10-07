@@ -129,9 +129,4 @@ foreach ($p as $entidade => $dados) {
 }
 Config::createFile(PATH_HOME . "entity/general/general_info.json", json_encode($p));
 
-/**
- * Informa ao sistema que houve atualização
- */
-Config::updateSite();
-
 $data['data'] = true;
