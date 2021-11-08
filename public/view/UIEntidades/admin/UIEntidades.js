@@ -320,8 +320,12 @@ function saveAttrInputs() {
     checkSaveFilter();
     checkSaveSelect();
     checkSaveAssociacaoShowAttr();
+
     if (["source", "source_list"].indexOf(dicionariosEdit[entity.name][entity.edit].format) > -1)
-        checkSaveSource(); else checkSaveAllow();
+        checkSaveSource();
+    else
+        checkSaveAllow();
+
     if (typeof (oldData) === "undefined" || typeof (oldData.indice) === "undefined") {
         let lastIndice = 0;
         $.each(dicionariosEdit[entity.name], function (i, e) {
@@ -415,11 +419,17 @@ function saveAttrValue($input) {
     if (name === "nome")
         dicionariosEdit[entity.name][entity.edit].column = slug($input.val(), "_");
     if (["default", "size"].indexOf(name) > -1 && !$("#" + name + "_custom").prop("checked"))
-        dicionariosEdit[entity.name][entity.edit][name] = !1; else if ("form" === name || "datagrid" === name)
-        dicionariosEdit[entity.name][entity.edit][name] = $input.prop("checked") ? {} : !1; else if (dicionariosEdit[entity.name][entity.edit].form !== !1 && ["class", "style", "orientation", "template", "atributos", "coll", "cols", "colm", "input", "type"].indexOf(name) > -1)
-        dicionariosEdit[entity.name][entity.edit].form[name] = $input.val(); else if (dicionariosEdit[entity.name][entity.edit].datagrid !== !1 && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
-        dicionariosEdit[entity.name][entity.edit].datagrid[name] = $input.val(); else if ("regexp" === name)
-        dicionariosEdit[entity.name][entity.edit].allow.regexp = $input.val(); else dicionariosEdit[entity.name][entity.edit][name] = ($input.attr("type") === "checkbox" ? $input.prop("checked") : $input.val())
+        dicionariosEdit[entity.name][entity.edit][name] = !1;
+    else if ("form" === name || "datagrid" === name)
+        dicionariosEdit[entity.name][entity.edit][name] = $input.prop("checked") ? {} : !1;
+    else if (dicionariosEdit[entity.name][entity.edit].form !== !1 && ["class", "style", "orientation", "template", "atributos", "coll", "cols", "colm", "input", "type"].indexOf(name) > -1)
+        dicionariosEdit[entity.name][entity.edit].form[name] = $input.val();
+    else if (dicionariosEdit[entity.name][entity.edit].datagrid !== !1 && ["grid_relevant", "grid_class", "grid_style", "grid_template", "grid_relevant_relational", "grid_class_relational", "grid_style_relational", "grid_template_relational"].indexOf(name) > -1)
+        dicionariosEdit[entity.name][entity.edit].datagrid[name] = $input.val();
+    else if ("regexp" === name)
+        dicionariosEdit[entity.name][entity.edit].allow.regexp = $input.val();
+    else
+        dicionariosEdit[entity.name][entity.edit][name] = ($input.attr("type") === "checkbox" ? $input.prop("checked") : $input.val())
 }
 
 function saveAllowValue($input) {

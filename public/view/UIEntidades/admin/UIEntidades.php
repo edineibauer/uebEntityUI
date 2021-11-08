@@ -286,7 +286,7 @@
             <span class="left padding-medium font-medium pointer">__$1__ </span>
         </label>
 
-        <div class="hide card padding-medium <?php //relation_container?>">
+        <div class="hide card padding-medium">
             <header class="row padding-8">
                 <span class="left padding-12 padding-right upper font-bold">Configurar Campos do Formulário Relacional</span>
             </header>
@@ -314,7 +314,7 @@
             </div>
         </div>
 
-        <div class="hide card padding-medium <?php //relation_container ?>">
+        <div class="hide card padding-medium">
             <header class="row padding-8">
                 <span class="left padding-12 padding-right upper font-bold">Listagem de Dados da Entidade Relacional</span>
             </header>
@@ -415,6 +415,16 @@
                         <option value="1">08.3% &nbsp;|&nbsp; 1/12</option>
                     </select>
                 </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col">
+                    <div class="col s12 padding-small form_body">
+                        <label class="color-text-gray">Descrição / Ajuda</label>
+                        <input id="ajuda" type="text" class="input form_body">
+                    </div>
+                </div>
+
                 <div class="clearfix"></div>
 
                 <div class="col hide" id="orientation_field">
