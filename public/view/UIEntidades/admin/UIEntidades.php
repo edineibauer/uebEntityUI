@@ -70,11 +70,16 @@
                 <div class="col left relative" style="width: 70px;padding-top: 14px">
                     Sistema:
                 </div>
-                <label class="col left" style="padding: 3.5px 0 0 0;width: 187px">
+                <label class="col left" style="padding: 3.5px 0 0 0;width: 154px">
                     <select id="system" class="col margin-0 mode-text-colorText">
                         <option value="" class="mode-background-colorBox mode-text-colorText"><?=SITENAME?></option>
                     </select>
                 </label>
+                <label class="col relative" style="width: 43px;padding-top: 5px">
+                    <input type="checkbox" class="left" id="systemRequired"/>
+                    <span class="left pointer" style="color: coral;padding:5px 0">*</span>
+                </label>
+
             </label>
 
             <div class="row font-small hide requireNameEntity">

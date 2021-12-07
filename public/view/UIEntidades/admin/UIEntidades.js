@@ -99,11 +99,13 @@ function entityEdit(id) {
                 entity.name = id;
                 entity.icon = info[id].icon;
                 entity.autor = info[id].autor;
+                entity.systemRequired = info[id].systemRequired;
                 entity.owner = info[id].owner;
                 entity.system = info[id].system;
                 entity.user = typeof info[id].user === "number" ? info[id].user : "0";
                 $("#entityIconDemo").text(entity.icon || "");
                 $("#haveAutor").prop("checked", entity.autor === 1);
+                $("#systemRequired").prop("checked", entity.systemRequired === 1);
                 $("#haveOwner").prop("checked", entity.autor === 2);
                 $("#user").val(entity.user)
             } else {
@@ -137,6 +139,7 @@ function showEntity() {
     $("#entityIcon").val(entity.icon);
     $("#entityIconDemo").text(entity.icon);
     $("#haveAutor").prop("checked", entity.autor === 1);
+    $("#systemRequired").prop("checked", entity.systemRequired === 1);
     $("#haveOwner").prop("checked", entity.autor === 2);
     $("#user").val(entity.user).trigger("change");
 
@@ -183,6 +186,7 @@ function saveEntity(silent) {
             "name": entity.name,
             "icon": $("#entityIcon").val(),
             "autor": $("#haveAutor").prop("checked"),
+            "systemRequired": $("#systemRequired").prop("checked"),
             "owner": $("#haveOwner").prop("checked"),
             "user": $("#user").val(),
             "system": entity.system,
@@ -266,6 +270,7 @@ function checkSaveAttr() {
     var yes = !0;
     entity.icon = $("#entityIcon").val();
     entity.autor = $("#haveAutor").prop("checked") ? 1 : ($("#haveOwner").prop("checked") ? 2 : null);
+    entity.systemRequired = $("#systemRequired").prop("checked") ? 1 : null;
     entity.user = $("#user").val();
     if (checkRequiresFields()) {
         if (entity.edit === null) {

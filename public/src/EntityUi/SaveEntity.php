@@ -14,16 +14,17 @@ class SaveEntity
     /**
      * SaveEntity constructor.
      * Nome da entidade, dicionário de dados e identificador atual
-
-     * @param string|null $entity
-     * @param string|null $system
-     * @param string|null $icon
+     * 
+     * @param string $entity
+     * @param string $system
+     * @param string $icon
      * @param int $user
      * @param int|null $autor
+     * @param null $systemRequired
      * @param null $data
      * @param int|null $id
      */
-    public function __construct(string $entity = "", string $system = "", string $icon = "", int $user = 0, int $autor = null, $data = null, int $id = null)
+    public function __construct(string $entity = "", string $system = "", string $icon = "", int $user = 0, int $autor = null, $systemRequired = null, $data = null, int $id = null)
     {
         if ($entity) {
             $this->entity = $entity;
@@ -31,7 +32,7 @@ class SaveEntity
                 $this->id = $id;
 
             if ($data)
-                $this->start($system, $user, $data, $icon, $autor);
+                $this->start($system, $user, $data, $icon, $autor, $systemRequired);
         }
     }
 
@@ -54,10 +55,11 @@ class SaveEntity
      * @param string $system
      * @param int $user
      * @param null $metadados
-     * @param string|null $icon
+     * @param string $icon
      * @param int|null $autor
+     * @param null $systemRequired
      */
-    private function start(string $system, int $user, $metadados = null, string $icon = "", int $autor = null)
+    private function start(string $system, int $user, $metadados = null, string $icon = "", int $autor = null, $systemRequired = null)
     {
         try {
 
@@ -76,7 +78,7 @@ class SaveEntity
 
             //criar novo dicionario
             $this->createEntityJson($metadados);
-            $this->createEntityJson($this->generateInfo($system, $metadados, $icon, $autor, $user), "info");
+            $this->createEntityJson($this->generateInfo($system, $metadados, $icon, $autor, $user, $systemRequired), "info");
 
             //criar/atualizar banco
             new EntityCreateEntityDatabase($this->entity, $metadadosOld, $infoOld);
@@ -104,12 +106,13 @@ class SaveEntity
      * @param string $icon
      * @param int|null $autor
      * @param int $user
+     * @param null $systemRequired
      * @return array
      */
-    private function generateInfo(string $system, array $metadados, string $icon = "", int $autor = null, int $user = 0): array
+    private function generateInfo(string $system, array $metadados, string $icon = "", int $autor = null, int $user = 0, $systemRequired = null): array
     {
         $data = [
-            "icon" => $icon, "autor" => $autor, "user" => $user, "system" => $system, "setor" => "", "columns_readable" => ["id", "system_id"],
+            "icon" => $icon, "autor" => $autor, "user" => $user, "system" => $system, "systemRequired" => $systemRequired, "setor" => "", "columns_readable" => ["id", "system_id"],
             "required" => null, "unique" => null, "update" => null,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
             "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null
