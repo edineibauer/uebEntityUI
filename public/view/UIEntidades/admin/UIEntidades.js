@@ -74,11 +74,9 @@ function readDicionarios() {
         dicionariosEdit = data;
         $("#entity-space, #relation").html("");
         $.each(dicionariosEdit, function (i, e) {
-            if(i !== 'usuarios') {
-                dicionariosNomes[i] = i;
-                copy("#tpl-entity", "#entity-space", i, !0);
-                $("#relation").append("<option value='" + i + "'>" + i + "</option>");
-            }
+            dicionariosNomes[i] = i;
+            copy("#tpl-entity", "#entity-space", i, !0);
+            $("#relation").append("<option value='" + i + "'>" + i + "</option>");
         })
     })
 }
