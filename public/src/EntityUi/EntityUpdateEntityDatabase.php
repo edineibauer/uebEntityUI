@@ -237,12 +237,12 @@ class EntityUpdateEntityDatabase extends EntityDatabase
     {
         $sql = new SqlCommand();
         foreach ($this->new as $i => $dados) {
+            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME = 'unique_{$i}'");
+            if ($sql->getRowCount() > 0)
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $i);
 
-            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME = 'unique_{$i}'", !0, !0);
-            if ($sql->getRowCount() > 0 && !$dados['unique'])
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $i, !0, !0);
-            else if ($sql->getRowCount() === 0 && $dados['unique'])
-                $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`, `system_id`)", !0, !0);
+            if ($dados['unique'])
+                $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`, `system_id`)");
         }
     }
 }

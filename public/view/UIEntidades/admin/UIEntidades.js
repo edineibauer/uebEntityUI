@@ -202,7 +202,7 @@ function saveEntity(silent) {
                     info[entity.name].icon = $("#entityIcon").val()
             }
             if (typeof (silent) === "undefined")
-                toast("Salvo", 1500);
+                toast("Salvo", 1500, "toast-success");
             if (g && typeof (silent) === "undefined")
                 readDicionarios()
         })
