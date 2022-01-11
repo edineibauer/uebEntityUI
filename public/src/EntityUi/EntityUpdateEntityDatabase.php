@@ -78,12 +78,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         $this->checkChanges();
         $this->removeColumnsFromEntity();
         $this->addColumnsToEntity();
-
-        /**
-         * Devido ao uso de tabelas mult-tenancy, registros duplicados são válidos de usuário para usuário,
-         * porém não para o mesmo usuário, ou seja, deve ser controlado pela aplicação e não pelo banco
-         */
-//        $this->createKeys();
+        $this->createKeys();
     }
 
     private function checkChanges()
@@ -132,11 +127,8 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                 if ($d['column'] !== $this->new[$i]['column'] || $d['default'] !== $this->new[$i]['default'] || $d['size'] !== $this->new[$i]['size'])
                     $data[$i] = $d;
 
-                /*
-                 * Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
-                 *
-                 *  if ($d['column'] !== $this->new[$i]['column'] || $d['unique'] !== $this->new[$i]['unique'] || $d['default'] !== $this->new[$i]['default'] || $d['size'] !== $this->new[$i]['size'])
-                     $data[$i] = $d;*/
+                if ($d['column'] !== $this->new[$i]['column'] || $d['unique'] !== $this->new[$i]['unique'] || $d['default'] !== $this->new[$i]['default'] || $d['size'] !== $this->new[$i]['size'])
+                    $data[$i] = $d;
             }
         }
 
@@ -194,10 +186,10 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             if ($sql->getRowCount() > 0)
                 $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX index_" . $id, !0, !0);
 
-            //UNIQUE - Comenta Unique para não criar mais, devido a interferência em Multi-tenancy
-            /*$sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'", !0, !0);
+            //UNIQUE
+            $sql->exeCommand("SHOW KEYS FROM " . PRE . $this->entity . " WHERE KEY_NAME ='unique_{$id}'", !0, !0);
             if ($sql->getRowCount() > 0)
-                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id, !0, !0);*/
+                $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $id, !0, !0);
         }
     }
 
@@ -240,7 +232,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
 
         return $data;
     }
-/*
+
     private function createKeys()
     {
         $sql = new SqlCommand();
@@ -250,7 +242,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             if ($sql->getRowCount() > 0 && !$dados['unique'])
                 $sql->exeCommand("ALTER TABLE " . PRE . $this->entity . " DROP INDEX unique_" . $i, !0, !0);
             else if ($sql->getRowCount() === 0 && $dados['unique'])
-                $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`)", !0, !0);
+                $sql->exeCommand("ALTER TABLE `" . PRE . $this->entity . "` ADD UNIQUE KEY `unique_{$i}` (`{$dados['column']}`, `system_id`)", !0, !0);
         }
-    }*/
+    }
 }
