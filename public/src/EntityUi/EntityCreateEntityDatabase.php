@@ -25,11 +25,6 @@ class EntityCreateEntityDatabase extends EntityDatabase
             new EntityUpdateEntityDatabase($entity, $dicionarioOld, $infoOld);
         elseif ($sql->getErro())
             $this->createTableFromEntityJson($entity);
-
-        /**
-         * Cache DB
-         */
-        Config::createCacheDB($entity);
     }
 
     private  function createEntityFromJson(string $lib, string $entity) {
