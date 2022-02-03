@@ -213,7 +213,7 @@ function saveEntity(silent) {
 
 function resetAttr(id) {
     entity.edit = typeof (id) !== "undefined" ? id : null;
-    $("#atributos, #template, #style, #class, #orientation, .input").val("");
+    $("#atributos, #template, #style, #class, #orientation, #autocompletenovo, .input").val("");
     $(".selectInput").css("color", "#AAAAAA").val("");
     $(".allformat").prop("checked", !1);
     $("#format-source, .formato-div, #requireListExtend, .relation_container, #requireListFilter, .relation_creation_container").addClass("hide");
@@ -226,7 +226,9 @@ function resetAttr(id) {
         $("." + $(this).attr("id") + "-format").prop("checked", !1)
     });
     if (entity.edit !== null)
-        $(".selectInput, #relation").attr("disabled", "disabled").addClass("disabled"); else $(".selectInput, #relation").removeAttr("disabled").removeClass("disabled");
+        $(".selectInput, #relation").attr("disabled", "disabled").addClass("disabled");
+    else
+        $(".selectInput, #relation").removeAttr("disabled").removeClass("disabled");
     applyAttr(getDefaultsInfo());
     $("#nome").trigger("change")
 }
@@ -553,6 +555,12 @@ function setFormat(val) {
     } else {
         $("#orientation_field").addClass("hide")
     }
+    if (['list', 'list_mult'].indexOf(val) > -1) {
+        $("#includebtnnew_field").removeClass("hide")
+    } else {
+        $("#includebtnnew_field").addClass("hide")
+    }
+
     $("#allowBtnAdd, #spaceValueAllow").removeClass('hide');
     if (['select', 'radio', 'checkbox', 'source', 'source_list', 'week', 'month'].indexOf(val) > -1) {
         $("#definirvalores").removeClass("hide");

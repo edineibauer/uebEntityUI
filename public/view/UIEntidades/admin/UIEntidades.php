@@ -233,7 +233,7 @@
                         </div>
                     </div>
 
-                    <div class="col s12 m8 l5 padding-tiny hide" id="default_container">
+                    <div class="col s12 m8 l6 padding-tiny hide" id="default_container">
                         <label for="default" class="color-text-gray">Valor Inicial (Padrão)</label>
                         <input type="text" id="default" class="input">
                     </div>
@@ -424,9 +424,21 @@
                 <div class="clearfix"></div>
 
                 <div class="col">
-                    <div class="col s12 padding-small form_body">
+                    <div class="col s12 padding-small">
                         <label class="color-text-gray">Descrição / Ajuda</label>
                         <input id="ajuda" type="text" class="input form_body">
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col hide" id="includebtnnew_field">
+                    <div class="col s12 padding-small form_body">
+                        <label class="color-text-gray row" for="autocompletenovo">Adicionar botão para novos registros</label>
+                        <label class="switch">
+                            <input type="checkbox" class="input" id="autocompletenovo">
+                            <div class="slider"></div>
+                        </label>
                     </div>
                 </div>
 
