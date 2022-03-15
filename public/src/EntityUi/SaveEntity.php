@@ -224,6 +224,8 @@ class SaveEntity
                             $itemEntity => [
                                 "column" => $meta['column'],
                                 "key" => $meta['key'],
+                                "group" => $meta['group'],
+                                "format" => $meta['format'],
                                 "relevant" => $columnRelevant,
                                 "grid_class_relational" => !empty($meta['datagrid']['grid_class_relational']) ? $meta['datagrid']['grid_class_relational'] : null,
                                 "grid_style_relational" => !empty($meta['datagrid']['grid_style_relational']) ? $meta['datagrid']['grid_style_relational'] : null,
