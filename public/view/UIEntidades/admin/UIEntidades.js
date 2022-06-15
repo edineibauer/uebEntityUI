@@ -1024,11 +1024,6 @@ $(function () {
                 return !1
             }
         })
-    }).off("change", "#user").on("change", "#user", function () {
-        if ($(this).val() !== "2")
-            $("#col-system").removeClass("hide");
-        else
-            $("#col-system").addClass("hide");
 
     }).off("change", "#system").on("change", "#system", function () {
         entity.system = $("#system").val();
