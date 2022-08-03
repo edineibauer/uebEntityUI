@@ -112,7 +112,7 @@ class SaveEntity
     private function generateInfo(string $system, array $metadados, string $icon = "", int $autor = null, int $user = 0, $systemRequired = null): array
     {
         $data = [
-            "icon" => $icon, "autor" => $autor, "user" => $user, "system" => $system, "systemRequired" => $systemRequired, "setor" => "", "columns_readable" => ["id", "system_id"],
+            "icon" => $icon, "autor" => $autor, "user" => $user, "system" => $system, "systemRequired" => $systemRequired, "setor" => "", "columns_readable" => ["id", "system_id", "system_entity"],
             "required" => null, "unique" => null, "update" => null,
             "identifier" => $this->id, "title" => null, "link" => null, "status" => null, "date" => null, "datetime" => null, "valor" => null, "email" => null, "password" => null, "tel" => null, "cpf" => null, "cnpj" => null, "cep" => null, "time" => null, "week" => null, "month" => null, "year" => null,
             "publisher" => "", "owner" => null, "ownerPublisher" => null, "extend" => null, "extend_mult" => null, "list" => null, "list_mult" => null, "folder" => null, "extend_folder" => null

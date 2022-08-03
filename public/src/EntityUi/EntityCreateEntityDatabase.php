@@ -92,7 +92,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
             //Verifica se as entidades relacionais existem, se não, cria elas antes
             $this->createRelationalEntitys($metadados);
 
-            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL";
+            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL, `system_entity` varchar(127) DEFAULT NULL";
             foreach ($metadados as $dados)
                 $string .= ", " . parent::prepareSqlColumn($dados);
             $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
