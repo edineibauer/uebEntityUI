@@ -213,7 +213,7 @@ function saveEntity(silent) {
 
 function resetAttr(id) {
     entity.edit = typeof (id) !== "undefined" ? id : null;
-    $("#atributos, #template, #style, #class, #orientation, #autocompletenovo, .input").val("");
+    $("#atributos, #template, #style, #class, #orientation, #autocompletenovo, #autocompleteexists, .input").val("");
     $(".selectInput").css("color", "#AAAAAA").val("");
     $(".allformat").prop("checked", !1);
     $("#format-source, .formato-div, #requireListExtend, .relation_container, #requireListFilter, .relation_creation_container").addClass("hide");
