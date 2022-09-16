@@ -145,10 +145,15 @@ class EntityCreateEntityDatabase extends EntityDatabase
         if(!empty($info['system']))
             parent::createIndexFk($entity, 'system_id', $info['system']);
 
+        $sql = new Conn\SqlCommand();
+
         foreach ($metadados as $i => $dados) {
 
-            if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]))
-                parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
+            if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"])) {
+                $sql->exeCommand("SHOW KEYS FROM " . $entity . " WHERE KEY_NAME ='index_{$i}'");
+                if ($sql->getRowCount() === 0)
+                    parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
+            }
 
             if ($dados['key'] === "relation") {
 
