@@ -699,7 +699,7 @@ function sendImport() {
     if ($("#import").val() !== "") {
         var form_data = new FormData();
         form_data.append('arquivo', $('#import').prop('files')[0]);
-        form_data.append('maestruToken', localStorage.token);
+        form_data.append('maestruToken', JSON.parse(sessionStorage.__login).token);
         form_data.append('fileInSetFolder', 'save/import');
         $.ajax({
             url: HOME + 'set',
