@@ -145,7 +145,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         if(!empty($info['system']))
             parent::createIndexFk($entity, 'system_id', $info['system']);
 
-        $sql = new Conn\SqlCommand();
+        $sql = new \Conn\SqlCommand();
 
         foreach ($metadados as $i => $dados) {
 
