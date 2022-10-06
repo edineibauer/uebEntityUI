@@ -19,7 +19,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         parent::__construct($entity);
 
         $sql = new \Conn\SqlCommand();
-        $sql->exeCommand("SELECT 1 FROM " . PRE . "{$entity} LIMIT 1", !0, !0);
+        $sql->exeCommand("SELECT 1 FROM {$entity} LIMIT 1", !0, !0);
         
         if (!$sql->getErro() && !empty($dicionarioOld) && !empty($infoOld))
             new EntityUpdateEntityDatabase($entity, $dicionarioOld, $infoOld);
@@ -92,7 +92,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
             //Verifica se as entidades relacionais existem, se não, cria elas antes
             $this->createRelationalEntitys($metadados);
 
-            $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL, `system_entity` varchar(127) DEFAULT NULL";
+            $string = "CREATE TABLE IF NOT EXISTS `" . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL, `system_entity` varchar(127) DEFAULT NULL";
             foreach ($metadados as $dados)
                 $string .= ", " . parent::prepareSqlColumn($dados);
             $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
@@ -140,7 +140,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
      */
     private function createKeys(string $entity, array $metadados, array $info)
     {
-        parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
+        parent::exeSql("ALTER TABLE `" . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
 
         if(!empty($info['system']))
             parent::createIndexFk($entity, 'system_id', $info['system']);
@@ -152,7 +152,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
             if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"])) {
                 $sql->exeCommand("SHOW KEYS FROM " . $entity . " WHERE KEY_NAME ='index_{$i}'");
                 if ($sql->getRowCount() === 0)
-                    parent::exeSql("ALTER TABLE `" . PRE . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
+                    parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
             }
 
             if ($dados['key'] === "relation") {

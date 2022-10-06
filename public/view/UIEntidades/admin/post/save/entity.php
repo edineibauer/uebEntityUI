@@ -19,10 +19,10 @@ if($name !== $newName) {
     $sql = new \Conn\SqlCommand();
 
     //Table Rename
-    $sql->exeCommand("RENAME TABLE  `" . PRE . "{$name}` TO  `" . PRE . "{$newName}`");
+    $sql->exeCommand("RENAME TABLE  `{$name}` TO  `{$newName}`");
 
     //Table Rename Cache
-    $sql->exeCommand("RENAME TABLE  `" . PRE . "wcache_{$name}` TO  `" . PRE . "wcache_{$newName}`");
+    $sql->exeCommand("RENAME TABLE  `wcache_{$name}` TO  `wcache_{$newName}`");
 
     //Entity Rename
     rename(PATH_HOME . "entity/cache/{$name}.json",PATH_HOME . "entity/cache/{$newName}.json");
@@ -31,7 +31,7 @@ if($name !== $newName) {
     //Table Rename name in Relation
     $dic = new \Entity\Dicionario($newName);
     foreach ($dic->getAssociationMult() as $item)
-        $sql->exeCommand("RENAME TABLE  `" . PRE . "{$name}_{$item->getColumn()}` TO  `" . PRE . "{$newName}_{$item->getColumn()}`");
+        $sql->exeCommand("RENAME TABLE  `{$name}_{$item->getColumn()}` TO  `{$newName}_{$item->getColumn()}`");
 
     //Entity change name in others relations
     foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {
@@ -45,7 +45,7 @@ if($name !== $newName) {
                     $cc[$i]['relation'] = $newName;
 
                     //atualiza o nome da coluna na tabela de relação para apontar para o novo nome de entidade
-                    $sql->exeCommand("ALTER TABLE  " . PRE . "{$fEntity}_{$c['column']} CHANGE {$name}_id {$newName}_id int(11)");
+                    $sql->exeCommand("ALTER TABLE  {$fEntity}_{$c['column']} CHANGE {$name}_id {$newName}_id int(11)");
 
                 }
             }

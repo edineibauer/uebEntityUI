@@ -24,7 +24,7 @@ abstract class EntityDatabase
     {
         $table = $this->entity . "_" . substr($dados['column'], 0, 5);
 
-        $string = "CREATE TABLE IF NOT EXISTS `" . PRE . $table . "` ("
+        $string = "CREATE TABLE IF NOT EXISTS `" . $table . "` ("
             . "`{$this->entity}_id` INT(11) NOT NULL,"
             . "`{$dados['relation']}_id` INT(11) NOT NULL"
             . ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
@@ -41,8 +41,8 @@ abstract class EntityDatabase
         $constraint = substr("c_{$this->entity}_" . substr($col, 0, 5) . "_" . substr($tableTarget, 0, 5), 0, 64);
         $cascade = $cascade ? "CASCADE" : "SET NULL";
 
-        $this->exeSql("ALTER TABLE `" . PRE . $table . "` ADD KEY `fk_" . $column . "` (`{$column}`)");
-        $this->exeSql("ALTER TABLE `" . PRE . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . PRE . $tableTarget . "`(id) ON DELETE {$cascade} ON UPDATE NO ACTION");
+        $this->exeSql("ALTER TABLE `" . $table . "` ADD KEY `fk_" . $column . "` (`{$column}`)");
+        $this->exeSql("ALTER TABLE `" . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . $tableTarget . "`(id) ON DELETE {$cascade} ON UPDATE NO ACTION");
     }
 
     protected function prepareSqlColumn($dados)

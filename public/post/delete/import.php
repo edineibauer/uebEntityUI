@@ -12,4 +12,4 @@ if (file_exists(PATH_HOME . "entity/cache/info/{$entity}.json"))
     unlink(PATH_HOME . "entity/cache/info/{$entity}.json");
 
 $sql = new \Conn\SqlCommand();
-$sql->exeCommand("DROP TABLE IF EXISTS " . PRE . $entity);
+$sql->exeCommand("DROP TABLE IF EXISTS " . $entity);
