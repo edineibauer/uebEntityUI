@@ -152,7 +152,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
             if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"])) {
                 $sql->exeCommand("SHOW KEYS FROM " . $entity . " WHERE KEY_NAME ='index_{$i}'");
                 if ($sql->getRowCount() === 0)
-                    parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)");
+                    parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)", false);
             }
 
             if ($dados['key'] === "relation") {

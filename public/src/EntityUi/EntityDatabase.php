@@ -41,8 +41,8 @@ abstract class EntityDatabase
         $constraint = substr("c_{$this->entity}_" . substr($col, 0, 5) . "_" . substr($tableTarget, 0, 5), 0, 64);
         $cascade = $cascade ? "CASCADE" : "SET NULL";
 
-        $this->exeSql("ALTER TABLE `" . $table . "` ADD KEY `fk_" . $column . "` (`{$column}`)");
-        $this->exeSql("ALTER TABLE `" . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . $tableTarget . "`(id) ON DELETE {$cascade} ON UPDATE NO ACTION");
+        $this->exeSql("ALTER TABLE `" . $table . "` ADD KEY IF NOT EXISTS `fk_" . $column . "` (`{$column}`)", false);
+        $this->exeSql("ALTER TABLE `" . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . $tableTarget . "`(id) ON DELETE {$cascade} ON UPDATE NO ACTION", false);
     }
 
     protected function prepareSqlColumn($dados)
@@ -65,11 +65,19 @@ abstract class EntityDatabase
             . ($dados['default'] !== false && !empty($dados['default']) ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
     }
 
-    protected function exeSql($sql)
+    protected function exeSql($sql, $showError = true)
     {
-        $exe = new SqlCommand();
-        $exe->exeCommand($sql, !0, !0);
-        if ($exe->getErro()) {
+        try {
+            $exe = new SqlCommand();
+            $exe->exeCommand($sql, !0, !0);
+        } catch (\Exception $exception) {
+            if($showError) {
+                echo "<pre>";
+                var_dump("Excessão: ", $exception);
+                die;
+            }
+        }
+        if ($showError && $exe->getErro()) {
             var_dump($sql);
             var_dump($exe->getErro());
         }
