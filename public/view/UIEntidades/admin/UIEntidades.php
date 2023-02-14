@@ -1,4 +1,4 @@
-<ul id="nav-entity" class="z-depth-4 space-header mode-background-colorBackground mode-text-colorText">
+<ul id="nav-entity" class="z-depth-4 hide space-header mode-background-colorBackground mode-text-colorText">
     <div class="row">
         <div class="padding-12 col">
             <div class="left upper padding-medium">
@@ -34,7 +34,7 @@
     </ul>
 </ul>
 
-<div class="col s12 m4 space-header mode-background-colorBox mode-text-colorText" id="nav-menu">
+<div class="col s12 m4 space-header hide mode-background-colorBox mode-text-colorText" id="nav-menu">
     <header class="row">
         <div class="panel">
             <div class="col s12 padding-tiny">
@@ -144,6 +144,9 @@
 </div>
 
 <div id="main" class="row mode-background-colorBox mode-text-colorText space-header">
+    <div class="col s12 py-4" id="text-await">
+        <h3 class="center color-text-gray text-await active">Carregando entidades...</h3>
+    </div>
     <div class="col s12 hide requireNameEntity">
         <div class="col no-select margin-bottom padding-bottom">
             <button class="theme left radius padding-left" title="Salvar Campo" onclick="editAttr()">

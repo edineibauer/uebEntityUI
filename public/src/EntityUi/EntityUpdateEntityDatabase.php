@@ -227,9 +227,16 @@ class EntityUpdateEntityDatabase extends EntityDatabase
     private function getAdds()
     {
         $data = null;
-        $i = 10000;
+        $sql = new SqlCommand();
         foreach ($this->new as $e => $dic) {
             if (!isset($this->old[$e]))
+                $data[$e] = $dic;
+
+            /**
+             * Verifica se essa coluna existe no banco de dados, se não existir, cria a coluna
+             */
+            $sql->exeCommand("SHOW COLUMNS FROM `" . $this->entity . "` LIKE '" . $dic['column'] . "'");
+            if(!$sql->getResult())
                 $data[$e] = $dic;
         }
 

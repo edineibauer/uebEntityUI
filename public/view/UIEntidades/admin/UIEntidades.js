@@ -17,6 +17,11 @@ var source_types = {
     "denveloper": ["html", "css", "scss", "js", "tpl", "json", "xml", "md", "sql", "dll"]
 };
 
+async function destruct() {
+    $("#nav-entity").addClass("hide");
+    $("#nav-menu").css({"position": "relative", "transition": "none", "left":0});
+}
+
 function tplObject(obj, $elem, prefix) {
     prefix = typeof (prefix) === "undefined" ? "" : prefix;
     if (typeof obj === "object") {
@@ -67,16 +72,25 @@ function readIdentifier() {
     });
 }
 
-function readDicionarios() {
+async function readDicionarios() {
     readInfo();
     readIdentifier();
-    AJAX.post("load/dicionarios").then(data => {
+    AJAX.post("load/dicionarios").then(async data => {
         dicionariosEdit = data;
         $("#entity-space, #relation").html("");
-        $.each(dicionariosEdit, function (i, e) {
+        $.each(dicionariosEdit, async function (i, e) {
             dicionariosNomes[i] = i;
             copy("#tpl-entity", "#entity-space", i, !0);
             $("#relation").append("<option value='" + i + "'>" + i + "</option>");
+            $("#nav-entity, #nav-menu").removeClass("hide");
+            await sleep(100);
+            $("#nav-entity").addClass("active");
+            await sleep(100);
+            $("#nav-menu").addClass("active");
+            await sleep(200);
+            $(".text-await").removeClass("active");
+            await sleep(200);
+            $("#text-await").remove();
         })
     })
 }
