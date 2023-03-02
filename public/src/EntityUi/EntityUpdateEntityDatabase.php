@@ -92,7 +92,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                 if ($dados['group'] === "list")
                     $sql->exeCommand("RENAME TABLE `" . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`");
                 else
-                    $sql->exeCommand("ALTER TABLE " . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id]));
+                    $sql->exeCommand("ALTER TABLE " . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id], 1));
 
                 /**
                  * change general_info column name
@@ -202,7 +202,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             foreach ($add as $id => $dados) {
 
                 if ($dados['key'] !== "information")
-                    $sql->exeCommand("ALTER TABLE " . $this->entity . " ADD " . parent::prepareSqlColumn($dados));
+                    $sql->exeCommand("ALTER TABLE " . $this->entity . " ADD " . parent::prepareSqlColumn($dados, 1));
 
                 if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"])) {
                     $sql->exeCommand("SHOW KEYS FROM " . $this->entity . " WHERE KEY_NAME ='index_{$id}'");

@@ -94,7 +94,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
 
             $string = "CREATE TABLE IF NOT EXISTS `" . $entity . "` (`id` INT(11) NOT NULL, `system_id` INT(11) DEFAULT NULL, `system_entity` varchar(127) DEFAULT NULL";
             foreach ($metadados as $dados)
-                $string .= ", " . parent::prepareSqlColumn($dados);
+                $string .= ", " . parent::prepareSqlColumn($dados, 0);
             $string .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
             //executa comando para criar a tabela

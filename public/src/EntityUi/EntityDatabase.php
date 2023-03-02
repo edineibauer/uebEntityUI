@@ -45,7 +45,12 @@ abstract class EntityDatabase
         $this->exeSql("ALTER TABLE `" . $table . "` ADD CONSTRAINT `{$constraint}` FOREIGN KEY (`{$column}`) REFERENCES `" . $tableTarget . "`(id) ON DELETE {$cascade} ON UPDATE NO ACTION", false);
     }
 
-    protected function prepareSqlColumn($dados)
+    /**
+     * @param array $dados
+     * @param int $tipo
+     * @return string
+     */
+    protected function prepareSqlColumn(array $dados, int $tipo = 1)
     {
         if ($dados['type'] === "json") {
             $dados['type'] = "longtext";
@@ -61,8 +66,7 @@ abstract class EntityDatabase
 
         return "`{$dados['column']}` {$type} "
             . (!empty($size) ? "({$size}) " : ($dados['type'] === "varchar" ? "(254) " : ($dados['type'] === "decimal" ? "(15,2) " : " ")))
-//            . ($dados['default'] === false ? "NOT NULL " : "")
-            . ($dados['default'] !== false && !empty($dados['default']) ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
+            . ($dados['default'] !== false && !empty($dados['default']) && ($tipo === 0 || $dados['type'] !== "varchar") ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
     }
 
     protected function exeSql($sql, $showError = true)
