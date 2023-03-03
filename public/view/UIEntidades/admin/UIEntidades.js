@@ -934,7 +934,7 @@ function readSystem() {
 
 $(function () {
     $("#space-attr-entity").css("height", $(document).height() - 122.28);
-    $("#main").css("height", $(document).height());
+    $("#main").css("height", $(document).height() - 63);
     readInputTypes();
     readDefaults();
     readDicionarios();
