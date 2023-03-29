@@ -73,7 +73,7 @@ abstract class EntityDatabase
     {
         try {
             $exe = new SqlCommand();
-            $exe->exeCommand($sql, !0, !0);
+            $exe->exeCommand($sql);
         } catch (\Exception $exception) {
             if($showError) {
                 echo "<pre>";

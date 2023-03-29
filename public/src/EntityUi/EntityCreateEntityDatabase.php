@@ -19,7 +19,7 @@ class EntityCreateEntityDatabase extends EntityDatabase
         parent::__construct($entity);
 
         $sql = new \Conn\SqlCommand();
-        $sql->exeCommand("SELECT 1 FROM {$entity} LIMIT 1", !0, !0);
+        $sql->exeCommand("SELECT 1 FROM {$entity} LIMIT 1");
         
         if (!$sql->getErro() && !empty($dicionarioOld) && !empty($infoOld))
             new EntityUpdateEntityDatabase($entity, $dicionarioOld, $infoOld);
