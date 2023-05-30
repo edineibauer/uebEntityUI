@@ -139,12 +139,15 @@ class EntityCreateEntityDatabase extends EntityDatabase
      */
     private function createKeys(string $entity, array $metadados, array $info)
     {
-        parent::exeSql("ALTER TABLE `" . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
+        $sql = new \Conn\SqlCommand();
+
+        $sql->exeCommand("SHOW INDEXES FROM " . $entity . " WHERE Key_name = 'PRIMARY'");
+        if(!$sql->getResult())
+            parent::exeSql("ALTER TABLE `" . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
 
         if(!empty($info['system']))
             parent::createIndexFk($entity, 'system_id', $info['system']);
 
-        $sql = new \Conn\SqlCommand();
 
         foreach ($metadados as $i => $dados) {
 
