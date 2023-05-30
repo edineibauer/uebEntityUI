@@ -52,24 +52,33 @@ abstract class EntityDatabase
      */
     protected function prepareSqlColumn(array $dados, int $tipo = 1)
     {
+        $allowDefault = true;
         if ($dados['type'] === "json") {
             $dados['type'] = "longtext";
             $dados['size'] = "";
-        } elseif ($dados['type'] === "datetime-local")
+            $allowDefault = false;
+        }
+
+        if ($dados['type'] === "datetime-local")
             $dados['type'] = "datetime";
 
         if ($dados['type'] === "text" && !empty($dados['size']) && $dados['size'] < 1000)
             $dados['type'] = "varchar";
 
-        if ($dados['type'] === "varchar" && !empty($dados['size']) && $dados['size'] >= 1000)
+        if ($dados['type'] === "varchar" && !empty($dados['size']) && $dados['size'] >= 1000) {
             $dados['type'] = "text";
+            $allowDefault = false;
+        }
+
+        if(in_array($dados['type'], ["longtext", "text", "blob", "geometry", "json"]))
+            $allowDefault = false;
 
         $type = (in_array($dados['type'], ["float", "real", "double"]) ? "double" : ($dados['type'] === "number" ? "int" : $dados['type']));
         $size = (in_array($dados['type'], ['smallint', 'tinyint', 'mediumint', 'int', 'bigint', 'float', 'real', 'double']) ? "" : ($dados['type'] === "decimal" ? "11," . ($dados['format'] === "valor" ? 2 : ($dados['format'] === "valor_decimal" ? 3 : ($dados['format'] === "valor_decimal_plus" ? 4 : ($dados['format'] === "valor_decimal_minus" ? 1 : 0)))) : $dados['size']));
 
         return "`{$dados['column']}` {$type} "
             . (!empty($size) ? "({$size}) " : ($dados['type'] === "varchar" ? "(254) " : ($dados['type'] === "decimal" ? "(15,2) " : " ")))
-            . ($dados['default'] !== false && !empty($dados['default']) && ($tipo === 0 || $dados['type'] !== "varchar") ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
+            . ($allowDefault && $dados['default'] !== false && !empty($dados['default']) && ($tipo === 0 || $dados['type'] !== "varchar") ? $this->prepareDefault($dados['default']) : ($dados['default'] !== false ? "DEFAULT NULL" : ""));
     }
 
     protected function exeSql($sql, $showError = true)
