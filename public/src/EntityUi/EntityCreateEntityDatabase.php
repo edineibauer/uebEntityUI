@@ -145,20 +145,20 @@ class EntityCreateEntityDatabase extends EntityDatabase
         if(!$sql->getResult())
             parent::exeSql("ALTER TABLE `" . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
 
-        if(!empty($info['system']))
+        if(!empty($info['system'])) {
             parent::createIndexFk($entity, 'system_id', $info['system']);
-
+            parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY IF NOT EXISTS `index_system_entity` (`system_entity`)", false);
+        }
 
         foreach ($metadados as $i => $dados) {
 
-            if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"])) {
+            if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]) || in_array($dados['format'], ["select", "boolean", "radio"])) {
                 $sql->exeCommand("SHOW KEYS FROM " . $entity . " WHERE KEY_NAME ='index_{$i}'");
                 if ($sql->getRowCount() === 0)
                     parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)", false);
             }
 
             if ($dados['key'] === "relation") {
-
                 if ($dados['group'] === "list")
                     parent::createRelationalTable($dados);
                 elseif ($dados['type'] === "int")
