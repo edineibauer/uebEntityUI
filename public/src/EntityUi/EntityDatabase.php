@@ -25,7 +25,7 @@ abstract class EntityDatabase
         $table = $this->entity . "_" . substr($dados['column'], 0, 5);
 
         $string = "CREATE TABLE IF NOT EXISTS `" . $table . "` ("
-            . "`id` INT(11) NOT NULL, `{$this->entity}_id` INT(11) NOT NULL,`{$dados['relation']}_id` INT(11) NOT NULL"
+            . "`id` INT(11) NOT NULL AUTO_INCREMENT, `{$this->entity}_id` INT(11) NOT NULL,`{$dados['relation']}_id` INT(11) NOT NULL"
             . ", PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
         $this->exeSql($string);
