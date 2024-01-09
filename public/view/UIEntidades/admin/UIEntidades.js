@@ -184,7 +184,6 @@ function saveEntity(silent) {
             "newName": newName
         }).then(g => {
             $("#saveEntityBtn").removeClass("disabled");
-            updateCacheUser();
             if (entity.name !== $("#entityName").val()) {
                 dicionariosEdit[newName] = dicionariosEdit[entity.name];
                 entity.name = newName;
@@ -679,7 +678,6 @@ function removeEntity(entity) {
     if (entity !== 'usuarios' && confirm("Excluir esta entidade e todos os seus dados?")) {
         AJAX.post("delete/entity", {"name": entity}).then(g => {
             if (g) {
-                updateCacheUser();
                 toast("Entidade Excluída", 3000, "toast-success");
                 readDicionarios();
                 entityEdit();
@@ -709,7 +707,6 @@ function sendImport() {
                 } else {
                     toast("Entidade Restaurada", 1300, "toast-success");
                     readDicionarios();
-                    updateCacheUser();
                     $("#import").val("");
                 }
             }
