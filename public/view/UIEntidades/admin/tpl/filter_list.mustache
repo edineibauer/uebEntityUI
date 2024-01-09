@@ -1,0 +1,21 @@
+<div class="col s12 filterTpl">
+    <select class="filter col s12 m6"></select>
+    <select class="filter_operator col s12 m2">
+        <option value="{{operator}}" selected>{{operator}}</option>
+        <option value="=">=</option>
+        <option value="!=">!=</option>
+        <option value="<="><=</option>
+        <option value=">=">>=</option>
+        <option value=">">></option>
+        <option value="<"><</option>
+        <option value="%%">%%</option>
+        <option value="%=">%=</option>
+        <option value="=%">=%</option>
+        <option value="!%%">!%%</option>
+        <option value="!%=">!%=</option>
+        <option value="!=%">!=%</option>
+        <option value='in'>in "1,2"</option>
+        <option value='!in'>! in "1,2"</option>
+    </select>
+    <input type="text" class="filter_value col s12 m4" style="padding-top: 13px;" value="{{valor}}">
+</div>

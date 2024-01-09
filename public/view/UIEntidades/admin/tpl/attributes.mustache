@@ -1,0 +1,22 @@
+<li class="col s12 list-att-{{p}}" style="border-bottom: solid 1px #EEE;padding-left:0">
+    <div class="left" style="width: 27px">
+        <button class="btn-flat z-depth-0 pointer left mode-background-colorBox mode-text-colorText radius padding-0"
+                style="margin-bottom: 1px"
+                onclick="indiceChange({{p}},-1)">
+            <i class="material-icons right font-large">keyboard_arrow_up</i>
+        </button>
+        <button class="btn-flat z-depth-0 pointer left mode-background-colorBox mode-text-colorText radius padding-0"
+                onclick="indiceChange({{p}},1)">
+            <i class="material-icons right font-large">keyboard_arrow_down</i>
+        </button>
+    </div>
+    <span class="left overflow-hidden padding-4" style="width: 150px">{{column}}</span>
+    <button class="btn-flat pointer right opacity theme radius" style="padding: 9px 5px"
+            onclick="deleteAttr({{p}})">
+        <i class="material-icons right font-large">delete</i>
+    </button>
+    <button class="btn-flat pointer right theme radius" style="margin-right: 5px;padding: 9px"
+            onclick="editAttr({{p}})">
+        <i class="material-icons right font-large">edit</i>
+    </button>
+</li>

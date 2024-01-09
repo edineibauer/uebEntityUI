@@ -22,33 +22,8 @@ async function destruct() {
     $("#nav-menu").css({"position": "relative", "transition": "none", "left":0});
 }
 
-function tplObject(obj, $elem, prefix) {
-    prefix = typeof (prefix) === "undefined" ? "" : prefix;
-    if (typeof obj === "object") {
-        $.each(obj, function (key, value) {
-            if (obj instanceof Array)
-                $elem = tplObject(value, $elem, prefix + key);
-            else
-                $elem = typeof (value) === "object" ? tplObject(value, $elem, prefix + key + ".") : $elem.replace(regexTpl(prefix + key), value)
-        })
-    } else {
-        $elem = $elem.replace(regexTpl(prefix), obj)
-    }
-    return $elem
-}
-
 function regexTpl(v) {
     return new RegExp('__\\s*\\$' + v + '\\s*__', 'g')
-}
-
-function copy($elem, $destino, variable, position) {
-    $elem = (typeof ($elem) === "string" ? $($elem) : $elem);
-    if (typeof $elem !== "undefined") {
-        $destino = (typeof ($destino) === "string" ? $($destino) : $destino);
-        $elem = $elem.clone().removeClass("hide").removeAttr("id").prop('outerHTML');
-        $elem = tplObject(variable, $elem);
-        if (typeof (position) === "undefined") $($elem).prependTo($destino); else if (position === "after") $($elem).insertAfter($destino); else if (position === "before") $($elem).insertBefore($destino); else $($elem).appendTo($destino)
-    }
 }
 
 function readDefaults() {
@@ -80,7 +55,9 @@ async function readDicionarios() {
         $("#entity-space, #relation").html("");
         $.each(dicionariosEdit, async function (i, e) {
             dicionariosNomes[i] = i;
-            copy("#tpl-entity", "#entity-space", i, !0);
+
+            $("#entity-space").append(Mustache.render(getTemplates().entity_list, {p: i}));
+
             $("#relation").append("<option value='" + i + "'>" + i + "</option>");
             $("#nav-entity, #nav-menu").removeClass("hide");
             await sleep(100);
@@ -170,8 +147,8 @@ function showEntity() {
     for (c = 1; c < maxIndice; c++) {
         $.each(dicionariosEdit[entity.name], function (i, f) {
             if (f && f.indice == c) {
-                copy("#tpl-attrEntity", "#entityAttr", [i, f.column], !0);
-                return
+                $("#entityAttr").append(Mustache.render(getTemplates().attributes, {p: i, column: f.column}));
+                return;
             }
         })
     }
@@ -516,7 +493,7 @@ function setAllow(value) {
         let copia = $("#spaceValueAllow").html() === "";
         $.each(value, function (i, e) {
             if (copia)
-                copy('#tplValueAllow', '#spaceValueAllow', '', 'append');
+                $('#spaceValueAllow').append(getTemplates().valueAllow);
             let $allow = (copia ? $("#spaceValueAllow").find(".allow:last-child") : $("#spaceValueAllow").find(".allow:eq(" + i + ")"));
             $allow.find(".values").val(e.valor);
             $allow.find(".names").val(e.representacao)
@@ -753,16 +730,15 @@ function addFilter(value) {
             valor = e[2];
             column = e[3]
         }
-        copy("#tpl-list-filter", "#list-filter", {0: operator, 1: valor}, "append");
+        $("#list-filter").append(Mustache.render(getTemplates().filter_list, {operator: operator, valor: valor}));
+
         var id = Math.floor(Math.random() * 1000000);
         var $filter = $(".filter").last().attr("id", id).html("");
         var relation = "null";
         $.each(dicionariosEdit[$("#relation").val()], function (i, e) {
-            copy("#optionTpl", "#" + id, {
-                0: e.column,
-                1: e.nome,
-                2: (field === e.column ? "\" selected=\"selected" : "")
-            }, "append");
+
+            $("#" + id).append('<option value="' + e.column + '"' + (field === e.column ? ' selected="selected"' : "") + '>' + e.nome + '</option>');
+
             if (field === e.column && typeRelacionamentos.indexOf(e.key) > -1)
                 relation = e.relation
         });
@@ -795,35 +771,23 @@ function checkAttrRelationToShow() {
             });
             $.each(dicRelation, function (i, e) {
                 i = parseInt(i);
-                let checked = $.inArray(i, dic.form.fields) > -1 ? 'checked="checked"' : '';
+                let checked = $.inArray(i, dic.form.fields) > -1 ? ' checked="checked"' : '';
                 let value = dic.form !== !1 && typeof (dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "";
-                copy("#tpl_relation_fields_show", "#relation_fields_show", {0: i, 1: e.nome, 2: checked}, "append");
-                copy("#tpl_relation_fields_default", "#relation_fields_default", {0: i, 1: e.nome, 2: value}, "append")
+                $("#relation_fields_show").append(Mustache.render(getTemplates().relation_fields_show, {i: i, nome: e.nome, checked: checked}));
+                $("#relation_fields_default").append(Mustache.render(getTemplates().relation_fields_default, {i: i, value: value}));
             })
         } else {
             $.each(dicRelation, function (i, e) {
                 i = parseInt(i);
-                copy("#tpl_relation_fields_show", "#relation_fields_show", {
-                    0: i,
-                    1: e.nome,
-                    2: $.inArray(i, dic.form.fields) > -1 ? 'checked="checked"' : ''
-                }, "append");
-                copy("#tpl_relation_fields_default", "#relation_fields_default", {
-                    0: i,
-                    1: e.nome,
-                    2: (dic.form !== !1 && typeof (dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "")
-                }, "append")
+                $("#relation_fields_show").append(Mustache.render(getTemplates().relation_fields_show, {i: i, nome: e.nome, checked: ($.inArray(i, dic.form.fields) > -1 ? ' checked="checked"' : '')}));
+                $("#relation_fields_default").append(Mustache.render(getTemplates().relation_fields_default, {i: i, value: (dic.form !== !1 && typeof (dic.form.defaults[i]) !== "undefined" ? dic.form.defaults[i] : "")}));
             })
         }
     } else {
         $.each(dicRelation, function (i, e) {
             i = parseInt(i);
-            copy("#tpl_relation_fields_show", "#relation_fields_show", {
-                0: i,
-                1: e.nome,
-                2: 'checked="checked"'
-            }, "append");
-            copy("#tpl_relation_fields_default", "#relation_fields_default", {0: i, 1: e.nome, 2: ""}, "append")
+            $("#relation_fields_show").append(Mustache.render(getTemplates().relation_fields_show, {i: i, nome: e.nome, checked: ' checked="checked"'}));
+            $("#relation_fields_default").append(Mustache.render(getTemplates().relation_fields_default, {i: i, value: ''}));
         })
     }
 }
@@ -833,8 +797,8 @@ function checkEntityMultipleFields(values) {
     $("#requireListExtendDiv").html("");
     $.each(dicionariosEdit[$("#relation").val()], function (i, e) {
         if (["selecao_mult", "list_mult", "folder", "extend_folder", "checkbox_mult"].indexOf(e.key) > -1) {
-            var checked = typeof (values) !== "undefined" && $.inArray(e.column, values) > -1 ? '" checked="checked' : '';
-            copy("#selectOneListOption", "#requireListExtendDiv", {0: e.column, 1: e.nome, 2: checked}, "append");
+            var checked = typeof (values) !== "undefined" && $.inArray(e.column, values) > -1 ? ' checked="checked"' : '';
+            $("#requireListExtendDiv").append(Mustache.render(getTemplates().option_select, {column: e.column, nome: e.nome, checked: checked}));
             $("#requireListExtend").removeClass("hide")
         }
     });

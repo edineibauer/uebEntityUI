@@ -15,22 +15,7 @@
         </div>
     </div>
     <ul class="row">
-        <li class="col s12" id="entity-space">
-        </li>
-        <div class="col s12 hide" id="tpl-entity">
-            <div class="col s7 padding-small">__$__</div>
-            <div class="padding-small col s5 align-right">
-                <button class="theme opacity radius pointer right padding-tiny btn-flat"
-                        style="height: 26px;" onclick="removeEntity('__$__')">
-                    <i class="material-icons font-medium" style="margin-top: 4px;">delete</i>
-                </button>
-                <button class="theme radius pointer right padding-tiny btn-flat"
-                        style="margin-right: 5px;height: 26px;"
-                        onclick="entityEdit('__$__')">
-                    <i class="material-icons font-medium" style="margin-top: 4px;">edit</i>
-                </button>
-            </div>
-        </div>
+        <li class="col s12" id="entity-space"></li>
     </ul>
 </ul>
 
@@ -116,30 +101,6 @@
         </div>
 
         <ul class="row" id="entityAttr"></ul>
-
-        <li class="col s12 list-att-__$0__ hide" id="tpl-attrEntity"
-            style="border-bottom: solid 1px #EEE;padding-left:0">
-            <div class="left" style="width: 27px">
-                <button class="btn-flat z-depth-0 pointer left mode-background-colorBox mode-text-colorText radius padding-0"
-                        style="margin-bottom: 1px"
-                        onclick="indiceChange(__$0__,-1)">
-                    <i class="material-icons right font-large">keyboard_arrow_up</i>
-                </button>
-                <button class="btn-flat z-depth-0 pointer left mode-background-colorBox mode-text-colorText radius padding-0"
-                        onclick="indiceChange(__$0__,1)">
-                    <i class="material-icons right font-large">keyboard_arrow_down</i>
-                </button>
-            </div>
-            <span class="left overflow-hidden padding-4" style="width: 150px">__$1__</span>
-            <button class="btn-flat pointer right opacity theme radius" style="padding: 9px 5px"
-                    onclick="deleteAttr(__$0__)">
-                <i class="material-icons right font-large">delete</i>
-            </button>
-            <button class="btn-flat pointer right theme radius" style="margin-right: 5px;padding: 9px"
-                    onclick="editAttr(__$0__)">
-                <i class="material-icons right font-large">edit</i>
-            </button>
-        </li>
     </div>
 </div>
 
@@ -244,29 +205,6 @@
             </div>
         </div>
 
-        <div id="tpl-list-filter" class="hide col s12 filterTpl">
-            <select class="filter col s12 m6"></select>
-            <select class="filter_operator col s12 m2">
-                <option value="__$0__" selected>__$0__</option>
-                <option value="=">=</option>
-                <option value="!=">!=</option>
-                <option value="<="><=</option>
-                <option value=">=">>=</option>
-                <option value=">">></option>
-                <option value="<"><</option>
-                <option value="%%">%%</option>
-                <option value="%=">%=</option>
-                <option value="=%">=%</option>
-                <option value="!%%">!%%</option>
-                <option value="!%=">!%=</option>
-                <option value="!=%">!=%</option>
-                <option value='in'>in "1,2"</option>
-                <option value='!in'>! in "1,2"</option>
-            </select>
-            <input type="text" class="filter_value col s12 m4" style="padding-top: 13px;" value="__$1__">
-        </div>
-        <option id="optionTpl" class="hide" value="__$0____$2__">__$1__</option>
-
         <!-- <div class="hide card padding-medium" id="requireListFilter">
              <header class="row padding-small">
                  <span class="left padding-medium" style="padding-left: 0!important;">Filtrar Lista</span>
@@ -289,11 +227,6 @@
             <div id="requireListExtendDiv"></div>
         </div>
 
-        <label class="col s12 relative tpl hide" for="__$0__" id="selectOneListOption">
-            <input type="checkbox" id="__$0__" class="left padding-right __$2__"/>
-            <span class="left padding-medium font-medium pointer">__$1__ </span>
-        </label>
-
         <div class="hide card padding-medium">
             <header class="row padding-8">
                 <span class="left padding-12 padding-right upper font-bold">Configurar Campos do Formulário Relacional</span>
@@ -303,20 +236,10 @@
                 <div class="col s12 m5 padding-small">
                     <h4>Mostrar Campos</h4>
                     <div class="col" id="relation_fields_show"></div>
-
-                    <label class="col s12 relativep pointer border-bottom hide" id="tpl_relation_fields_show">
-                        <input type="checkbox" class="relation_fields_show" rel="__$0__" __$2__/>
-                        <span class="left padding-8 font-medium">__$1__</span>
-                    </label>
                 </div>
                 <div class="col s12 m7 padding-small">
                     <h4>Valor de Entrada Padrão</h4>
                     <div class="col" id="relation_fields_default" style="padding-top:4px"></div>
-
-                    <div class="col hide" id="tpl_relation_fields_default">
-                        <input type="text" class="col font-medium relation_fields_default" value="__$2__"
-                               style="margin-bottom: 4px;" rel="__$0__">
-                    </div>
                 </div>
                 <div class="col padding-12"></div>
             </div>
@@ -700,18 +623,6 @@
                 </div>
 
                 <div class="col s12" id="spaceValueAllow"></div>
-
-                <div class="col s12 font-medium hide allow" id="tplValueAllow">
-                    <label class="input-field col s12 m4 padding-small">
-                        <span class="color-text-gray">Opção de Seleção (Valor armazenado)</span>
-                        <input class="values" type="text"/>
-                    </label>
-
-                    <label class="input-field col s12 m8 padding-small">
-                        <span class="color-text-gray">Opção de Seleção (Label)</span>
-                        <input class="names" type="text">
-                    </label>
-                </div>
 
                 <div class="clearfix col"></div>
             </div>
