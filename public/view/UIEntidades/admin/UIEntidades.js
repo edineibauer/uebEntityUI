@@ -686,6 +686,11 @@ function removeEntity(entity) {
     }
 }
 
+function addValueAllow() {
+    $("#spaceValueAllow").prepend(getTemplates().valueAllow);
+    $('#spaceValueAllow').find('.allow:first-child').find('.values').focus()
+}
+
 function sendImport() {
     if ($("#import").val() !== "") {
         var form_data = new FormData();

@@ -492,7 +492,7 @@
                             <span class="left padding-left upper font-bold">Definir opções de seleção deste campo &nbsp;&nbsp;</span>
                         </span>
                     <span class="btn-floating left theme" id="allowBtnAdd" title="adicionar nova opção de seleção para este campo"
-                          onclick="copy('#tplValueAllow', '#spaceValueAllow');$('#spaceValueAllow').find('.allow:first-child').find('.values').focus()">
+                          onclick="addValueAllow()">
                             <i class="material-icons">add</i>
                         </span>
                 </header>
