@@ -947,7 +947,8 @@ $(function () {
             $(".form_body").removeClass("hide");
             if (entity.name !== "" && entity.edit !== "" && typeof dicionariosEdit[entity.name][entity.edit] !== "undefined" && typeof dicionariosEdit[entity.name][entity.edit].form !== "undefined") {
                 dicionariosEdit[entity.name][entity.edit].form = Object.assign({}, defaults.default.form, (typeof defaults[getType()] !== "undefined" ? defaults[getType()].form : {}));
-                $("#cols").val(12)
+                $("#input").val(dicionariosEdit[entity.name][entity.edit].form.input);
+                $("#cols").val(12);
             }
         } else {
             $(".form_body").addClass("hide")
