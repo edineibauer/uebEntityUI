@@ -10,7 +10,6 @@
     "group": "",
     "inputName": "Padrão",
     "inputType": "template",
-    "lib": "entity-ui",
     "js": "",
     "css": "",
     "unique": false,

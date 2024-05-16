@@ -5,7 +5,6 @@
     "nome": "Setor de Acesso",
     "inputName": "Setor de Acesso",
     "inputType": "template",
-    "lib": "entity-ui",
     "js": "inputSetor",
     "allow": {
       "options": [{
