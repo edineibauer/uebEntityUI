@@ -64,7 +64,7 @@ class SaveEntity
         try {
 
             //exclui todos os filedsCustom da entidade
-            Helper::recurseDelete(PATH_HOME . "_cdn/fieldsCustom/" . $this->entity);
+            Helper::recurseDelete(PATH_PRIVATE . "_cdn/fieldsCustom/" . $this->entity);
 
             //obtém dicionario atual (old)
             $infoOld = Metadados::getInfo($this->entity);
