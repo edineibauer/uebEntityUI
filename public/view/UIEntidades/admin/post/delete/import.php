@@ -1,5 +1,7 @@
 <?php
 
+DEV || die;
+
 $entity = strip_tags(trim(filter_input(INPUT_POST, 'entity', FILTER_DEFAULT)));
 
 $entity = explode('\\', $entity);

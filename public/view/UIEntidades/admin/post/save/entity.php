@@ -2,6 +2,8 @@
 
 use Config\Config;
 
+DEV || die;
+
 $name = trim(strip_tags(filter_input(INPUT_POST, 'name', FILTER_DEFAULT)));
 $icon = trim(strip_tags(filter_input(INPUT_POST, 'icon', FILTER_DEFAULT)));
 $systemRequired = trim(strip_tags(filter_input(INPUT_POST, 'systemRequired', FILTER_VALIDATE_BOOLEAN)));

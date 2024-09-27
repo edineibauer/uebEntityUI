@@ -1,4 +1,7 @@
 <?php
+
+DEV || die;
+
 $data['data'] = [];
 foreach (\Helpers\Helper::listFolder("entity/cache/info") as $json) {
     $name = str_replace('.json', '', $json);

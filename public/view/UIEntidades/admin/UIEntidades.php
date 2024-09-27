@@ -1,3 +1,7 @@
+<?php
+DEV || die;
+?>
+
 <ul id="nav-entity" class="z-depth-4 hide space-header mode-background-colorBackground mode-text-colorText">
     <div class="row">
         <div class="padding-12 col">

@@ -1,5 +1,7 @@
 <?php
 
+DEV || die;
+
 $entity = filter_input(INPUT_POST, 'entity', FILTER_DEFAULT);
 $edit = filter_input(INPUT_POST, 'edit', FILTER_DEFAULT);
 

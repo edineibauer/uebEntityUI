@@ -2,6 +2,8 @@
 
 use Config\Config;
 
+DEV || die;
+
 $entity = trim(strip_tags(filter_input(INPUT_POST, 'name', FILTER_DEFAULT)));
 
 $sql = new \Conn\SqlCommand();

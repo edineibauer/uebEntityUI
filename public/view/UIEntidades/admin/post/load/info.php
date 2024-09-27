@@ -1,4 +1,7 @@
 <?php
+
+DEV || die;
+
 $data['data'] = [];
 foreach (\Helpers\Helper::listFolder("entity/cache/info") as $json) {
     if(preg_match('/\.json$/i', $json)) {

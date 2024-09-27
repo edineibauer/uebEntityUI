@@ -2,6 +2,8 @@
 
 use Config\Config;
 
+DEV || die;
+
 /**
  * Get name from the entity and if allready exist,
  * get a unique name, try 4 times to get a unique name

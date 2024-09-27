@@ -1,4 +1,7 @@
 <?php
+
+DEV || die;
+
 $data['data'] = [];
 
 $listNot = [

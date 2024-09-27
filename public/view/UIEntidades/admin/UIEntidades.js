@@ -899,6 +899,10 @@ function readSystem() {
 }
 
 $(function () {
+
+    if(!DEV)
+        location.href = HOME + "admin";
+
     $("#space-attr-entity").css("height", $(document).height() - 122.28);
     $("#main").css("height", $(document).height() - 63);
     readInputTypes();
