@@ -89,7 +89,7 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             $sql = new SqlCommand();
 
             foreach ($changes as $id => $dados) {
-                if ($dados['group'] === "list")
+                if (!empty($dados['group']) && $dados['group'] === "list")
                     $sql->exeCommand("RENAME TABLE `" . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`");
                 else
                     $sql->exeCommand("ALTER TABLE " . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id], 1));
