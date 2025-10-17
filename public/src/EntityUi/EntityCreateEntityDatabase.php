@@ -141,28 +141,44 @@ class EntityCreateEntityDatabase extends EntityDatabase
     {
         $sql = new \Conn\SqlCommand();
 
+        // Garante que a primary key existe
         $sql->exeCommand("SHOW INDEXES FROM " . $entity . " WHERE Key_name = 'PRIMARY'");
         if(!$sql->getResult())
             parent::exeSql("ALTER TABLE `" . $entity . "` ADD PRIMARY KEY (`id`), MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
 
+        // Adiciona índices de sistema se necessário
         if(!empty($info['system'])) {
-            parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY IF NOT EXISTS `index_system_id` (`system_id`)", false);
-            parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY IF NOT EXISTS `index_system_entity` (`system_entity`)", false);
+            $sql->exeCommand("SHOW KEYS FROM `{$entity}` WHERE Key_name = 'index_system_id'");
+            if ($sql->getRowCount() === 0) {
+                parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_system_id` (`system_id`)", false);
+            }
+
+            $sql->exeCommand("SHOW KEYS FROM `{$entity}` WHERE Key_name = 'index_system_entity'");
+            if ($sql->getRowCount() === 0) {
+                parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_system_entity` (`system_entity`)", false);
+            }
         }
 
         foreach ($metadados as $i => $dados) {
 
+            // Adiciona índices para campos relevantes
             if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]) || in_array($dados['format'], ["select", "boolean", "radio"])) {
                 $sql->exeCommand("SHOW KEYS FROM " . $entity . " WHERE KEY_NAME ='index_{$i}'");
                 if ($sql->getRowCount() === 0)
                     parent::exeSql("ALTER TABLE `" . $entity . "` ADD KEY `index_{$i}` (`{$dados['column']}`)", false);
             }
 
+            // Cria relações e foreign keys
             if ($dados['key'] === "relation") {
-                if ($dados['group'] === "list")
-                    parent::createRelationalTable($dados);
-                elseif ($dados['type'] === "int")
+                if ($dados['group'] === "list") {
+                    // Verifica se a tabela relacional já existe antes de criar
+                    $relationalTable = $entity . "_" . substr($dados['column'], 0, 5);
+                    if (!parent::tableExists($relationalTable)) {
+                        parent::createRelationalTable($dados);
+                    }
+                } elseif ($dados['type'] === "int") {
                     parent::createIndexFk($entity, $dados['column'], $dados['relation']);
+                }
 
             } elseif ($dados['key'] === "publisher") {
                 parent::createIndexFk($entity, $dados['column'], "usuarios", "", "publisher");

@@ -89,10 +89,53 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             $sql = new SqlCommand();
 
             foreach ($changes as $id => $dados) {
-                if (!empty($dados['group']) && $dados['group'] === "list")
-                    $sql->exeCommand("RENAME TABLE `" . $this->entity . "_" . substr($dados['column'], 0, 5) . "` TO `" . $this->entity . "_" . substr($this->new[$id]['column'], 0, 5) . "`");
-                else
-                    $sql->exeCommand("ALTER TABLE " . $this->entity . " CHANGE {$dados['column']} " . parent::prepareSqlColumn($this->new[$id], 1));
+                // Se for uma tabela relacional tipo list
+                if (!empty($dados['group']) && $dados['group'] === "list") {
+                    $oldTableName = $this->entity . "_" . substr($dados['column'], 0, 5);
+                    $newTableName = $this->entity . "_" . substr($this->new[$id]['column'], 0, 5);
+
+                    if (parent::tableExists($oldTableName) && $oldTableName !== $newTableName) {
+                        $sql->exeCommand("RENAME TABLE `{$oldTableName}` TO `{$newTableName}`");
+                    }
+                } else {
+                    // Verifica se a coluna mudou de nome
+                    $columnNameChanged = $dados['column'] !== $this->new[$id]['column'];
+
+                    if ($columnNameChanged) {
+                        // Se mudou o nome da coluna, precisa remover foreign keys antes
+                        $foreignKeys = parent::getColumnForeignKeys($this->entity, $dados['column']);
+                        $fkData = []; // Armazena dados das FKs para recriar depois
+
+                        foreach ($foreignKeys as $fk) {
+                            // Busca informações completas da FK antes de remover
+                            $sql->exeCommand("SELECT REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME, DELETE_RULE FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_NAME = '{$fk['CONSTRAINT_NAME']}' AND TABLE_NAME = '{$this->entity}'");
+                            $fkInfo = $sql->getResult();
+                            if ($fkInfo) {
+                                $fkData[] = [
+                                    'constraint' => $fk['CONSTRAINT_NAME'],
+                                    'referenced_table' => $fkInfo[0]['REFERENCED_TABLE_NAME'],
+                                    'referenced_column' => $fkInfo[0]['REFERENCED_COLUMN_NAME'],
+                                    'delete_rule' => $fkInfo[0]['DELETE_RULE']
+                                ];
+                            }
+                            parent::dropForeignKey($this->entity, $fk['CONSTRAINT_NAME']);
+                        }
+
+                        // Remove índice fk se existir
+                        parent::dropIndex($this->entity, "fk_" . $dados['column']);
+                    }
+
+                    // Executa a alteração da coluna
+                    $sql->exeCommand("ALTER TABLE " . $this->entity . " CHANGE `{$dados['column']}` " . parent::prepareSqlColumn($this->new[$id], 1));
+
+                    // Recria as foreign keys com o novo nome da coluna se necessário
+                    if ($columnNameChanged && isset($fkData)) {
+                        foreach ($fkData as $fkInfo) {
+                            $cascade = $fkInfo['delete_rule'] === 'CASCADE';
+                            parent::createIndexFk($this->entity, $this->new[$id]['column'], $fkInfo['referenced_table'], $this->new[$id]['column'], $cascade);
+                        }
+                    }
+                }
 
                 /**
                  * change general_info column name
@@ -100,20 +143,25 @@ class EntityUpdateEntityDatabase extends EntityDatabase
                 if(file_exists(PATH_HOME . "entity/general/general_info.json")) {
                     $oldName = $dados['column'];
                     $newName = $this->new[$id]['column'];
-                    $general = json_decode(file_get_contents(PATH_HOME . "entity/general/general_info.json"), !0);
 
-                    foreach ($general as $entity => $gen) {
-                        foreach ($gen['belongsTo'] as $i => $gene) {
-                            foreach ($gene as $key => $value) {
-                                if($value['column'] === $oldName)
-                                    $general[$entity]['belongsTo'][$i][$key]['column'] = $newName;
+                    if ($oldName !== $newName) {
+                        $general = json_decode(file_get_contents(PATH_HOME . "entity/general/general_info.json"), !0);
+
+                        foreach ($general as $entity => $gen) {
+                            if (!empty($gen['belongsTo'])) {
+                                foreach ($gen['belongsTo'] as $i => $gene) {
+                                    foreach ($gene as $key => $value) {
+                                        if(isset($value['column']) && $value['column'] === $oldName)
+                                            $general[$entity]['belongsTo'][$i][$key]['column'] = $newName;
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    $f = fopen(PATH_HOME . "entity/general/general_info.json", "w");
-                    fwrite($f, json_encode($general));
-                    fclose($f);
+                        $f = fopen(PATH_HOME . "entity/general/general_info.json", "w");
+                        fwrite($f, json_encode($general));
+                        fclose($f);
+                    }
                 }
             }
         }
@@ -167,29 +215,49 @@ class EntityUpdateEntityDatabase extends EntityDatabase
     {
         $sql = new SqlCommand();
 
-        //deleta dados da tabela relacional
-        if ($dados['key'] === "relation") {
+        // 1. Remove todas as foreign keys que a coluna possui
+        $foreignKeys = parent::getColumnForeignKeys($this->entity, $dados['column']);
+        foreach ($foreignKeys as $fk) {
+            parent::dropForeignKey($this->entity, $fk['CONSTRAINT_NAME']);
+        }
 
+        // 2. Verifica se outras tabelas referenciam esta coluna (muito raro, mas possível)
+        $referencingKeys = parent::getReferencingForeignKeys($this->entity, $dados['column']);
+        foreach ($referencingKeys as $refKey) {
+            // Remove a foreign key da tabela que referencia
+            parent::dropForeignKey($refKey['TABLE_NAME'], $refKey['CONSTRAINT_NAME']);
+        }
+
+        // 3. Remove tabela relacional se for uma relação tipo list
+        if ($dados['key'] === "relation") {
             if ($dados['type'] === "int") {
-                $constraint = substr("c_{$this->entity}_" . substr($dados['column'], 0, 5) . "_" . substr($dados['relation'], 0, 5), 0, 64);
-                $sql->exeCommand("ALTER TABLE " . $this->entity . " DROP FOREIGN KEY {$constraint}, DROP INDEX fk_" . $dados['column']);
+                // Remove índice fk específico se existir
+                parent::dropIndex($this->entity, "fk_" . $dados['column']);
 
             } elseif ($dados['group'] === "list") {
-                $sql->exeCommand("DROP TABLE " . $this->entity . "_" . substr($dados['column'], 0, 5));
+                $relationalTable = $this->entity . "_" . substr($dados['column'], 0, 5);
+                if (parent::tableExists($relationalTable)) {
+                    $sql->exeCommand("DROP TABLE `{$relationalTable}`");
+                }
             }
         }
 
+        // 4. Remove índices padrão da coluna (index_{$id}, unique_{$id})
         if ($id < 999900) {
+            parent::dropIndex($this->entity, "index_" . $id);
+            parent::dropIndex($this->entity, "unique_" . $id);
+        }
 
-            //INDEX
-            $sql->exeCommand("SHOW KEYS FROM " . $this->entity . " WHERE KEY_NAME ='index_{$id}'");
-            if ($sql->getRowCount() > 0)
-                $sql->exeCommand("ALTER TABLE " . $this->entity . " DROP INDEX index_" . $id);
-
-            //UNIQUE
-            $sql->exeCommand("SHOW KEYS FROM " . $this->entity . " WHERE KEY_NAME ='unique_{$id}'");
-            if ($sql->getRowCount() > 0)
-                $sql->exeCommand("ALTER TABLE " . $this->entity . " DROP INDEX unique_" . $id);
+        // 5. Remove todos os outros índices que possam estar associados à coluna
+        $sql->exeCommand("SHOW KEYS FROM `{$this->entity}` WHERE Column_name = '{$dados['column']}'");
+        $indexes = $sql->getResult();
+        if ($indexes) {
+            foreach ($indexes as $index) {
+                // Não tenta remover a PRIMARY KEY
+                if ($index['Key_name'] !== 'PRIMARY') {
+                    parent::dropIndex($this->entity, $index['Key_name']);
+                }
+            }
         }
     }
 
@@ -201,21 +269,35 @@ class EntityUpdateEntityDatabase extends EntityDatabase
             $sql = new SqlCommand();
             foreach ($add as $id => $dados) {
 
-                if ($dados['key'] !== "information")
+                // Adiciona a coluna apenas se não for campo informativo e se a coluna não existir
+                if ($dados['key'] !== "information" && !parent::columnExists($this->entity, $dados['column'])) {
                     $sql->exeCommand("ALTER TABLE " . $this->entity . " ADD " . parent::prepareSqlColumn($dados, 1));
 
-                if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"])) {
-                    $sql->exeCommand("SHOW KEYS FROM " . $this->entity . " WHERE KEY_NAME ='index_{$id}'");
-                    if ($sql->getRowCount() === 0)
-                        parent::exeSql("ALTER TABLE `" . $this->entity . "` ADD KEY `index_{$id}` (`{$dados['column']}`)");
+                    // Verifica se houve erro ao adicionar
+                    if ($sql->getErro()) {
+                        continue; // Pula para próxima coluna se houve erro
+                    }
                 }
 
-                if ($dados['key'] === "relation") {
+                // Adiciona índice para campos relevantes
+                if (in_array($dados['key'], ["title", "link", "status", "email", "cpf", "cnpj", "telefone", "cep"]) || in_array($dados['format'], ["select", "boolean", "radio"])) {
+                    $sql->exeCommand("SHOW KEYS FROM " . $this->entity . " WHERE KEY_NAME ='index_{$id}'");
+                    if ($sql->getRowCount() === 0) {
+                        parent::exeSql("ALTER TABLE `" . $this->entity . "` ADD KEY `index_{$id}` (`{$dados['column']}`)", false);
+                    }
+                }
 
-                    if ($dados['group'] === "list")
-                        parent::createRelationalTable($dados);
-                    elseif ($dados['type'] === "int")
+                // Cria relações
+                if ($dados['key'] === "relation") {
+                    if ($dados['group'] === "list") {
+                        // Verifica se a tabela relacional já existe antes de criar
+                        $relationalTable = $this->entity . "_" . substr($dados['column'], 0, 5);
+                        if (!parent::tableExists($relationalTable)) {
+                            parent::createRelationalTable($dados);
+                        }
+                    } elseif ($dados['type'] === "int") {
                         parent::createIndexFk($this->entity, $dados['column'], $dados['relation']);
+                    }
 
                 } elseif ($dados['key'] === "publisher") {
                     parent::createIndexFk($this->entity, $dados['column'], "usuarios", "", "publisher");
