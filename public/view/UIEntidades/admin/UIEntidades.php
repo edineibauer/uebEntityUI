@@ -3,22 +3,7 @@ DEV || die;
 ?>
 
 <ul id="nav-entity" class="z-depth-4 hide space-header mode-background-colorBackground mode-text-colorText">
-    <div class="row">
-        <div class="padding-12 col">
-            <div class="left upper padding-medium">
-                Entidades
-            </div>
-            <div class="right align-right">
-                <button class="btn theme btn-floating right" id="newEntityBtn" onclick="entityEdit()">
-                    <i class="material-icons">add</i>
-                </button>
-                <button class="btn mode-background-colorBox mode-text-colorText btn-floating right" onclick="uploadEntity()">
-                    <i class="material-icons">backup</i>
-                </button>
-            </div>
-        </div>
-    </div>
-    <ul class="row">
+    <ul class="row" style="padding-top:10px">
         <li class="col s12" id="entity-space"></li>
     </ul>
 </ul>
@@ -27,13 +12,16 @@ DEV || die;
     <header class="row">
         <div class="panel">
             <div class="col s12 padding-tiny">
-                <button class="btn theme right radius" id="saveEntityBtn" onclick="saveEntity()">
+                <button class="save-btn right" id="saveEntityBtn" onclick="saveEntity()">
+                    <i class="material-icons">save</i>
                     Salvar Entidade
-                    <i class="material-icons right padding-left">check</i>
                 </button>
-                <button class="btn mode-background-colorLine mode-text-colorText left radius hide downloadEntity" title="baixar backup da entidade"
-                        onclick="downloadEntity()">
-                    <i class="material-icons left">get_app</i>
+                <button class="mobile-back-btn" onclick="mobileBackToList()" title="Voltar">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <button class="deleteEntityBtn hide" title="Excluir entidade"
+                        onclick="removeEntity(entity.name)">
+                    <i class="material-icons">delete</i>
                 </button>
             </div>
         </div>
@@ -41,69 +29,105 @@ DEV || die;
     <div class="row"></div>
     <div class="panel" id="space-attr-entity" style="margin-top: 0!important;">
         <div class="row" id="entity-name">
-            <label class="col s12">
-                <label class="col right relative" style="width: 90px;padding: 3.5px 0 0 2px;">
-                    <select id="user" class="col margin-0 mode-text-colorText">
-                        <option value="0" class="mode-background-colorBox mode-text-colorText">Entidade</option>
-                        <option value="2" class="mode-background-colorBox mode-text-colorText">Sistema</option>
-                        <option value="1" class="mode-background-colorBox mode-text-colorText">Usuário</option>
-                        <option value="3" class="mode-background-colorBox mode-text-colorText">Configuração</option>
-                    </select>
-                </label>
-                <div class="rest">
+            <input type="hidden" id="user" value="0"/>
+            <input type="hidden" id="entityIcon" value="">
+            <label class="col s12" style="display:flex;align-items:center;gap:8px">
+                <button type="button" class="icon-picker-trigger" onclick="toggleIconPicker()" title="Escolher ícone" style="flex-shrink:0">
+                    <span id="entityIconDemo" class="material-icons"></span>
+                </button>
+                <div style="flex:1">
                     <input id="entityName" type="text" placeholder="nome da entidade..." class="font-large col"
                            style="margin:0">
                 </div>
+                <span id="entityTypeLabel" class="entity-type-badge" style="flex-shrink:0"></span>
             </label>
-            <label class="col s12" id="col-system">
-                <div class="col left relative" style="width: 70px;padding-top: 14px">
-                    Sistema:
+            <div class="system-card" id="col-system">
+                <div class="system-card-header">
+                    <i class="material-icons system-card-icon">account_tree</i>
+                    <span>Vínculo com Sistema</span>
                 </div>
-                <label class="col left" style="padding: 3.5px 0 0 0;width: 154px">
-                    <select id="system" class="col margin-0 mode-text-colorText">
-                        <option value="" class="mode-background-colorBox mode-text-colorText"><?=SITENAME?></option>
+                <div class="system-card-body">
+                    <div class="system-card-desc">Define a qual sistema os registros pertencem.</div>
+                    <select id="system" class="system-select">
+                        <option value=""><?=SITENAME?> (raiz)</option>
                     </select>
-                </label>
-                <label class="col relative" style="width: 43px;padding-top: 5px">
-                    <input type="checkbox" class="left" id="systemRequired"/>
-                    <span class="left pointer" style="color: coral;padding:5px 0">*</span>
-                </label>
-
-            </label>
-
-            <div class="row font-small hide requireNameEntity">
-                <div class="col left padding-tiny" style="width: 26px; height: 26px">
-                    <a href="https://material.io/tools/icons/?style=baseline" target="_blank"
-                       class="right btn-flat font-small margin-0" style="width: 27px; height: 26px">
-                        <i class="material-icons padding-tiny padding-4" id="entityIconDemo"></i>
-                    </a>
                 </div>
-                <div class="left" style="width: 50px">
-                    <input id="entityIcon" placeholder="ícone" type="text">
+                <div id="systemRequiredRow" class="system-required-row hide">
+                    <label class="card-check-label">
+                        <input type="checkbox" id="systemRequired" class="card-check-input"/>
+                        <span class="card-check-box"></span>
+                        <span>Exigir que registros sejam associados a este sistema</span>
+                    </label>
                 </div>
-                <label class="col relative" style="width: 70px">
-                    <input type="checkbox" class="left" id="haveAutor"/>
-                    <span class="left pointer" style="padding:10px 0">Autor</span>
-                </label>
-                <label class="col relative" style="width: 110px">
-                    <input type="checkbox" class="left" id="haveOwner"/>
-                    <span class="left pointer" style="padding:10px 0">Proprietário</span>
-                </label>
+                <div id="systemRequiredBlock" class="system-required-block hide">
+                    <i class="material-icons">info_outline</i>
+                    <span id="systemRequiredBlockMsg"></span>
+                </div>
+            </div>
+
+            <div class="system-card hide requireNameEntity" id="col-author">
+                <div class="system-card-header">
+                    <i class="material-icons system-card-icon">person</i>
+                    <span>Vínculo com Usuário</span>
+                </div>
+                <div class="system-card-body">
+                    <label class="card-check-label">
+                        <input type="checkbox" id="haveAutor" class="card-check-input"/>
+                        <span class="card-check-box"></span>
+                        <span>Registrar o criador de cada registro</span>
+                    </label>
+                </div>
+                <div id="authorTypeRow" class="author-type-row hide">
+                    <div class="author-type-question">Visibilidade</div>
+                    <div class="author-type-options">
+                        <input type="radio" name="authorType" value="1" id="authorTypeInfo" class="author-radio-hidden"/>
+                        <input type="radio" name="authorType" value="2" id="authorTypeOwner" class="author-radio-hidden"/>
+                        <div class="author-type-btn active" data-value="1">
+                            <div class="author-type-title">Público</div>
+                            <div class="author-type-desc">Todos visualizam</div>
+                        </div>
+                        <div class="author-type-btn" data-value="2">
+                            <div class="author-type-title">Privado</div>
+                            <div class="author-type-desc">Apenas o criador</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row"></div>
         </div>
 
-        <div class="col hide overflow-hidden relative padding-bottom" id="importForm">
-            <br>
-            <div class="row">
-                <label for="import">Restaurar Entidade</label>
-                <input type="file" name="import" id="import"/>
+        <div class="hide" id="fieldStartChoice" style="padding:10px 4px">
+            <div style="display:flex;gap:8px">
+                <button class="field-choice-btn" onclick="chooseFromTemplate()">
+                    <i class="material-icons">content_copy</i>
+                    <span>Copiar entidade</span>
+                </button>
+                <button class="field-choice-btn" onclick="chooseFromScratch()">
+                    <i class="material-icons">add</i>
+                    <span>Começar do zero</span>
+                </button>
             </div>
-            <button class="btn theme-d1 left" onclick="sendImport()">
-                <i class="material-icons padding-right font-large left">send</i><span class="left">Enviar</span>
-            </button>
         </div>
 
+        <div class="hide" id="templateEntitySelector" style="padding:8px 4px">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                <button class="field-choice-back" onclick="cancelTemplateSelection()">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;opacity:0.5">Copiar campos de</span>
+            </div>
+            <select id="templateEntity" class="col s12 margin-0 mode-text-colorText" onchange="applyEntityTemplate()">
+                <option value="">Selecione a entidade...</option>
+            </select>
+        </div>
+
+        <div class="fields-header hide" id="fieldsHeader">
+            <span>Campos</span>
+            <button class="field-add-btn" onclick="addNewField()" title="Adicionar campo">
+                <i class="material-icons">add</i>
+                <span>Adicionar</span>
+            </button>
+        </div>
         <ul class="row" id="entityAttr"></ul>
     </div>
 </div>
@@ -113,10 +137,17 @@ DEV || die;
         <h3 class="center color-text-gray text-await active">Carregando entidades...</h3>
     </div>
     <div class="col s12 hide requireNameEntity">
-        <div class="col no-select margin-bottom padding-bottom">
-            <button class="theme left radius padding-left" title="Salvar Campo" onclick="editAttr()">
+        <div class="col no-select margin-bottom padding-bottom" style="display:flex;align-items:center;gap:8px">
+            <button class="mobile-back-btn" onclick="mobileBackToEntity()" title="Voltar">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            <button class="save-btn" title="Salvar Campo" onclick="editAttr()">
+                <i class="material-icons">save</i>
                 Salvar Campo
-                <i class="material-icons right" style="padding-left: 8px">check</i>
+            </button>
+            <button class="deleteFieldBtn hide" title="Excluir campo"
+                    onclick="deleteCurrentField()" style="margin-left:auto">
+                <i class="material-icons">delete</i>
             </button>
         </div>
         <div class="card padding-medium">

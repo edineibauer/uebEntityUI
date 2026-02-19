@@ -20,20 +20,36 @@ $save = new \EntityUi\SaveEntity($name, $system, $icon, (!empty($user) && is_num
 if($name !== $newName) {
     $sql = new \Conn\SqlCommand();
 
-    //Table Rename
-    $sql->exeCommand("RENAME TABLE  `{$name}` TO  `{$newName}`");
+    // Verificar se e Template (tipo 4) para pular RENAME TABLE
+    $entityInfo = \Entity\Metadados::getInfo($name);
+    $isTemplate = (!empty($entityInfo) && isset($entityInfo['user']) && $entityInfo['user'] === 4);
 
-    //Table Rename Cache
-    $sql->exeCommand("RENAME TABLE  `wcache_{$name}` TO  `wcache_{$newName}`");
+    if (!$isTemplate) {
+        //Table Rename
+        $sql->exeCommand("RENAME TABLE  `{$name}` TO  `{$newName}`");
+
+        //Table Rename Cache
+        $sql->exeCommand("RENAME TABLE  `wcache_{$name}` TO  `wcache_{$newName}`");
+    }
 
     //Entity Rename
     rename(PATH_HOME . "entity/cache/{$name}.json",PATH_HOME . "entity/cache/{$newName}.json");
     rename(PATH_HOME . "entity/cache/info/{$name}.json",PATH_HOME . "entity/cache/info/{$newName}.json");
 
-    //Table Rename name in Relation
-    $dic = new \Entity\Dicionario($newName);
-    foreach ($dic->getAssociationMult() as $item)
-        $sql->exeCommand("RENAME TABLE  `{$name}_{$item->getColumn()}` TO  `{$newName}_{$item->getColumn()}`");
+    //Entity Rename in public (para deploy)
+    if (DEV) {
+        if (file_exists(PATH_HOME . "public/entity/cache/{$name}.json"))
+            rename(PATH_HOME . "public/entity/cache/{$name}.json", PATH_HOME . "public/entity/cache/{$newName}.json");
+        if (file_exists(PATH_HOME . "public/entity/cache/info/{$name}.json"))
+            rename(PATH_HOME . "public/entity/cache/info/{$name}.json", PATH_HOME . "public/entity/cache/info/{$newName}.json");
+    }
+
+    //Table Rename name in Relation (skip para Templates)
+    if (!$isTemplate) {
+        $dic = new \Entity\Dicionario($newName);
+        foreach ($dic->getAssociationMult() as $item)
+            $sql->exeCommand("RENAME TABLE  `{$name}_{$item->getColumn()}` TO  `{$newName}_{$item->getColumn()}`");
+    }
 
     //Entity change name in others relations
     foreach (\Helpers\Helper::listFolder(PATH_HOME . "entity/cache") as $f) {

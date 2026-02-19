@@ -42,27 +42,16 @@ class EntityUpdateEntityDatabase extends EntityDatabase
         if (!empty($infoOld['user']) && $infoOld['user'] === 1)
             $this->old["999997"] = Metadados::generateUser();
 
-        $publisher = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/publisher.json"), !0)['publisher'];
         $owner = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/owner.json"), !0)['owner'];
 
-        if (!empty($infoOld['autor'])) {
-            if ($infoOld['autor'] === 1) {
-                $this->old["999998"] = array_replace_recursive($publisher, ["indice" => 999998, "default" => ""]);
-            } elseif ($infoOld['autor'] === 2) {
-                $this->old["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
-            }
-        }
+        // ownerpub always exists
+        $this->old["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
 
         if (!empty($info['user']) && $info['user'] === 1)
             $this->new["999997"] = Metadados::generateUser();
 
-        if (!empty($info['autor'])) {
-            if ($info['autor'] === 1) {
-                $this->new["999998"] = array_replace_recursive($publisher, ["indice" => 999998, "default" => ""]);
-            } elseif ($info['autor'] === 2) {
-                $this->new["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
-            }
-        }
+        // ownerpub always exists
+        $this->new["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
     }
 
     /**

@@ -10,22 +10,28 @@ $sql = new \Conn\SqlCommand();
 $del = new \Conn\Delete();
 $read = new \Conn\Read();
 
+// Verificar se e Template (tipo 4) ANTES de deletar os arquivos
+$entityInfoDel = \Entity\Metadados::getInfo($entity);
+$isTemplate = (!empty($entityInfoDel) && isset($entityInfoDel['user']) && $entityInfoDel['user'] === 4);
+
 $dic = new \Entity\Dicionario($entity);
 
-//Remove dados extendidos multiplos e tablas de relação multiplas
-if (!empty($dic->getAssociationMult())) {
-    foreach ($dic->getAssociationMult() as $item)
-        $sql->exeCommand("DROP TABLE {$entity}_{$item->getColumn()}");
-}
+if (!$isTemplate) {
+    //Remove dados extendidos multiplos e tablas de relação multiplas
+    if (!empty($dic->getAssociationMult())) {
+        foreach ($dic->getAssociationMult() as $item)
+            $sql->exeCommand("DROP TABLE {$entity}_{$item->getColumn()}");
+    }
 
-//Remove dados extendidos simples
-if (!empty($dic->getExtends())) {
-    foreach ($dic->getExtends() as $extend) {
-        $read->exeRead($entity);
-        if ($read->getResult()) {
-            foreach ($read->getResult() as $ddd) {
-                if (!empty($ddd[$extend->getColumn()]))
-                    $del->exeDelete($extend->getRelation(), "WHERE id = :id", "id={$ddd[$extend->getColumn()]}");
+    //Remove dados extendidos simples
+    if (!empty($dic->getExtends())) {
+        foreach ($dic->getExtends() as $extend) {
+            $read->exeRead($entity);
+            if ($read->getResult()) {
+                foreach ($read->getResult() as $ddd) {
+                    if (!empty($ddd[$extend->getColumn()]))
+                        $del->exeDelete($extend->getRelation(), "WHERE id = :id", "id={$ddd[$extend->getColumn()]}");
+                }
             }
         }
     }
@@ -103,7 +109,9 @@ if (DEV && file_exists(PATH_HOME . "public/entity" . DIRECTORY_SEPARATOR . "cach
 if (DEV && file_exists(PATH_HOME . "public/entity" . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "info" . DIRECTORY_SEPARATOR . $entity . ".json"))
     unlink(PATH_HOME . "public/entity" . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "info" . DIRECTORY_SEPARATOR . $entity . ".json");
 
-$sql->exeCommand("DROP TABLE " . $entity);
+if (!$isTemplate) {
+    $sql->exeCommand("DROP TABLE " . $entity);
+}
 
 /**
  * Remove permissões para a entidade excluída

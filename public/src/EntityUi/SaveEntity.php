@@ -81,7 +81,24 @@ class SaveEntity
             $this->createEntityJson($this->generateInfo($system, $metadados, $icon, $autor, $user, $systemRequired), "info");
 
             //criar/atualizar banco
-            new EntityCreateEntityDatabase($this->entity, $metadadosOld, $infoOld);
+            if ($user !== 4) {
+                new EntityCreateEntityDatabase($this->entity, $metadadosOld, $infoOld);
+            } else {
+                // Template (tipo 4): dropar tabela se existir (leftover de mudanca de tipo)
+                // No dev, entityType.php ja garante que a tabela esta vazia antes de converter
+                $sql = new \Conn\SqlCommand();
+                $sql->exeCommand("SHOW TABLES LIKE '{$this->entity}'");
+                if ($sql->getResult()) {
+                    // Verificar se tabela tem dados (seguranca extra para producao)
+                    $sql->exeCommand("SELECT COUNT(*) as cnt FROM `{$this->entity}`");
+                    $r = $sql->getResult();
+                    if ($r && (int)$r[0]['cnt'] === 0) {
+                        $sql->exeCommand("DROP TABLE IF EXISTS `{$this->entity}`");
+                        $sql->exeCommand("DROP TABLE IF EXISTS `wcache_{$this->entity}`");
+                    }
+                    // Se tiver dados, mantém a tabela (nao perder dados em producao)
+                }
+            }
 
         } catch (\Exception $e) {
             echo $e->getMessage() . " #linha {$e->getLine()}";
@@ -121,9 +138,7 @@ class SaveEntity
         if($user === 1)
             $data['columns_readable'][] = "usuarios_id";
 
-        if($autor === 1)
-            $data['columns_readable'][] = "autorpub";
-        elseif($autor === 2)
+        if($autor === 1 || $autor === 2)
             $data['columns_readable'][] = "ownerpub";
 
         foreach ($metadados as $i => $dados) {

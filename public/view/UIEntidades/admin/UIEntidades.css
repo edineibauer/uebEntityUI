@@ -27,8 +27,16 @@
     left: 0!important;
 }
 
-#user {
-    padding-top: 10px;
+.entity-type-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    line-height: 1.2;
 }
 
 #nav-menu {
@@ -46,19 +54,32 @@
 }
 
 #main {
+    position: fixed;
+    top: inherit;
+    left: 560px;
+    right: 0;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 20px 20px 20px 320px;
-    width: 100%;
+    padding: 20px;
     height: 100%;
     z-index: 1;
     background-color: var(--colorBackground)!important;
+    transform: translateX(calc(-100% - 300px));
+    transition: transform .7s ease;
+}
+
+#main.active {
+    transform: translateX(0);
+}
+
+#entity-space {
+    padding: 0 0 10px 0!important;
 }
 
 #entity-space, #space-attr-entity {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: calc(100vh - 134px);
+    max-height: calc(100vh - 60px);
 }
 
 .card {
@@ -73,10 +94,1014 @@ input, select, textarea {
     color: var(--colorText)!important;
 }
 
+select option {
+    background-color: var(--colorBackground);
+    color: var(--colorText);
+}
+
 .switch .slider {
     background-color: var(--colorLine);
 }
 
 .switch .slider:after {
     background-color: var(--colorBackground);
+}
+
+/* ============================================
+   Entity List - Hierarchical Tree
+   ============================================ */
+
+.entity-root-section-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.5;
+    margin-top: 8px;
+}
+
+.entity-root-section-header:first-child {
+    margin-top: 0;
+}
+
+.entity-root-section-header .entity-group-add-btn {
+    margin-left: auto;
+}
+
+.entity-group-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+}
+
+.entity-group-add-btn:hover {
+    opacity: 1;
+}
+
+.entity-group-add-btn i {
+    font-size: 18px;
+}
+
+/* System Tree Nodes */
+
+.entity-system-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 8px;
+    cursor: default;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.entity-system-toggle {
+    font-size: 18px;
+    opacity: 0.4;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+}
+
+.entity-system-toggle:hover {
+    opacity: 0.8;
+}
+
+.entity-system-icon {
+    font-size: 18px;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.entity-system-name {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.entity-system-name:hover {
+    text-decoration: underline dotted;
+}
+
+.entity-system-count {
+    font-size: 10px;
+    opacity: 0.4;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: var(--colorLine);
+    flex-shrink: 0;
+}
+
+.entity-system-header .entity-group-add-btn {
+    flex-shrink: 0;
+}
+
+/* Entity Items */
+
+.entity-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.entity-item:hover {
+    background-color: var(--colorBox);
+}
+
+.entity-item.active {
+    background-color: var(--colorBox);
+}
+
+.entity-item-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
+.entity-item-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.entity-item-name {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.entity-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 1px;
+}
+
+.entity-item-type {
+    font-size: 10px;
+    opacity: 0.45;
+    line-height: 1.3;
+}
+
+.entity-type-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.entity-required-badge {
+    font-size: 9px;
+    color: coral;
+    font-weight: 600;
+}
+
+/* ============================================
+   System Card
+   ============================================ */
+
+.system-card {
+    clear: both;
+    margin-top: 8px;
+    border: 1px solid var(--colorLine);
+    border-radius: 8px;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.system-card-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    opacity: 0.5;
+    border-bottom: 1px solid var(--colorLine);
+}
+
+.system-card-icon {
+    font-size: 16px;
+}
+
+.system-card-body {
+    padding: 10px 12px;
+}
+
+/* Custom Checkbox for System Cards */
+.card-check-input {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    pointer-events: none;
+}
+
+.card-check-box {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid var(--colorLine);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: var(--colorBackground);
+    margin-top: 1px;
+}
+
+.card-check-input:checked + .card-check-box {
+    background: var(--colorPrimary);
+    border-color: var(--colorPrimary);
+}
+
+.card-check-input:checked + .card-check-box:after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+.card-check-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.system-card label {
+    float: none !important;
+}
+
+.system-card-desc {
+    font-size: 11px;
+    opacity: 0.45;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.system-select {
+    display: block;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    border: solid 1px;
+    border-radius: 10px;
+    padding: 8px 12px;
+    background: var(--colorBackground) !important;
+}
+
+.system-required-row {
+    padding: 10px 12px;
+    border-top: 1px solid var(--colorLine);
+}
+
+.system-required-block {
+    padding: 10px 12px;
+    border-top: 1px solid var(--colorLine);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11px;
+    opacity: 0.6;
+    line-height: 1.4;
+}
+
+.system-required-block i {
+    font-size: 16px;
+    color: coral;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ============================================
+   Author Card - Visibility Selection Buttons
+   ============================================ */
+
+.author-type-row {
+    padding: 10px 12px;
+    border-top: 1px solid var(--colorLine);
+}
+
+.author-type-question {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+}
+
+.author-radio-hidden {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    pointer-events: none;
+}
+
+.author-type-options {
+    display: flex;
+    gap: 8px;
+}
+
+.author-type-btn {
+    flex: 1;
+    padding: 8px 10px;
+    border: 2px solid var(--colorLine);
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    opacity: 0.5;
+}
+
+.author-type-btn:hover {
+    opacity: 0.8;
+}
+
+.author-type-btn.active {
+    border-color: var(--colorPrimary);
+    opacity: 1;
+}
+
+.author-type-btn.active .author-type-title {
+    color: var(--colorPrimary);
+}
+
+.author-type-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.author-type-desc {
+    font-size: 10px;
+    opacity: 0.45;
+    line-height: 1.3;
+    margin-top: 2px;
+}
+
+/* ============================================
+   Save Buttons
+   ============================================ */
+
+.save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--colorPrimary);
+    color: var(--colorPrimaryText, #fff);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    box-shadow: none;
+    line-height: 1.3;
+}
+
+.save-btn:hover {
+    opacity: 0.85;
+}
+
+.save-btn.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.save-btn i {
+    font-size: 18px;
+}
+
+/* ============================================
+   Field Start Choice (Copy vs Scratch)
+   ============================================ */
+
+.field-choice-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--colorBackground);
+    color: var(--colorText);
+    border: 1px solid var(--colorLine);
+    border-radius: 8px;
+    padding: 14px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.field-choice-btn:hover {
+    border-color: var(--colorPrimary);
+    opacity: 0.85;
+}
+
+.field-choice-btn i {
+    font-size: 20px;
+    opacity: 0.6;
+}
+
+.field-choice-back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: var(--colorText);
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.15s;
+}
+
+.field-choice-back:hover {
+    opacity: 1;
+}
+
+.field-choice-back i {
+    font-size: 20px;
+}
+
+#iconPickerSearch {
+    margin-bottom: 0!important;
+}
+
+/* ============================================
+   Field List Items
+   ============================================ */
+
+.fields-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.5;
+    margin-top: 8px;
+}
+
+.field-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 1px solid var(--colorLine);
+    background: var(--colorBackground);
+    color: var(--colorText);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 14px;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1;
+}
+
+.field-add-btn:hover {
+    opacity: 1;
+}
+
+.field-add-btn i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.field-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 4px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--colorLine);
+    border-left: 2px solid transparent;
+    list-style: none;
+}
+
+.field-item:hover {
+    background-color: var(--colorBox);
+}
+
+.field-item-active {
+    background-color: var(--colorBackground);
+    border-left-color: var(--colorPrimary);
+}
+
+.drag-handle {
+    width: 24px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.drag-handle i {
+    font-size: 18px;
+    opacity: 0.3;
+}
+
+.drag-handle:hover i {
+    opacity: 0.7;
+}
+
+.field-item-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    padding: 0 6px;
+}
+
+/* ============================================
+   Drag and Drop - Field Reordering
+   ============================================ */
+
+#entityAttr li[data-id] {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.drag-origin {
+    opacity: 0.25;
+}
+
+.drag-ghost {
+    background: var(--colorBox);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    border-radius: 4px;
+}
+
+.drag-placeholder {
+    border: 2px dashed var(--colorPrimary);
+    background: transparent;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 4px;
+    opacity: 0.5;
+}
+
+/* ============================================
+   Delete Buttons in Edit Headers
+   ============================================ */
+
+.deleteEntityBtn,
+.deleteFieldBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--colorText);
+    opacity: 0.35;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.15s;
+}
+
+.deleteEntityBtn:hover,
+.deleteFieldBtn:hover {
+    opacity: 1;
+    color: var(--colorRed, #e53935);
+    background: rgba(229, 57, 53, 0.08);
+}
+
+.deleteEntityBtn i,
+.deleteFieldBtn i {
+    font-size: 20px;
+}
+
+/* ============================================
+   Icon Picker
+   ============================================ */
+
+.icon-picker-trigger {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--colorLine);
+    border-radius: 8px;
+    background: var(--colorBackground);
+    color: var(--colorText);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: border-color 0.15s;
+}
+
+.icon-picker-trigger:hover {
+    border-color: var(--colorPrimary);
+}
+
+.icon-picker-trigger #entityIconDemo {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.icon-preview-emoji {
+    font-size: 20px;
+    line-height: 1;
+    font-family: inherit;
+}
+
+.icon-picker {
+    position: fixed;
+    width: 300px;
+    max-height: 380px;
+    background: var(--colorBox);
+    border: 1px solid var(--colorLine);
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.icon-picker-header {
+    padding: 10px 10px 6px;
+}
+
+.icon-picker-header input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--colorLine) !important;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.icon-picker-clear-btn {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--colorLine);
+    border-radius: 6px;
+    background: none;
+    color: var(--colorRed, #e53935);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background-color 0.15s;
+}
+
+.icon-picker-clear-btn:hover {
+    background: var(--colorBackground);
+}
+
+.icon-picker-clear-btn i {
+    font-size: 20px;
+}
+
+.icon-picker-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--colorLine);
+    padding: 0 10px;
+}
+
+.icon-picker-tab {
+    flex: 1;
+    padding: 8px 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--colorText) !important;
+    opacity: 0.4;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+}
+
+.icon-picker-tab.active {
+    opacity: 1;
+    border-bottom-color: var(--colorPrimary);
+}
+
+.icon-picker-tab:hover {
+    opacity: 0.8;
+}
+
+.icon-picker-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 2px;
+    padding: 8px;
+    overflow-y: auto;
+    max-height: 260px;
+}
+
+.icon-picker-item {
+    width: auto !important;
+    height: 36px;
+    border: none !important;
+    background: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    color: var(--colorText);
+    transition: background-color 0.1s;
+    padding: 0;
+    margin: 0 !important;
+    min-width: 0;
+    box-shadow: none !important;
+}
+
+.icon-picker-item:hover {
+    background: var(--colorBackground);
+}
+
+.icon-picker-item i.material-icons {
+    font-family: 'Material Icons' !important;
+    font-feature-settings: 'liga' !important;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: normal;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+.icon-picker-emoji {
+    font-family: sans-serif !important;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.icon-picker-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 24px 8px;
+    font-size: 12px;
+    opacity: 0.4;
+}
+
+/* ============================================
+   Mobile Back Button
+   ============================================ */
+
+.mobile-back-btn {
+    display: none;
+}
+
+/* ============================================
+   Mobile Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+    #nav-entity {
+        position: fixed !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 100;
+        transition: ease left .3s;
+    }
+
+    #nav-entity.active {
+        left: 0 !important;
+    }
+
+    #nav-entity.mobile-hidden {
+        left: -100% !important;
+    }
+
+    #nav-menu {
+        position: fixed !important;
+        left: 100% !important;
+        width: 100% !important;
+        height: 100vh !important;
+        z-index: 101;
+        transition: ease left .3s;
+        overflow-y: auto;
+    }
+
+    #nav-menu.active {
+        left: 0 !important;
+    }
+
+    #nav-menu.mobile-visible {
+        left: 0 !important;
+    }
+
+    #main {
+        position: fixed !important;
+        top: 0;
+        left: 100%;
+        width: 100% !important;
+        height: 100vh !important;
+        padding: 15px !important;
+        z-index: 102;
+        transition: ease left .3s;
+        overflow-y: auto;
+    }
+
+    #main.mobile-visible {
+        left: 0 !important;
+    }
+
+    #space-attr-entity {
+        max-height: none !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    #entity-space {
+        max-height: calc(100vh - 80px) !important;
+    }
+
+    .mobile-back-btn {
+        display: inline-flex !important;
+        align-items: center;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: var(--colorText);
+        padding: 8px;
+        margin-right: 4px;
+        font-size: 14px;
+        opacity: 0.7;
+    }
+
+    .mobile-back-btn:hover {
+        opacity: 1;
+    }
+
+    .mobile-back-btn i {
+        font-size: 22px;
+    }
+
+    /* Entity edit: hide the field editor panels by default on mobile */
+    .requireNameEntity {
+        padding-bottom: 8px;
+    }
+
+    /* Adjust entity header on mobile */
+    #nav-entity > .row > .padding-12 {
+        padding: 12px 8px !important;
+    }
+
+    /* Make cards full width and reduce padding on mobile */
+    #main .card {
+        margin: 8px 0;
+    }
+
+    /* Icon picker: bottom sheet on mobile */
+    .icon-picker {
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-height: 55vh;
+        border-radius: 16px 16px 0 0;
+    }
+}
+
+/* ============================================
+   Record Count
+   ============================================ */
+
+.entity-record-count {
+    font-size: 10px;
+    opacity: 0.4;
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+/* ============================================
+   Activity Indicator Dot
+   ============================================ */
+
+.entity-activity-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #BDBDBD;
+}
+
+/* ============================================
+   Entity Drag-and-Drop
+   ============================================ */
+
+.entity-drag-handle {
+    width: 20px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.entity-item:hover .entity-drag-handle {
+    opacity: 0.3;
+}
+
+.entity-drag-handle:hover {
+    opacity: 0.7 !important;
+}
+
+.entity-drag-handle i {
+    font-size: 16px;
+}
+
+.entity-drag-ghost {
+    background: var(--colorBackground);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    opacity: 0.9;
+}
+
+.entity-drag-origin {
+    opacity: 0.25;
+}
+
+.entity-drop-highlight {
+    background: rgba(156, 39, 176, 0.1) !important;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--colorPrimary);
+}
+
+@media (max-width: 768px) {
+    .entity-drag-handle {
+        opacity: 0.2;
+    }
+}
+
+@media (max-width: 480px) {
+    .entity-item {
+        padding: 8px 10px;
+    }
+
+    .entity-item-name {
+        font-size: 13px;
+    }
+
+    #main {
+        padding: 10px !important;
+    }
 }

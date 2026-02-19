@@ -119,15 +119,8 @@ class EntityCreateEntityDatabase extends EntityDatabase
         if(!empty($info['user']) && $info['user'] === 1)
             $metadados["999997"] = Metadados::generateUser();
 
-        if(!empty($info['autor'])) {
-            if($info['autor'] === 1) {
-                $publisher = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/publisher.json"), !0)['publisher'];
-                $metadados["999998"] = array_replace_recursive($publisher, ["indice" => 999998, "default" => ""]);
-            } elseif($info['autor'] === 2) {
-                $owner = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/owner.json"), !0)['owner'];
-                $metadados["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
-            }
-        }
+        $owner = json_decode(file_get_contents(PATH_HOME . VENDOR . "entity-ui/public/input_type/owner.json"), !0)['owner'];
+        $metadados["999999"] = array_replace_recursive($owner, ["indice" => 999999, "default" => ""]);
 
         return [$metadados, $info];
     }

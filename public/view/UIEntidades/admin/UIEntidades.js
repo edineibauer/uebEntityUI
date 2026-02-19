@@ -32,110 +32,506 @@ function readDefaults() {
     })
 }
 
-function readInfo() {
-    AJAX.post("load/info").then(data => {
-        info = data;
-        readSystem();
-        if(!isEmpty(entity.system))
-            $("#system").val(entity.system);
-    })
-}
-
 function readIdentifier() {
     AJAX.post("load/identifier").then(data => {
         identifier = data
     });
 }
 
+/* ============================================
+   Entity Type Definitions
+   ============================================ */
+var entityTypeConfig = {
+    1: {name: "Usuários", singular: "Usuário", color: "#4CAF50", userValue: "1"},
+    2: {name: "Sistemas", singular: "Sistema", color: "#2196F3", userValue: "2"},
+    0: {name: "Entidades", singular: "Entidade", color: "#78909C", userValue: "0"},
+    3: {name: "Configuração", singular: "Configuração", color: "#9E9E9E", userValue: "3"},
+    4: {name: "Templates", singular: "Template", color: "#9C27B0", userValue: "4"}
+};
+var entityTypeOrder = [1, 2, 0, 3, 4];
+var entityStats = {};
+
+/* ============================================
+   Entity Tree Building & Rendering
+   ============================================ */
+function buildEntityTree() {
+    var systemChildren = {};
+    var rootSystems = [];
+    var rootUsers = [];
+    var rootEntities = [];
+    var rootConfig = [];
+    var rootTemplates = [];
+
+    $.each(dicionariosEdit, function(name) {
+        dicionariosNomes[name] = name;
+
+        var entityInfo = info[name] || {};
+        var userType = typeof entityInfo.user === "number" ? entityInfo.user : 0;
+        var systemParent = entityInfo.system || "";
+
+        var item = {
+            name: name,
+            icon: entityInfo.icon || "description",
+            userType: userType,
+            typeName: entityTypeConfig[userType] ? entityTypeConfig[userType].singular : "Entidade",
+            typeColor: entityTypeConfig[userType] ? entityTypeConfig[userType].color : "#78909C",
+            systemRequired: entityInfo.systemRequired === 1
+        };
+
+        if (systemParent !== "") {
+            if (!systemChildren[systemParent]) systemChildren[systemParent] = [];
+            systemChildren[systemParent].push(item);
+        } else {
+            if (userType === 2) rootSystems.push(item);
+            else if (userType === 1) rootUsers.push(item);
+            else if (userType === 3) rootConfig.push(item);
+            else if (userType === 4) rootTemplates.push(item);
+            else rootEntities.push(item);
+        }
+    });
+
+    // Handle orphaned entities (system parent doesn't exist)
+    for (var sysName in systemChildren) {
+        if (!dicionariosEdit[sysName] || !info[sysName] || info[sysName].user !== 2) {
+            systemChildren[sysName].forEach(function(child) {
+                if (child.userType === 2) rootSystems.push(child);
+                else if (child.userType === 1) rootUsers.push(child);
+                else if (child.userType === 3) rootConfig.push(child);
+                else if (child.userType === 4) rootTemplates.push(child);
+                else rootEntities.push(child);
+            });
+            delete systemChildren[sysName];
+        }
+    }
+
+    var sortByName = function(a, b) { return a.name.localeCompare(b.name); };
+    rootSystems.sort(sortByName);
+    rootUsers.sort(sortByName);
+    rootEntities.sort(sortByName);
+    rootConfig.sort(sortByName);
+    rootTemplates.sort(sortByName);
+
+    for (var key in systemChildren) {
+        systemChildren[key].sort(function(a, b) {
+            var typeOrder = {2: 0, 1: 1, 0: 2, 3: 3, 4: 4};
+            var orderA = typeOrder[a.userType] !== undefined ? typeOrder[a.userType] : 2;
+            var orderB = typeOrder[b.userType] !== undefined ? typeOrder[b.userType] : 2;
+            if (orderA !== orderB) return orderA - orderB;
+            return a.name.localeCompare(b.name);
+        });
+    }
+
+    return {
+        rootSystems: rootSystems,
+        rootUsers: rootUsers,
+        rootEntities: rootEntities,
+        rootConfig: rootConfig,
+        rootTemplates: rootTemplates,
+        systemChildren: systemChildren
+    };
+}
+
+function countChildren(systemName, systemChildren, depth) {
+    if (depth > 10) return 0;
+    var direct = systemChildren[systemName] || [];
+    var total = direct.length;
+    direct.forEach(function(child) {
+        if (child.userType === 2) total += countChildren(child.name, systemChildren, (depth || 0) + 1);
+    });
+    return total;
+}
+
+function isSystemCollapsed(systemName) {
+    try {
+        var state = JSON.parse(sessionStorage.getItem('entityTreeState') || '{}');
+        return state[systemName] === true;
+    } catch(e) { return false; }
+}
+
+function setSystemCollapsed(systemName, collapsed) {
+    try {
+        var state = JSON.parse(sessionStorage.getItem('entityTreeState') || '{}');
+        state[systemName] = collapsed;
+        sessionStorage.setItem('entityTreeState', JSON.stringify(state));
+    } catch(e) {}
+}
+
+function toggleSystemCollapse(systemName) {
+    var collapsed = isSystemCollapsed(systemName);
+    setSystemCollapsed(systemName, !collapsed);
+    var $children = $('[data-system-children="' + systemName + '"]');
+    var $toggle = $('[data-system-toggle="' + systemName + '"]');
+    if (collapsed) {
+        $children.slideDown(200);
+        $toggle.text('expand_more');
+    } else {
+        $children.slideUp(200);
+        $toggle.text('chevron_right');
+    }
+}
+
+function renderSystemNode($container, sys, systemChildren, depth) {
+    if (depth > 10) return;
+    var childCount = countChildren(sys.name, systemChildren, 0);
+    var collapsed = isSystemCollapsed(sys.name);
+    var headerPadding = 8 + depth * 20;
+
+    $container.append(
+        '<div class="entity-system-header" data-drop-system="' + sys.name + '" style="padding-left:' + headerPadding + 'px">' +
+            '<i class="material-icons entity-system-toggle" data-system-toggle="' + sys.name + '" onclick="event.stopPropagation();toggleSystemCollapse(\'' + sys.name + '\')">' + (collapsed ? 'chevron_right' : 'expand_more') + '</i>' +
+            '<span class="entity-activity-dot" data-activity-entity="' + sys.name + '"></span>' +
+            '<i class="material-icons entity-system-icon" style="color:' + sys.typeColor + '">' + (sys.icon || 'dns') + '</i>' +
+            '<span class="entity-system-name" onclick="entityEdit(\'' + sys.name + '\')">' + sys.name + '<span class="entity-record-count" data-count-entity="' + sys.name + '"></span></span>' +
+            '<span class="entity-system-count">' + childCount + '</span>' +
+            '<button class="entity-group-add-btn" onclick="event.stopPropagation();createEntityInSystem(\'' + sys.name + '\')" title="Criar entidade em ' + sys.name + '"><i class="material-icons">add</i></button>' +
+        '</div>'
+    );
+
+    var $childrenDiv = $('<div class="entity-system-children" data-system-children="' + sys.name + '"></div>');
+    if (collapsed) $childrenDiv.hide();
+
+    var children = systemChildren[sys.name] || [];
+    children.forEach(function(child) {
+        if (child.userType === 2) {
+            renderSystemNode($childrenDiv, child, systemChildren, depth + 1);
+        } else {
+            child.indent = 12 + depth * 20;
+            $childrenDiv.append(Mustache.render(getTemplates().entity_list, child));
+        }
+    });
+
+    $container.append($childrenDiv);
+}
+
+function renderEntityList() {
+    $("#entity-space, #relation").html("");
+
+    // Populate relation dropdown
+    $.each(dicionariosEdit, function(i) {
+        $("#relation").append("<option value='" + i + "'>" + i + "</option>");
+    });
+
+    var data = buildEntityTree();
+    var $space = $("#entity-space");
+
+    // Render systems section
+    if (data.rootSystems.length > 0) {
+        $space.append(
+            '<div class="entity-root-section-header" data-drop-type="2">' +
+                '<span class="entity-type-dot" style="background:#2196F3"></span>' +
+                '<span style="flex:1">Sistemas</span>' +
+                '<button class="entity-group-add-btn" onclick="createEntityOfType(2)" title="Novo Sistema"><i class="material-icons">add</i></button>' +
+            '</div>'
+        );
+        data.rootSystems.forEach(function(sys) {
+            renderSystemNode($space, sys, data.systemChildren, 0);
+        });
+    }
+
+    // Render root users
+    $space.append(
+        '<div class="entity-root-section-header" data-drop-type="1">' +
+            '<span class="entity-type-dot" style="background:#4CAF50"></span>' +
+            '<span style="flex:1">Usuários</span>' +
+            '<button class="entity-group-add-btn" onclick="createEntityOfType(1)" title="Novo Usuário"><i class="material-icons">add</i></button>' +
+        '</div>'
+    );
+    data.rootUsers.forEach(function(item) {
+        item.indent = 12;
+        $space.append(Mustache.render(getTemplates().entity_list, item));
+    });
+
+    // Render root entities
+    $space.append(
+        '<div class="entity-root-section-header" data-drop-type="0">' +
+            '<span class="entity-type-dot" style="background:#78909C"></span>' +
+            '<span style="flex:1">Entidades</span>' +
+            '<button class="entity-group-add-btn" onclick="createEntityOfType(0)" title="Nova Entidade"><i class="material-icons">add</i></button>' +
+        '</div>'
+    );
+    data.rootEntities.forEach(function(item) {
+        item.indent = 12;
+        $space.append(Mustache.render(getTemplates().entity_list, item));
+    });
+
+    // Render config type
+    if (data.rootConfig.length > 0) {
+        $space.append(
+            '<div class="entity-root-section-header" data-drop-type="3">' +
+                '<span class="entity-type-dot" style="background:#9E9E9E"></span>' +
+                '<span style="flex:1">Configuração</span>' +
+            '</div>'
+        );
+        data.rootConfig.forEach(function(item) {
+            item.indent = 12;
+            $space.append(Mustache.render(getTemplates().entity_list, item));
+        });
+    }
+
+    // Render templates section
+    $space.append(
+        '<div class="entity-root-section-header" data-drop-type="4">' +
+            '<span class="entity-type-dot" style="background:#9C27B0"></span>' +
+            '<span style="flex:1">Templates</span>' +
+            '<button class="entity-group-add-btn" onclick="createEntityOfType(4)" title="Novo Template"><i class="material-icons">add</i></button>' +
+        '</div>'
+    );
+    data.rootTemplates.forEach(function(item) {
+        item.indent = 12;
+        $space.append(Mustache.render(getTemplates().entity_list, item));
+    });
+
+    highlightActiveEntity();
+    initEntityDragDrop();
+}
+
+function highlightActiveEntity() {
+    $(".entity-item").removeClass("active");
+    if (entity.name) {
+        $(".entity-item[data-entity='" + entity.name + "']").addClass("active");
+    }
+}
+
+/* ============================================
+   Load Dicionarios (await info for grouping)
+   ============================================ */
 async function readDicionarios() {
-    readInfo();
     readIdentifier();
-    AJAX.post("load/dicionarios").then(async data => {
-        dicionariosEdit = data;
-        $("#entity-space, #relation").html("");
-        $.each(dicionariosEdit, async function (i, e) {
-            dicionariosNomes[i] = i;
 
-            $("#entity-space").append(Mustache.render(getTemplates().entity_list, {p: i}));
+    var results = await Promise.all([
+        AJAX.post("load/info"),
+        AJAX.post("load/dicionarios")
+    ]);
 
-            $("#relation").append("<option value='" + i + "'>" + i + "</option>");
-            $("#nav-entity, #nav-menu").removeClass("hide");
-            await sleep(100);
-            $("#nav-entity").addClass("active");
-            await sleep(100);
-            $("#nav-menu").addClass("active");
-            await sleep(200);
-            $(".text-await").removeClass("active");
-            await sleep(200);
-            $("#text-await").remove();
-        })
-    })
+    info = results[0];
+    dicionariosEdit = results[1];
+
+    readSystem();
+    if(!isEmpty(entity.system))
+        $("#system").val(entity.system);
+
+    renderEntityList();
+    loadEntityStats();
+
+    $("#nav-entity, #nav-menu").removeClass("hide");
+    await sleep(100);
+    $("#nav-entity").addClass("active");
+    await sleep(300);
+    $(".text-await").removeClass("active");
+    await sleep(200);
+    $("#text-await").remove();
 }
 
 function entityReset() {
     entity = {"name": "", "icon": "", "autor": "", "owner": "", "user": "0", "system": "", "edit": null}
 }
 
+var isNewEntityPending = false;
+
+function createEntityOfType(type) {
+    var cfg = entityTypeConfig[type];
+    if (!cfg) return;
+
+    resetAttr();
+    entityReset();
+    entity.user = String(type);
+    isNewEntityPending = true;
+    $(".deleteEntityBtn").addClass("hide");
+    $("#entity-name, #entityAttr").removeClass("hide");
+    hideFieldChoicePanels();
+    showEntity();
+    updateEntityTypeLabel();
+    highlightActiveEntity();
+
+    // Show edit panel
+    $("#nav-menu").addClass("active");
+    if (window.innerWidth <= 768) {
+        $("#nav-entity").addClass("mobile-hidden");
+        $("#nav-menu").addClass("mobile-visible");
+    }
+}
+
+function createEntityInSystem(systemName) {
+    resetAttr();
+    entityReset();
+    entity.user = "0";
+    entity.system = systemName;
+    isNewEntityPending = true;
+    $(".deleteEntityBtn").addClass("hide");
+    $("#entity-name, #entityAttr").removeClass("hide");
+    hideFieldChoicePanels();
+    showEntity();
+    updateEntityTypeLabel();
+    highlightActiveEntity();
+
+    // Show edit panel
+    $("#nav-menu").addClass("active");
+    if (window.innerWidth <= 768) {
+        $("#nav-entity").addClass("mobile-hidden");
+        $("#nav-menu").addClass("mobile-visible");
+    }
+}
+
+function hideFieldChoicePanels() {
+    $("#fieldStartChoice, #templateEntitySelector, #fieldsHeader").addClass("hide");
+}
+
+function showFieldChoice() {
+    hideFieldChoicePanels();
+    $("#fieldStartChoice").removeClass("hide");
+}
+
+function chooseFromTemplate() {
+    $("#fieldStartChoice").addClass("hide");
+
+    var $select = $("#templateEntity");
+    $select.html('<option value="">Selecione a entidade...</option>');
+    $.each(dicionariosEdit, function(name) {
+        if (name !== "usuarios") {
+            $select.append('<option value="' + name + '">' + name + '</option>');
+        }
+    });
+
+    $("#templateEntitySelector").removeClass("hide");
+}
+
+function cancelTemplateSelection() {
+    $("#templateEntitySelector").addClass("hide");
+    $("#templateEntity").val("");
+    showFieldChoice();
+}
+
+function chooseFromScratch() {
+    isNewEntityPending = false;
+    hideFieldChoicePanels();
+    $(".requireNameEntity").removeClass("hide");
+    $("#fieldsHeader").removeClass("hide");
+}
+
+function applyEntityTemplate() {
+    var templateName = $("#templateEntity").val();
+    if (!templateName || !dicionariosEdit[templateName]) return;
+
+    // Ensure entity has a name
+    if (entity.name === "") {
+        var tempName = slug($("#entityName").val(), '_');
+        if (tempName.length > 2) {
+            entity.name = tempName;
+            dicionariosEdit[entity.name] = {};
+            identifier[entity.name] = 1;
+        } else {
+            toast("Digite um nome para a entidade", 3000, "toast-warning");
+            $("#templateEntity").val("");
+            return;
+        }
+    }
+
+    // Copy fields from template entity
+    var templateFields = dicionariosEdit[templateName];
+    var copiedFields = {};
+    var newId = 1;
+
+    $.each(templateFields, function(id, field) {
+        copiedFields[newId] = JSON.parse(JSON.stringify(field));
+        copiedFields[newId].indice = newId;
+        newId++;
+    });
+
+    dicionariosEdit[entity.name] = copiedFields;
+    identifier[entity.name] = newId;
+
+    // Transition to normal editing mode
+    isNewEntityPending = false;
+    hideFieldChoicePanels();
+    $(".requireNameEntity").removeClass("hide");
+    $("#fieldsHeader").removeClass("hide");
+
+    showEntity();
+    toast("Campos copiados de " + templateName, 2000, "toast-success");
+}
+
+function updateEntityTypeLabel() {
+    var userVal = parseInt(entity.user) || 0;
+    var cfg = entityTypeConfig[userVal];
+    if (cfg) {
+        $("#entityTypeLabel").text(cfg.singular).css({
+            "background-color": cfg.color,
+            "color": "#fff"
+        });
+    }
+    $("#user").val(entity.user);
+
+    // Hide system/author cards for Templates (type 4)
+    if (userVal === 4) {
+        $("#col-system, #col-author").addClass("hide");
+    } else {
+        $("#col-system, #col-author").removeClass("hide");
+    }
+}
+
 function entityEdit(id) {
     if (id !== "usuarios") {
-        $("#importForm").addClass("hide");
         $("#entity-name, #entityAttr").removeClass("hide");
         if ((typeof (id) === "undefined" && entity.name !== "") || (typeof (id) !== "undefined" && id !== entity.name)) {
             resetAttr();
             entityReset();
+            isNewEntityPending = false;
+            hideFieldChoicePanels();
             if (typeof (id) !== "undefined") {
-                $(".downloadEntity").removeClass("hide");
+                $(".deleteEntityBtn").removeClass("hide");
                 entity.name = id;
                 entity.icon = info[id].icon;
                 entity.autor = info[id].autor;
                 entity.systemRequired = info[id].systemRequired;
                 entity.owner = info[id].owner;
                 entity.system = info[id].system;
-                entity.user = typeof info[id].user === "number" ? info[id].user : "0";
-                $("#entityIconDemo").text(entity.icon || "");
-                $("#haveAutor").prop("checked", entity.autor === 1);
+                entity.user = typeof info[id].user === "number" ? String(info[id].user) : "0";
+                renderIconPreview(entity.icon || "");
+                $("#haveAutor").prop("checked", entity.autor === 1 || entity.autor === 2);
                 $("#systemRequired").prop("checked", entity.systemRequired === 1);
-                $("#haveOwner").prop("checked", entity.autor === 2);
                 $("#user").val(entity.user)
             } else {
-                $(".downloadEntity").addClass("hide");
+                $(".deleteEntityBtn").addClass("hide");
             }
-            showEntity()
+            showEntity();
+            updateEntityTypeLabel();
+            highlightActiveEntity();
+
+            // Show edit panel
+            $("#nav-menu").addClass("active");
+            if (window.innerWidth <= 768) {
+                $("#nav-entity").addClass("mobile-hidden");
+                $("#nav-menu").addClass("mobile-visible");
+            }
         } else {
             $("#entityName").focus()
         }
     }
 }
 
-function downloadEntity() {
-    get('downloadEntity/' + entity.name).then(d => {
-        if (typeof d === "string")
-            download("backup_" + entity.name + ".json", d);
-        else
-            toast("Error");
-    });
-}
-
-function uploadEntity() {
-    entityReset();
-    showEntity();
-    $("#importForm").removeClass("hide");
-    $("#entity-name, #entityAttr, .downloadEntity").addClass("hide");
-}
-
 function showEntity() {
     $("#entityName").val(entity.name).focus();
     $("#entityIcon").val(entity.icon);
-    $("#entityIconDemo").text(entity.icon);
-    $("#haveAutor").prop("checked", entity.autor === 1);
+    renderIconPreview(entity.icon);
     $("#systemRequired").prop("checked", entity.systemRequired === 1);
-    $("#haveOwner").prop("checked", entity.autor === 2);
-    $("#user").val(entity.user).trigger("change");
+    $("#haveAutor").prop("checked", entity.autor === 1 || entity.autor === 2);
+    if (entity.autor === 1 || entity.autor === 2) {
+        $("#authorTypeRow").removeClass("hide");
+        var val = entity.autor === 2 ? "2" : "1";
+        $("#authorType" + (val === "2" ? "Owner" : "Info")).prop("checked", true);
+        $(".author-type-btn").removeClass("active");
+        $(".author-type-btn[data-value='" + val + "']").addClass("active");
+    } else {
+        $("#authorTypeRow").addClass("hide");
+        $("#authorTypeInfo").prop("checked", true);
+        $(".author-type-btn").removeClass("active");
+        $(".author-type-btn[data-value='1']").addClass("active");
+    }
+    $("#user").val(entity.user);
+    updateEntityTypeLabel();
 
-    if(entity.system !== "")
-        $("#system").attr("disabled", "disabled").addClass("disabled").val(entity.system);
-    else
-        $("#system").removeAttr("disabled").removeClass("disabled").val("");
+    $("#system").val(entity.system || "");
+    updateSystemRequiredUI();
 
     $("#entityAttr").html("");
     let maxIndice = 1;
@@ -152,10 +548,17 @@ function showEntity() {
             }
         })
     }
+
+    // Initialize drag-and-drop after rendering fields
+    initDragDrop();
 }
 
 function saveEntity(silent) {
     $("#saveEntityBtn").addClass("disabled");
+
+    // Retrair campo imediatamente ao salvar
+    if (typeof (silent) === "undefined")
+        $("#main").removeClass("active");
 
     let userRequisite = {'title': !1, 'password': !1, 'validate': !0};
     if (entity.user === "1") {
@@ -168,15 +571,18 @@ function saveEntity(silent) {
             userRequisite.validate = !1;
         }
     }
+    // Templates (tipo 4) nao precisam de validacao de titulo/senha
+    if (entity.user === "4") {
+        userRequisite.validate = !0;
+    }
 
     if (userRequisite.validate && checkSaveAttr() && entity.name.length > 2 && typeof (dicionariosEdit[entity.name]) !== "undefined" && !$.isEmptyObject(dicionariosEdit[entity.name])) {
         let newName = slug($("#entityName").val(), "_");
         AJAX.post("save/entity", {
             "name": entity.name,
             "icon": $("#entityIcon").val(),
-            "autor": $("#haveAutor").prop("checked"),
+            "autor": entity.autor,
             "systemRequired": $("#systemRequired").prop("checked"),
-            "owner": $("#haveOwner").prop("checked"),
             "user": $("#user").val(),
             "system": entity.system,
             "dados": dicionariosEdit[entity.name],
@@ -191,8 +597,12 @@ function saveEntity(silent) {
                 if (typeof (info[entity.name]) !== "undefined")
                     info[entity.name].icon = $("#entityIcon").val()
             }
-            if (typeof (silent) === "undefined")
+            if (typeof (silent) === "undefined") {
                 toast("Salvo", 1500, "toast-success");
+                $("#nav-menu").removeClass("active");
+                entityReset();
+                highlightActiveEntity();
+            }
             if (g && typeof (silent) === "undefined")
                 readDicionarios()
         })
@@ -219,6 +629,13 @@ function resetAttr(id) {
         $(".selectInput, #relation").attr("disabled", "disabled").addClass("disabled");
     else
         $(".selectInput, #relation").removeAttr("disabled").removeClass("disabled");
+
+    // Reset field highlight and delete button
+    $(".field-item").removeClass("field-item-active");
+    if (entity.edit === null) {
+        $(".deleteFieldBtn").addClass("hide");
+    }
+
     applyAttr(getDefaultsInfo());
     $("#nome").trigger("change")
 }
@@ -247,10 +664,242 @@ function indiceChange(id, val) {
     }
 }
 
+/* ============================================
+   Drag and Drop - Field Reordering
+   ============================================ */
+var _dragCleanup = null;
+
+function initDragDrop() {
+    // Clean up previous listeners
+    if (_dragCleanup) {
+        _dragCleanup();
+        _dragCleanup = null;
+    }
+
+    var list = document.getElementById('entityAttr');
+    if (!list) return;
+
+    var dragEl = null;
+    var ghost = null;
+    var placeholder = null;
+    var offsetY = 0;
+
+    function getY(e) {
+        if (e.touches && e.touches.length) return e.touches[0].clientY;
+        return e.clientY;
+    }
+
+    function onStart(e) {
+        var target = e.target;
+        var handle = target.closest ? target.closest('.drag-handle') : $(target).closest('.drag-handle')[0];
+        if (!handle) return;
+
+        var li = target.closest ? target.closest('li[data-id]') : $(target).closest('li[data-id]')[0];
+        if (!li) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        dragEl = li;
+
+        var rect = dragEl.getBoundingClientRect();
+        offsetY = getY(e) - rect.top;
+
+        // Create ghost (visual clone that follows cursor)
+        ghost = dragEl.cloneNode(true);
+        ghost.classList.add('drag-ghost');
+        ghost.style.position = 'fixed';
+        ghost.style.zIndex = '10000';
+        ghost.style.width = rect.width + 'px';
+        ghost.style.left = rect.left + 'px';
+        ghost.style.top = rect.top + 'px';
+        ghost.style.margin = '0';
+        ghost.style.pointerEvents = 'none';
+        ghost.style.listStyle = 'none';
+        document.body.appendChild(ghost);
+
+        // Create placeholder (shows drop target position)
+        placeholder = document.createElement('li');
+        placeholder.className = 'drag-placeholder';
+        placeholder.style.height = rect.height + 'px';
+
+        // Dim the original element in place
+        dragEl.classList.add('drag-origin');
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('touchmove', onMove, {passive: false});
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+    }
+
+    function onMove(e) {
+        if (!dragEl) return;
+        e.preventDefault();
+
+        var y = getY(e);
+        ghost.style.top = (y - offsetY) + 'px';
+
+        // Remove placeholder first
+        if (placeholder.parentNode) {
+            placeholder.parentNode.removeChild(placeholder);
+        }
+
+        // Find where to insert the placeholder
+        var items = list.querySelectorAll('li[data-id]:not(.drag-origin)');
+        var inserted = false;
+        for (var i = 0; i < items.length; i++) {
+            var rect = items[i].getBoundingClientRect();
+            var midY = rect.top + rect.height / 2;
+            if (y < midY) {
+                items[i].parentNode.insertBefore(placeholder, items[i]);
+                inserted = true;
+                break;
+            }
+        }
+
+        if (!inserted) {
+            // After the original element or at the very end
+            if (dragEl.nextSibling) {
+                list.insertBefore(placeholder, dragEl.nextSibling);
+            } else {
+                list.appendChild(placeholder);
+            }
+            // If placeholder ended up right after drag-origin, try after placeholder
+            // Check if we should be after all non-origin items
+            if (items.length > 0) {
+                var lastItem = items[items.length - 1];
+                var lastRect = lastItem.getBoundingClientRect();
+                if (y > lastRect.top + lastRect.height / 2) {
+                    if (lastItem.nextSibling && lastItem.nextSibling !== dragEl) {
+                        list.insertBefore(placeholder, lastItem.nextSibling);
+                    } else if (lastItem.nextSibling === dragEl) {
+                        if (dragEl.nextSibling) {
+                            list.insertBefore(placeholder, dragEl.nextSibling);
+                        } else {
+                            list.appendChild(placeholder);
+                        }
+                    } else {
+                        list.appendChild(placeholder);
+                    }
+                }
+            }
+        }
+    }
+
+    function onEnd() {
+        if (!dragEl) return;
+
+        // Move the original element to where the placeholder is
+        if (placeholder.parentNode) {
+            placeholder.parentNode.insertBefore(dragEl, placeholder);
+            placeholder.parentNode.removeChild(placeholder);
+        }
+
+        // Remove ghost
+        if (ghost && ghost.parentNode) {
+            ghost.parentNode.removeChild(ghost);
+        }
+
+        // Restore original element
+        dragEl.classList.remove('drag-origin');
+
+        dragEl = null;
+        ghost = null;
+        placeholder = null;
+
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('mouseup', onEnd);
+        document.removeEventListener('touchend', onEnd);
+
+        updateFieldIndices();
+    }
+
+    list.addEventListener('mousedown', onStart);
+    list.addEventListener('touchstart', onStart, {passive: false});
+
+    _dragCleanup = function() {
+        list.removeEventListener('mousedown', onStart);
+        list.removeEventListener('touchstart', onStart);
+    };
+}
+
+function updateFieldIndices() {
+    var index = 1;
+    $("#entityAttr li[data-id]").each(function() {
+        var id = $(this).data("id");
+        if (dicionariosEdit[entity.name] && dicionariosEdit[entity.name][id]) {
+            dicionariosEdit[entity.name][id].indice = index;
+            index++;
+        }
+    });
+}
+
+/* ============================================
+   Mobile Navigation
+   ============================================ */
+function mobileBackToList() {
+    $("#nav-menu").removeClass("mobile-visible");
+    $("#main").removeClass("mobile-visible");
+    setTimeout(function() {
+        $("#nav-entity").removeClass("mobile-hidden");
+    }, 50);
+}
+
+function mobileBackToEntity() {
+    $("#main").removeClass("mobile-visible");
+    if (window.innerWidth <= 768) {
+        $("#nav-menu").addClass("mobile-visible");
+    }
+}
+
+function addNewField() {
+    if (checkSaveAttr()) {
+        resetAttr();
+        // Show the field editor for a new field
+        $(".deleteFieldBtn").addClass("hide");
+
+        // Show field editor
+        $("#main").addClass("active");
+        if (window.innerWidth <= 768) {
+            $("#main").addClass("mobile-visible");
+        }
+    }
+}
+
+function deleteCurrentField() {
+    if (entity.edit !== null) {
+        deleteAttr(entity.edit);
+    }
+}
+
 function editAttr(id) {
     if (id !== entity.edit) {
-        if (checkSaveAttr())
-            resetAttr(id)
+        if (checkSaveAttr()) {
+            resetAttr(id);
+
+            // Show delete button only when editing an existing field
+            if (typeof id !== "undefined" && id !== null) {
+                $(".deleteFieldBtn").removeClass("hide");
+            } else {
+                $(".deleteFieldBtn").addClass("hide");
+            }
+
+            // Highlight the active field
+            $(".field-item").removeClass("field-item-active");
+            if (typeof id !== "undefined") {
+                $(".list-att-" + id).addClass("field-item-active");
+            }
+
+            // Show/hide field editor
+            if (typeof id !== "undefined") {
+                $("#main").addClass("active");
+                if (window.innerWidth <= 768) {
+                    $("#main").addClass("mobile-visible");
+                }
+            } else {
+                $("#main").removeClass("active");
+            }
+        }
     }
 }
 
@@ -259,7 +908,7 @@ var alert = !1;
 function checkSaveAttr() {
     var yes = !0;
     entity.icon = $("#entityIcon").val();
-    entity.autor = $("#haveAutor").prop("checked") ? 1 : ($("#haveOwner").prop("checked") ? 2 : null);
+    entity.autor = $("#haveAutor").prop("checked") ? ($("#authorTypeOwner").prop("checked") ? 2 : 1) : null;
     entity.systemRequired = $("#systemRequired").prop("checked") ? 1 : null;
     entity.user = $("#user").val();
     if (checkRequiresFields()) {
@@ -674,11 +1323,14 @@ function deleteAttr(id) {
     }
 }
 
-function removeEntity(entity) {
-    if (entity !== 'usuarios' && confirm("Excluir esta entidade e todos os seus dados?")) {
-        AJAX.post("delete/entity", {"name": entity}).then(g => {
+function removeEntity(entityName) {
+    if (typeof entityName === "object") entityName = entity.name;
+    if (entityName !== 'usuarios' && confirm("Excluir esta entidade e todos os seus dados?")) {
+        AJAX.post("delete/entity", {"name": entityName}).then(g => {
             if (g) {
                 toast("Entidade Excluída", 3000, "toast-success");
+                $(".deleteEntityBtn").addClass("hide");
+                mobileBackToList();
                 readDicionarios();
                 entityEdit();
             }
@@ -689,34 +1341,6 @@ function removeEntity(entity) {
 function addValueAllow() {
     $("#spaceValueAllow").prepend(getTemplates().valueAllow);
     $('#spaceValueAllow').find('.allow:first-child').find('.values').focus()
-}
-
-function sendImport() {
-    if ($("#import").val() !== "") {
-        var form_data = new FormData();
-        form_data.append('arquivo', $('#import').prop('files')[0]);
-        form_data.append('maestruToken', JSON.parse(sessionStorage.__login).token);
-        form_data.append('fileInSetFolder', 'save/import');
-        $.ajax({
-            url: HOME + 'set',
-            dataType: 'text',
-            cache: !1,
-            contentType: !1,
-            processData: !1,
-            data: form_data,
-            type: 'post',
-            success: function (data) {
-                data = JSON.parse(data);
-                if (!data.data) {
-                    toast("Erro ao restaurar", 3000, "toast-error");
-                } else {
-                    toast("Entidade Restaurada", 1300, "toast-success");
-                    readDicionarios();
-                    $("#import").val("");
-                }
-            }
-        })
-    }
 }
 
 function addFilter(value) {
@@ -891,11 +1515,271 @@ async function readInputTypes() {
 }
 
 function readSystem() {
-    $("#system").html('<option value="" class="theme-l2 theme-text-aux">' + SITENAME + '</option>');
+    $("#system").html('<option value="">' + SITENAME + ' (raiz)</option>');
     for(let i in info) {
         if(info[i].user === 2)
-            $("#system").append('<option value="' + i + '" class="theme-l2 theme-text-aux">' + ucFirst(i).replace("_", " ").replace("_", " ") + '</option>');
+            $("#system").append('<option value="' + i + '">' + ucFirst(i).replace("_", " ").replace("_", " ") + '</option>');
     }
+}
+
+function readInfo() {
+    AJAX.post("load/info").then(data => {
+        info = data;
+        readSystem();
+        if(!isEmpty(entity.system))
+            $("#system").val(entity.system);
+    })
+}
+
+function updateSystemRequiredUI() {
+    var systemVal = $("#system").val();
+    var $requiredRow = $("#systemRequiredRow");
+    var $requiredBlock = $("#systemRequiredBlock");
+
+    $requiredRow.addClass("hide");
+    $requiredBlock.addClass("hide");
+
+    if (!systemVal) return;
+
+    // Entity exists - validate against DB
+    if (entity.name !== "" && dicionariosEdit[entity.name]) {
+        AJAX.post("check/systemRequired", { entity: entity.name }).then(function(result) {
+            if (result && result.valid) {
+                $requiredRow.removeClass("hide");
+            } else if (result && !result.valid) {
+                if (entity.systemRequired === 1) {
+                    $("#systemRequired").prop("checked", false);
+                    entity.systemRequired = null;
+                }
+                $requiredBlock.removeClass("hide");
+                $("#systemRequiredBlockMsg").text(
+                    result.count + " registro(s) sem sistema definido. Não é possível tornar obrigatório enquanto houver registros sem associação."
+                );
+            }
+        });
+    } else {
+        // New entity - always allow
+        $requiredRow.removeClass("hide");
+    }
+}
+
+/* ============================================
+   Entity Stats - Record Count & Activity
+   ============================================ */
+
+async function loadEntityStats() {
+    var stats = await AJAX.post("load/entityStats");
+    if (stats) {
+        entityStats = stats;
+        applyEntityStats();
+    }
+}
+
+function applyEntityStats() {
+    $('[data-count-entity]').each(function() {
+        var name = $(this).data('count-entity');
+        var s = entityStats[name];
+        if (s && s.count !== null) {
+            $(this).text('(' + s.count.toLocaleString('pt-BR') + ')');
+        }
+    });
+    applyActivityDots();
+}
+
+function applyActivityDots() {
+    $('[data-activity-entity]').each(function() {
+        var name = $(this).data('activity-entity');
+        var s = entityStats[name];
+        if (!s || s.count === null) {
+            $(this).hide();
+            return;
+        }
+        if (!s.lastDate || s.count === 0) {
+            $(this).css('background', '#BDBDBD').attr('title', 'Sem registros');
+            return;
+        }
+        var diff = (new Date() - new Date(s.lastDate)) / (1000 * 60 * 60 * 24 * 30);
+        if (diff < 1) {
+            $(this).css('background', '#4CAF50').attr('title', 'Ativo recentemente');
+        } else if (diff <= 6) {
+            $(this).css('background', '#FFC107').attr('title', 'Pouco utilizado');
+        } else {
+            $(this).css('background', '#F44336').attr('title', 'Inativo há mais de 6 meses');
+        }
+    });
+}
+
+/* ============================================
+   Entity Drag-and-Drop (between sections)
+   ============================================ */
+
+var _entityDragCleanup = null;
+
+function initEntityDragDrop() {
+    if (_entityDragCleanup) {
+        _entityDragCleanup();
+        _entityDragCleanup = null;
+    }
+
+    var space = document.getElementById('entity-space');
+    if (!space) return;
+
+    var dragEl = null;
+    var ghost = null;
+    var offsetX = 0;
+    var offsetY = 0;
+    var isDragging = false;
+    var lastPos = {x: 0, y: 0};
+
+    function getXY(e) {
+        var pos;
+        if (e.touches && e.touches.length) pos = {x: e.touches[0].clientX, y: e.touches[0].clientY};
+        else if (e.changedTouches && e.changedTouches.length) pos = {x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY};
+        else pos = {x: e.clientX, y: e.clientY};
+        lastPos = pos;
+        return pos;
+    }
+
+    function onStart(e) {
+        var target = e.target;
+        var handle = target.closest ? target.closest('.entity-drag-handle') : $(target).closest('.entity-drag-handle')[0];
+        if (!handle) return;
+
+        var item = target.closest ? target.closest('.entity-item') : $(target).closest('.entity-item')[0];
+        if (!item) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        dragEl = item;
+        isDragging = true;
+
+        var rect = dragEl.getBoundingClientRect();
+        var pos = getXY(e);
+        offsetX = pos.x - rect.left;
+        offsetY = pos.y - rect.top;
+
+        ghost = dragEl.cloneNode(true);
+        ghost.classList.add('entity-drag-ghost');
+        ghost.style.position = 'fixed';
+        ghost.style.zIndex = '10000';
+        ghost.style.width = rect.width + 'px';
+        ghost.style.left = rect.left + 'px';
+        ghost.style.top = rect.top + 'px';
+        ghost.style.margin = '0';
+        ghost.style.pointerEvents = 'none';
+        document.body.appendChild(ghost);
+
+        dragEl.classList.add('entity-drag-origin');
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('touchmove', onMove, {passive: false});
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+    }
+
+    function onMove(e) {
+        if (!dragEl) return;
+        e.preventDefault();
+
+        var pos = getXY(e);
+        ghost.style.left = (pos.x - offsetX) + 'px';
+        ghost.style.top = (pos.y - offsetY) + 'px';
+
+        // Highlight drop zones
+        var dropZones = space.querySelectorAll('[data-drop-type], [data-drop-system]');
+        dropZones.forEach(function(zone) {
+            var rect = zone.getBoundingClientRect();
+            if (pos.x >= rect.left && pos.x <= rect.right && pos.y >= rect.top && pos.y <= rect.bottom) {
+                zone.classList.add('entity-drop-highlight');
+            } else {
+                zone.classList.remove('entity-drop-highlight');
+            }
+        });
+    }
+
+    function onEnd(e) {
+        if (!dragEl) return;
+
+        var pos = getXY(e);
+        var entityName = dragEl.getAttribute('data-entity');
+        var currentType = parseInt(dragEl.getAttribute('data-entity-type')) || 0;
+
+        // Find which drop zone we landed on
+        var targetType = null;
+        var targetSystem = null;
+        var dropZones = space.querySelectorAll('[data-drop-type], [data-drop-system]');
+        dropZones.forEach(function(zone) {
+            zone.classList.remove('entity-drop-highlight');
+            var rect = zone.getBoundingClientRect();
+            if (pos.x >= rect.left && pos.x <= rect.right && pos.y >= rect.top && pos.y <= rect.bottom) {
+                if (zone.hasAttribute('data-drop-type')) {
+                    targetType = parseInt(zone.getAttribute('data-drop-type'));
+                } else if (zone.hasAttribute('data-drop-system')) {
+                    targetSystem = zone.getAttribute('data-drop-system');
+                }
+            }
+        });
+
+        // Cleanup visual state
+        if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+        dragEl.classList.remove('entity-drag-origin');
+
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('mouseup', onEnd);
+        document.removeEventListener('touchend', onEnd);
+
+        var movedEntity = entityName;
+        dragEl = null;
+        ghost = null;
+        isDragging = false;
+
+        // Determine action
+        if (targetSystem) {
+            // Drag to system
+            var currentSystem = (info[movedEntity] && info[movedEntity].system) || "";
+            if (currentSystem === targetSystem) return;
+            if (!confirm('Vincular "' + movedEntity + '" ao sistema "' + targetSystem + '"?')) return;
+
+            AJAX.post("save/entityType", {
+                entity: movedEntity,
+                newType: currentType,
+                newSystem: targetSystem
+            }).then(function(result) {
+                if (result && result.success) {
+                    toast("Entidade vinculada ao sistema", 2000, "toast-success");
+                    readDicionarios();
+                } else {
+                    toast("Erro ao vincular entidade", 3000, "toast-error");
+                }
+            });
+        } else if (targetType !== null && targetType !== currentType) {
+            var targetCfg = entityTypeConfig[targetType];
+            if (!targetCfg) return;
+            if (!confirm('Alterar "' + movedEntity + '" para tipo "' + targetCfg.singular + '"?')) return;
+
+            AJAX.post("save/entityType", {
+                entity: movedEntity,
+                newType: targetType,
+                newSystem: ""
+            }).then(function(result) {
+                if (result && result.success) {
+                    toast("Tipo alterado para " + targetCfg.singular, 2000, "toast-success");
+                    readDicionarios();
+                } else {
+                    toast("Erro ao alterar tipo", 3000, "toast-error");
+                }
+            });
+        }
+    }
+
+    space.addEventListener('mousedown', onStart);
+    space.addEventListener('touchstart', onStart, {passive: false});
+
+    _entityDragCleanup = function() {
+        space.removeEventListener('mousedown', onStart);
+        space.removeEventListener('touchstart', onStart);
+    };
 }
 
 $(function () {
@@ -910,8 +1794,20 @@ $(function () {
     readDicionarios();
     entityReset();
     $("#app").off("keyup change focus", "#entityName").on("keyup change focus", "#entityName", function () {
-        if ($(this).val().length > 2)
-            $(".requireNameEntity").removeClass("hide"); else $(".requireNameEntity").addClass("hide")
+        if ($(this).val().length > 2) {
+            if (isNewEntityPending) {
+                // Don't reset if template selector is already open
+                if (!$("#templateEntitySelector").is(":visible")) {
+                    showFieldChoice();
+                }
+            } else {
+                $(".requireNameEntity").removeClass("hide");
+                $("#fieldsHeader").removeClass("hide");
+            }
+        } else {
+            $(".requireNameEntity").addClass("hide");
+            hideFieldChoicePanels();
+        }
     }).off("change", "#relation").on("change", "#relation", function () {
         checkFieldsOpenOrClose();
         checkEntityMultipleFields();
@@ -925,12 +1821,24 @@ $(function () {
         applyAttr(assignObject(defaults.default, defaults[getType()]));
         checkFieldsOpenOrClose();
         $("#nome").trigger("change")
-    }).off("change", "#haveAutor, #haveOwner").on("change", "#haveAutor, #haveOwner", function (e) {
-        let alt = $(this).attr("id") === "haveAutor" ? "#haveOwner" : "#haveAutor";
-        if (!$(this).prop("checked") || $(alt).prop("checked")) {
-            if (confirm("Os dados com Referência a esta entidade serão perdidos.\n\nDeseja Formatar?"))
-                $(alt).prop("checked", !1); else $(this).prop("checked", !$(alt).prop("checked"))
+    }).off("change", "#haveAutor").on("change", "#haveAutor", function () {
+        if ($(this).prop("checked")) {
+            $("#authorTypeRow").removeClass("hide");
+            $("#authorTypeInfo").prop("checked", true);
+            $(".author-type-btn").removeClass("active");
+            $(".author-type-btn[data-value='1']").addClass("active");
+            entity.autor = 1;
+        } else {
+            $("#authorTypeRow").addClass("hide");
+            entity.autor = null;
         }
+    }).off("click", ".author-type-btn").on("click", ".author-type-btn", function () {
+        var val = $(this).data("value");
+        $(".author-type-btn").removeClass("active");
+        $(this).addClass("active");
+        $("input[name='authorType']").prop("checked", false);
+        $("#authorType" + (val == 2 ? "Owner" : "Info")).prop("checked", true);
+        entity.autor = parseInt(val);
     }).off("keyup change", "#nome").on("keyup change", "#nome", function () {
         checkFieldsOpenOrClose($(this).val())
     }).off("change", "#default_custom").on("change", "#default_custom", function () {
@@ -1013,9 +1921,14 @@ $(function () {
         })
 
     }).off("change", "#system").on("change", "#system", function () {
-        entity.system = $("#system").val();
-
-    }).off("change keyup", "#entityIcon").on("change keyup", "#entityIcon", function () {
-        $("#entityIconDemo").text($(this).val())
+        var newSystem = $("#system").val();
+        if (entity.system !== newSystem && $("#systemRequired").prop("checked")) {
+            $("#systemRequired").prop("checked", false);
+            entity.systemRequired = null;
+        }
+        entity.system = newSystem;
+        updateSystemRequiredUI();
+    }).off("change", "#systemRequired").on("change", "#systemRequired", function () {
+        entity.systemRequired = $(this).prop("checked") ? 1 : null;
     })
 })
